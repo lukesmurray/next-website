@@ -22,6 +22,8 @@ interface PageFrontmatter {
   title: string;
 }
 
+type PageSlug = string;
+
 /**
  * The interface for a page (pages can contain other pages)
  */
@@ -29,18 +31,18 @@ interface Page {
   /**
    * Content defined below frontmatter
    */
-  content?: string;
+  content: string | null;
 
   /**
    * date field from frontmatter
    */
-  date?: string;
+  date: string | null;
 
   /**
    * Description of the page
    * from description field of frontmatter
    */
-  description?: string;
+  description: string | null;
 
   /**
    * Path to the directory containing this content file.
@@ -57,7 +59,7 @@ interface Page {
   /**
    * information about the file associated with the page
    */
-  file: File | undefined;
+  file: File | null;
 
   /**
    * true if this is the home page
@@ -79,22 +81,22 @@ interface Page {
   /**
    * the next page in the entire tree
    */
-  next: Page | undefined;
+  next: PageSlug | null;
 
   /**
    * the next page in the current section
    */
-  nextInSection: Page | undefined;
+  nextInSection: PageSlug | null;
 
   /**
    * the prev page in the entire tree
    */
-  prev: Page | undefined;
+  prev: PageSlug | null;
 
   /**
    * the prev page in the current section
    */
-  prevInSection: Page | undefined;
+  prevInSection: PageSlug | null;
 
   /**
    * the title for this page
@@ -105,32 +107,32 @@ interface Page {
   /**
    * The section for the page (can be the page itself if the page is a section)
    */
-  section: Page;
+  section: PageSlug;
 
   /**
    * The parent section for the page
    */
-  parent: Page | undefined;
+  parent: PageSlug | null;
 
   /**
    * The page's first section below root
    */
-  firstSection: Page | undefined;
+  firstSection: PageSlug | null;
 
   /**
    * The sections below this page
    */
-  sections: Page[];
+  sections: PageSlug[];
 
   /**
    * The regular pages below this page (does not include sections)
    */
-  regularPages: Page[];
+  regularPages: PageSlug[];
 
   /**
    * The pages below this page (includes sections)
    */
-  pages: Page[];
+  pages: PageSlug[];
 
   /**
    * The unique slug for this page
@@ -181,11 +183,11 @@ export async function createFileTree(rootDir) {
     rootDirectory: rootDir,
     pageDict: {},
   };
-  const dirPage = await parseDirectory(rootDir, undefined, parseContext);
-  await walkFileTree(rootDir, dirPage, parseContext);
+  const root = await parseDirectory(rootDir, undefined, parseContext);
+  await walkFileTree(rootDir, root, parseContext);
 
   // TODO(lukemurray): assign next and previous properties
-  return dirPage;
+  return { root, pageDict: parseContext.pageDict };
 }
 
 /**
@@ -229,24 +231,27 @@ async function parseDirectory(
   }
 
   const page: Page = {
-    draft: false,
+    content: null,
+    date: null,
+    description: null,
     dir: path.relative(parseContext.rootDirectory, dir),
-    file: undefined,
+    draft: false,
+    file: null,
+    firstSection: null,
     isHome,
     isSection,
     kind: isHome ? "home" : isSection ? "section" : "page",
-    next: undefined,
-    nextInSection: undefined,
-    prev: undefined,
-    prevInSection: undefined,
-    title: path.basename(dir),
-    section: parent,
-    parent,
-    firstSection: undefined,
-    sections: [],
-    regularPages: [],
+    next: null,
+    nextInSection: null,
     pages: [],
+    parent: parent?.slug ?? null,
+    prev: null,
+    prevInSection: null,
+    regularPages: [],
+    section: parent?.slug ?? null,
+    sections: [],
     slug: "",
+    title: path.basename(dir),
   };
   page.slug = createPageSlug(page);
 
@@ -255,26 +260,28 @@ async function parseDirectory(
   }
 
   if (isSection) {
-    page.section = page;
+    page.section = page.slug;
     page.firstSection = isHome
-      ? undefined
+      ? null
       : parent.isHome
-      ? page
+      ? page.slug
       : parent.firstSection;
     if (parent !== undefined) {
-      parent.sections.push(page);
+      parent.sections.push(page.slug);
     }
   }
 
   if (isPage) {
     if (parent !== undefined) {
-      parent.regularPages.push(page);
+      parent.regularPages.push(page.slug);
     }
   }
 
   if (parent !== undefined) {
-    parent.pages.push(page);
+    parent.pages.push(page.slug);
   }
+
+  parseContext.pageDict[page.slug] = page;
 
   return page;
 }
@@ -295,19 +302,22 @@ async function parseFile(
   }
 
   const page: Page = {
+    content: null,
+    date: null,
+    description: null,
     draft: false,
     dir: parent.dir,
-    file: undefined,
+    file: null,
     isHome: false,
     isSection: false,
     kind: "page",
-    next: undefined,
-    nextInSection: undefined,
-    prev: undefined,
-    prevInSection: undefined,
+    next: null,
+    nextInSection: null,
+    prev: null,
+    prevInSection: null,
     title: path.basename(filePath).replace(/\.mdx?$/i, ""),
-    section: parent,
-    parent,
+    section: parent.slug,
+    parent: parent.slug,
     firstSection: parent.firstSection,
     sections: [],
     regularPages: [],
@@ -319,8 +329,10 @@ async function parseFile(
 
   assignFileInfo(filePath, page, parseContext);
 
-  parent.pages.push(page);
-  parent.regularPages.push(page);
+  parent.pages.push(page.slug);
+  parent.regularPages.push(page.slug);
+
+  parseContext.pageDict[page.slug] = page;
 
   return page;
 }
@@ -393,7 +405,7 @@ function assignFileInfo(
 function createPageSlug(page: Page): string {
   return `${path.join(
     ...(page.isSection ? ["/", page.dir] : ["/", page.dir, page.title])
-  )}`;
+  )}`.toLowerCase();
 }
 
 function isSectionIndex(entry: string) {
