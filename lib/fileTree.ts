@@ -7,7 +7,7 @@ import path from "path";
  */
 interface File {
   /**
-   * the path to the file
+   * the path to the file. Relative to the root directory.
    */
   path: string;
 }
@@ -44,6 +44,7 @@ interface Page {
 
   /**
    * Path to the directory containing this content file.
+   * Relatvie to the root directory.
    */
   dir: string;
 
@@ -56,7 +57,7 @@ interface Page {
   /**
    * information about the file associated with the page
    */
-  file: File;
+  file: File | undefined;
 
   /**
    * true if this is the home page
@@ -130,6 +131,11 @@ interface Page {
    * The pages below this page (includes sections)
    */
   pages: Page[];
+
+  /**
+   * The unique slug for this page
+   */
+  slug: string;
 }
 
 /**
@@ -147,6 +153,20 @@ type FileInfo = {
 };
 
 /**
+ * Parse context used in parsing
+ */
+type ParseContext = {
+  /**
+   * Dictionary of slug to page
+   */
+  pageDict: Record<string, Page>;
+  /**
+   * The root directory for the current parse context
+   */
+  rootDirectory: string;
+};
+
+/**
  * Parses a directory of md or mdx files and converts them into pages and sections.
  * Sections are folders which contain an `_index.md(x)` file and pages are either
  * normal markdown files in a section or folders which contain an `index.md(x)` file.
@@ -157,8 +177,12 @@ type FileInfo = {
  * @returns the root of the file tree
  */
 export async function createFileTree(rootDir) {
-  const dirPage = await parseDirectory(rootDir, undefined);
-  await walkFileTree(rootDir, dirPage);
+  const parseContext: ParseContext = {
+    rootDirectory: rootDir,
+    pageDict: {},
+  };
+  const dirPage = await parseDirectory(rootDir, undefined, parseContext);
+  await walkFileTree(rootDir, dirPage, parseContext);
 
   // TODO(lukemurray): assign next and previous properties
   return dirPage;
@@ -167,16 +191,20 @@ export async function createFileTree(rootDir) {
 /**
  * Recursively walk the file tree creating pages
  */
-async function walkFileTree(dir: string, parent: Page) {
+async function walkFileTree(
+  dir: string,
+  parent: Page,
+  parseContext: ParseContext
+) {
   for await (const dirEntry of await fs.promises.opendir(dir)) {
     const absPath = path.join(dir, dirEntry.name);
     if (dirEntry.isDirectory()) {
-      const dirPage = await parseDirectory(absPath, parent);
+      const dirPage = await parseDirectory(absPath, parent, parseContext);
       if (dirPage !== undefined && dirPage.isSection) {
-        await walkFileTree(absPath, dirPage);
+        await walkFileTree(absPath, dirPage, parseContext);
       }
     } else if (dirEntry.isFile()) {
-      await parseFile(absPath, parent);
+      await parseFile(absPath, parent, parseContext);
     }
   }
 }
@@ -190,7 +218,8 @@ async function walkFileTree(dir: string, parent: Page) {
  */
 async function parseDirectory(
   dir: string,
-  parent: Page | undefined
+  parent: Page | undefined,
+  parseContext: ParseContext
 ): Promise<Page | undefined> {
   const isHome = parent === undefined;
   const { isPage, isSection, indexPath } = await getDirectoryInfo(dir, parent);
@@ -201,10 +230,8 @@ async function parseDirectory(
 
   const page: Page = {
     draft: false,
-    dir,
-    file: {
-      path: indexPath,
-    },
+    dir: path.relative(parseContext.rootDirectory, dir),
+    file: undefined,
     isHome,
     isSection,
     kind: isHome ? "home" : isSection ? "section" : "page",
@@ -219,10 +246,12 @@ async function parseDirectory(
     sections: [],
     regularPages: [],
     pages: [],
+    slug: "",
   };
+  page.slug = createPageSlug(page);
 
   if (indexPath !== undefined) {
-    assignFileInfo(indexPath, page);
+    assignFileInfo(indexPath, page, parseContext);
   }
 
   if (isSection) {
@@ -258,7 +287,8 @@ async function parseDirectory(
  */
 async function parseFile(
   filePath: string,
-  parent: Page
+  parent: Page,
+  parseContext: ParseContext
 ): Promise<Page | undefined> {
   if (!isPageFile(filePath)) {
     return undefined;
@@ -267,9 +297,7 @@ async function parseFile(
   const page: Page = {
     draft: false,
     dir: parent.dir,
-    file: {
-      path: filePath,
-    },
+    file: undefined,
     isHome: false,
     isSection: false,
     kind: "page",
@@ -284,9 +312,12 @@ async function parseFile(
     sections: [],
     regularPages: [],
     pages: [],
+    slug: "",
   };
 
-  assignFileInfo(filePath, page);
+  page.slug = createPageSlug(page);
+
+  assignFileInfo(filePath, page, parseContext);
 
   parent.pages.push(page);
   parent.regularPages.push(page);
@@ -333,7 +364,11 @@ function getFileInfo(file: string): FileInfo {
  * @param filePath Path to a file
  * @param page the page to assign the file info to
  */
-function assignFileInfo(filePath: string, page: Page) {
+function assignFileInfo(
+  filePath: string,
+  page: Page,
+  parseContext: ParseContext
+) {
   const { frontMatter, content } = getFileInfo(filePath);
   page.content = content;
   if (frontMatter.description !== undefined) {
@@ -345,9 +380,20 @@ function assignFileInfo(filePath: string, page: Page) {
   if (frontMatter.draft !== undefined) {
     page.draft = frontMatter.draft;
   }
+
   if (frontMatter.title !== undefined) {
     page.title = frontMatter.title;
   }
+
+  page.file = {
+    path: path.relative(parseContext.rootDirectory, filePath),
+  };
+}
+
+function createPageSlug(page: Page): string {
+  return `${path.join(
+    ...(page.isSection ? ["/", page.dir] : ["/", page.dir, page.title])
+  )}`;
 }
 
 function isSectionIndex(entry: string) {
