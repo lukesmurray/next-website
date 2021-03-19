@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# TODOs
+
+Basically the only thing I'm doing here is parsing a file tree in node and then building some simple layout to render it.
+
+The parsing is based off of Hugo.
+
+General idea is we want to recursively build a tree.
+
+At any point in time we only really need to know about the current section.
+
+The parsing is in filetree.ts
+
 ## Getting Started
 
 First, run the development server:
