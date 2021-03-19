@@ -1,5 +1,6 @@
 import fs from "fs";
 import path, { join } from "path";
+import { createFileTree } from "./fileTree";
 
 // this is the root directory
 const rootDirectory = join(process.cwd(), "content");
@@ -143,5 +144,5 @@ export async function getAllContent() {
   for await (const file of walkMdContent(rootDirectory)) {
     allFiles.push(file);
   }
-  return allFiles;
+  return { allFiles, fileTree: await createFileTree(rootDirectory) };
 }

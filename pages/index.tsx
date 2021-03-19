@@ -1,10 +1,11 @@
+import { parse, stringify } from "flatted";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import React from "react";
 import { getAllContent } from "../lib/api";
 
-export default function Home({ allPosts, content }) {
-  console.log(content);
+export default function Home({ fileTree, content }) {
+  console.log(parse(fileTree));
   return (
     <div>
       <div>this is also my home page</div>
@@ -24,9 +25,9 @@ export default function Home({ allPosts, content }) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const content = await getAllContent();
+  const { allFiles, fileTree } = await getAllContent();
 
   return {
-    props: { content },
+    props: { content: allFiles, fileTree: stringify(fileTree) },
   };
 };

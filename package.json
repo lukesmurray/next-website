@@ -6,17 +6,26 @@
     "dev": "next dev",
     "dev:inspect": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "jest"
   },
   "dependencies": {
+    "flatted": "^3.1.1",
     "gray-matter": "^4.0.2",
     "next": "10.0.9",
     "react": "17.0.1",
     "react-dom": "17.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.21",
     "@types/node": "^14.14.35",
     "@types/react": "^17.0.3",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
   }
 }

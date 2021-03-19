@@ -1,18 +1,30 @@
+import fs from "fs";
+import matter from "gray-matter";
 import path from "path";
 
+/**
+ * The interface for a file
+ */
 interface File {
   /**
-   * the path to the file relative to the content directory
+   * the path to the file
    */
   path: string;
 }
 
+/**
+ * interface for required frontmatter for any page
+ */
 interface PageFrontmatter {
   date: string;
   description: string;
   draft: boolean;
+  title: string;
 }
 
+/**
+ * The interface for a page (pages can contain other pages)
+ */
 interface Page {
   /**
    * Content defined below frontmatter
@@ -32,7 +44,6 @@ interface Page {
 
   /**
    * Path to the directory containing this content file.
-   * Path is relative to the content folder.
    */
   dir: string;
 
@@ -58,7 +69,9 @@ interface Page {
   isSection: boolean;
 
   /**
-   * The kind of the page
+   * The kind of the page. Note that a home page is also a section. It is a
+   * superset of the section type. So a page with `kind: home` would also have
+   * `isSection: true`
    */
   kind: "home" | "page" | "section";
 
@@ -99,6 +112,11 @@ interface Page {
   parent: Page | undefined;
 
   /**
+   * The page's first section below root
+   */
+  firstSection: Page | undefined;
+
+  /**
    * The sections below this page
    */
   sections: Page[];
@@ -114,7 +132,234 @@ interface Page {
   pages: Page[];
 }
 
-// this is the root directory
-const rootDirectory = path.join(process.cwd(), "content");
+/**
+ * File info used in parsing
+ */
+type FileInfo = {
+  /**
+   * front matter for the page
+   */
+  frontMatter: PageFrontmatter;
+  /**
+   * The content of the page
+   */
+  content: string;
+};
 
-export async function createFileTree() {}
+/**
+ * Parses a directory of md or mdx files and converts them into pages and sections.
+ * Sections are folders which contain an `_index.md(x)` file and pages are either
+ * normal markdown files in a section or folders which contain an `index.md(x)` file.
+ * The root is automatically considered a section, and all folders in the root are
+ * automatically considered sections.
+ *
+ * @param rootDir the root directory for the file tree
+ * @returns the root of the file tree
+ */
+export async function createFileTree(rootDir) {
+  const dirPage = await parseDirectory(rootDir, undefined);
+  await walkFileTree(rootDir, dirPage);
+
+  // TODO(lukemurray): assign next and previous properties
+  return dirPage;
+}
+
+/**
+ * Recursively walk the file tree creating pages
+ */
+async function walkFileTree(dir: string, parent: Page) {
+  for await (const dirEntry of await fs.promises.opendir(dir)) {
+    const absPath = path.join(dir, dirEntry.name);
+    if (dirEntry.isDirectory()) {
+      const dirPage = await parseDirectory(absPath, parent);
+      if (dirPage !== undefined && dirPage.isSection) {
+        await walkFileTree(absPath, dirPage);
+      }
+    } else if (dirEntry.isFile()) {
+      await parseFile(absPath, parent);
+    }
+  }
+}
+
+/**
+ * Parses a directory into a page. Creates a page for the directory but searches
+ * for an _index.md or index.md file.
+ * @param dir The absolute path to the directory to be parsed
+ * @param parent The parent page if one exists
+ * @returns The page representing the directory
+ */
+async function parseDirectory(
+  dir: string,
+  parent: Page | undefined
+): Promise<Page | undefined> {
+  const isHome = parent === undefined;
+  const { isPage, isSection, indexPath } = await getDirectoryInfo(dir, parent);
+
+  if (!isPage && !isSection) {
+    return undefined;
+  }
+
+  const page: Page = {
+    draft: false,
+    dir,
+    file: {
+      path: indexPath,
+    },
+    isHome,
+    isSection,
+    kind: isHome ? "home" : isSection ? "section" : "page",
+    next: undefined,
+    nextInSection: undefined,
+    prev: undefined,
+    prevInSection: undefined,
+    title: path.basename(dir),
+    section: parent,
+    parent,
+    firstSection: undefined,
+    sections: [],
+    regularPages: [],
+    pages: [],
+  };
+
+  if (indexPath !== undefined) {
+    assignFileInfo(indexPath, page);
+  }
+
+  if (isSection) {
+    page.section = page;
+    page.firstSection = isHome
+      ? undefined
+      : parent.isHome
+      ? page
+      : parent.firstSection;
+    if (parent !== undefined) {
+      parent.sections.push(page);
+    }
+  }
+
+  if (isPage) {
+    if (parent !== undefined) {
+      parent.regularPages.push(page);
+    }
+  }
+
+  if (parent !== undefined) {
+    parent.pages.push(page);
+  }
+
+  return page;
+}
+
+/**
+ * Parses an md or mdx file into a page
+ * @param filePath the absolute path to the file to be parsed
+ * @param parent the parent page
+ * @returns The page representing the file
+ */
+async function parseFile(
+  filePath: string,
+  parent: Page
+): Promise<Page | undefined> {
+  if (!isPageFile(filePath)) {
+    return undefined;
+  }
+
+  const page: Page = {
+    draft: false,
+    dir: parent.dir,
+    file: {
+      path: filePath,
+    },
+    isHome: false,
+    isSection: false,
+    kind: "page",
+    next: undefined,
+    nextInSection: undefined,
+    prev: undefined,
+    prevInSection: undefined,
+    title: path.basename(filePath).replace(/\.mdx?$/i, ""),
+    section: parent,
+    parent,
+    firstSection: parent.firstSection,
+    sections: [],
+    regularPages: [],
+    pages: [],
+  };
+
+  assignFileInfo(filePath, page);
+
+  parent.pages.push(page);
+  parent.regularPages.push(page);
+
+  return page;
+}
+
+async function getDirectoryInfo(dir: string, parent: Page | undefined) {
+  let isPage = false;
+  // home is by default a section (parent === undefined)
+  // directories in home are by default a section (parent.parent === undefined)
+  let isSection = parent === undefined || parent.parent === undefined;
+
+  let indexPath = undefined;
+  for await (const dirEntry of await fs.promises.opendir(dir)) {
+    const entry = path.join(dir, dirEntry.name);
+    if (dirEntry.isFile()) {
+      if (isSectionIndex(entry)) {
+        isSection = true;
+        indexPath = entry;
+        break;
+      } else if (isPageIndex(entry)) {
+        isPage = true;
+        indexPath = entry;
+        break;
+      }
+    }
+  }
+
+  return { isPage, isSection, indexPath };
+}
+
+function getFileInfo(file: string): FileInfo {
+  const fileContents = fs.readFileSync(file, "utf8");
+  const { data, content } = matter(fileContents);
+  return {
+    content,
+    frontMatter: data as PageFrontmatter,
+  };
+}
+
+/**
+ * Assigns the file info from the file found at filePath to the passed in page
+ * @param filePath Path to a file
+ * @param page the page to assign the file info to
+ */
+function assignFileInfo(filePath: string, page: Page) {
+  const { frontMatter, content } = getFileInfo(filePath);
+  page.content = content;
+  if (frontMatter.description !== undefined) {
+    page.description = frontMatter.description;
+  }
+  if (frontMatter.date !== undefined) {
+    page.date = frontMatter.date;
+  }
+  if (frontMatter.draft !== undefined) {
+    page.draft = frontMatter.draft;
+  }
+  if (frontMatter.title !== undefined) {
+    page.title = frontMatter.title;
+  }
+}
+
+function isSectionIndex(entry: string) {
+  return entry.match(/_index\.mdx?$/i) !== null;
+}
+
+function isPageIndex(entry: string) {
+  return entry.match(/(?<!_)index\.mdx?$/i) !== null;
+}
+
+function isPageFile(entry: string) {
+  return (
+    !isPageIndex(entry) && !isSectionIndex(entry) && entry.match(/\.mdx?$/i)
+  );
+}
