@@ -1,12 +1,25 @@
+/**
+ * This file seeds the database with the current file tree contents.
+ *
+ * To seed the database run the following two commands.
+ *
+ * npx prisma db push --preview-feature
+ * npx prisma db seed --preview-feature
+ *
+ * https://www.prisma.io/docs/reference/api-reference/command-reference#db-push--preview
+ * https://www.prisma.io/docs/reference/api-reference/command-reference#db-seed-preview
+ */
 import { PrismaClient } from "@prisma/client";
 import path from "path";
-import { parseAllPagesInDir } from "../lib/fileTree";
+import { parseAllPagesInDir } from "../lib/fileTreeParser";
+import { markdownToHtml } from "../lib/markdownToHtml";
 
 const prisma = new PrismaClient();
 
 async function seedPages() {
   const rootDirectory = path.join(process.cwd(), "content");
   for await (let page of parseAllPagesInDir(rootDirectory)) {
+    const html = await markdownToHtml(page.content);
     try {
       await prisma.page.upsert({
         where: { slug: page.slug },
@@ -37,6 +50,7 @@ async function seedPages() {
                     slug: page.parentSlug,
                   },
                 },
+          html,
         },
         update: {
           content: page.content,
@@ -65,9 +79,9 @@ async function seedPages() {
                     path: page.file.path,
                   },
                 },
+          html,
         },
       });
-      console.log("pushed page", page);
     } catch (e) {
       console.log("failed to push", page);
       throw e;

@@ -1,5 +1,5 @@
 import path from "path";
-import { parseAllPagesInDir } from "../fileTree";
+import { parseAllPagesInDir } from "../fileTreeParser";
 
 describe("file tree works", () => {
   it("can parse a fake root", async () => {

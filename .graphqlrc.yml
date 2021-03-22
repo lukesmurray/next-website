@@ -1,0 +1,6 @@
+# this is for graphql autocomplete in graphql queries
+schema: "./prisma/schema.gql"
+documents: ["{pages,lib,content}/**/*.{graphql,js,ts,jsx,tsx,mdx}"]
+extensions:
+  languageService:
+    useSchemaFileDefinitions: true

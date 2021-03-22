@@ -1,38 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NextJS + Markdown + Prisma + Graphql
 
-# TODOs
+This is a proof of concept static blogging concept which parses markdown files into a sqlite database and serves those files using graphql and next js.
 
-Add testing with `jest` and `mock-fs`.
+## Proof of Concept Almost Done
 
-## Getting Started
+## Backend Architecture Decisions
 
-First, run the development server:
+- The file parsing is contained in [`./lib/fileTreeParser.ts`](./lib/fileTreeParser.ts).
+- Files are added to the database in [`./prisma/seed.ts`](./prisma/seed.ts)
+- The database schema is defined in [`/prisma/schema.prisma`](./prisma/schema.prisma)
+  - This means the Page type is duplicated in the parsing and schema but that's alright for now
+- The graphql api is exposed in [`./pages/api/graphql.ts`](./pages/api/graphql.ts)
+  - The graphql server is an apollo server and the playground can be viewed at `/api/graphql` in a browser during local development and in deployment
+  - The server is created from the prisma schema using [typegraphql-prisma](https://www.npmjs.com/package/typegraphql-prisma) integration
+    - The final graphql schema is written to [`./prisma/schema.gql`](./prisma/schema.gql)
+- Graphql types are automatically generated for the graphql queries using [graphql-codegenerator](http://graphql-code-generator.com/)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Front End Decisions
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- All pages are routed through a file [`[[...slug]].tsx`](./pages/[[...slug]].tsx).
+  - This is a very flexible way of defining content since all pages are run through the same code
+  - Any page can be overriden by creating a page for it's slug
+  - For example blog pages could be overriden by creating a page `blog/[[...slug]].tsx`
+- The pages are styled with `emotion` and `twin.macro`
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Development
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- `yarn update-data` to sync the content from the files with the content in the database
+- `yarn dev` to start the next js dev server (in watch mode)
+- `yarn generate` to generate all the automatically generated graphql and prisma code
+- `yarn generate:watch` to generate prisma and graphql code in watch mode
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Todos
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- hot reloading
+  - when you edit prisma.schema `prisma/schema.gql` should update but it doesn't since it only updates when the server changes and the server is a singleton. We can use chokidar to watch files and update schema.gql when the prisma schema changes
+  - would be nice to run all code through one command but it doesn't work because the generated types sometimes don't get generated and next breaks. Have to restart next separately. The solution is to run `yarn dev` and `yarn watch` in two terminals
+  - upadting markdown content uses [next-remote-watch](https://github.com/hashicorp/next-remote-watch). but next-remote-watch is broken on dev and we really don't need to seed the whole database we could update individual pages

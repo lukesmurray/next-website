@@ -1,5 +1,5 @@
 module.exports = {
   twin: {
-    preset: "emotion",
+    preset: "emotion", // enable twin.macro emotion integration
   },
 };

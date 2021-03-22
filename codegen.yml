@@ -1,0 +1,22 @@
+overwrite: true
+schema: "./prisma/schema.gql"
+documents: "{pages,lib,content}/**/*.{graphql,js,ts,jsx,tsx,mdx}"
+generates:
+  lib/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      namingConvention:
+        typeNames: pascal-case#pascalCase
+        enumValues: pascal-case#pascalCase
+        transformUnderscore: true
+      # avoid using Pick and resovle primitive types
+      preResolveTypes: true
+      # remove duplicate operation suffixes
+      dedupeOperationSuffix: true
+      # don't include null in the maybeValue
+      maybeValue: T | undefined
+      # don't include typename unless it is specified
+      skipTypename: true
