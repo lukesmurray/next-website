@@ -31,9 +31,6 @@ model Page {
   /// the content of the page
   content String
 
-  /// the html content of the page
-  html String
-
   /// the date field from the page frontmatter
   date String?
 

@@ -158,9 +158,11 @@ async function* walkFileTree(
     const absPath = path.join(dir, dirEntry.name);
     if (dirEntry.isDirectory()) {
       const dirPage = await parseDirectory(absPath, parent, parseContext);
-      if (dirPage !== undefined && dirPage.isSection) {
+      if (dirPage !== undefined) {
         yield dirPage;
-        yield* walkFileTree(absPath, dirPage, parseContext);
+        if (dirPage.isSection) {
+          yield* walkFileTree(absPath, dirPage, parseContext);
+        }
       }
     } else if (dirEntry.isFile()) {
       const page = await parseFile(absPath, parent, parseContext);
@@ -207,11 +209,12 @@ async function parseDirectory(
     slug: "",
     title: path.basename(dir),
   };
-  page.slug = createPageSlug(page);
 
   if (indexPath !== undefined) {
     assignFileInfo(indexPath, page, parseContext);
   }
+
+  page.slug = createPageSlug(page);
 
   return page;
 }
@@ -246,9 +249,9 @@ async function parseFile(
     title: path.basename(filePath).replace(/\.mdx?$/i, ""),
   };
 
-  page.slug = createPageSlug(page);
-
   assignFileInfo(filePath, page, parseContext);
+
+  page.slug = createPageSlug(page);
 
   return page;
 }
@@ -341,8 +344,11 @@ function assignFileInfo(
  * @returns unique slug identifying the page
  */
 function createPageSlug(page: Page): string {
+  const isIndex =
+    page.file !== null &&
+    (isPageIndex(page.file.path) || isSectionIndex(page.file.path));
   return `${path.join(
-    ...(page.isSection ? ["/", page.dir] : ["/", page.dir, page.title])
+    ...(isIndex ? ["/", page.dir] : ["/", page.dir, page.title])
   )}`.toLowerCase();
 }
 

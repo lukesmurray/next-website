@@ -2,11 +2,11 @@
  * https://nextjs.org/docs/routing/dynamic-routes
  */
 import { gql } from "@apollo/client";
-import {
-  GetStaticPathsContext,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from "next";
+import { Interpolation, Theme } from "@emotion/react";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import hydrate from "next-mdx-remote/hydrate";
+import renderToString from "next-mdx-remote/render-to-string";
+import { MdxRemote } from "next-mdx-remote/types";
 import Link from "next/link";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
@@ -27,6 +27,10 @@ export default function Page({
     throw new Error("expected all pages to be defined");
   }
 
+  const content = hydrate(currentPage.mdx, {
+    components: mdxComponents(currentPage.slug),
+  });
+
   return (
     <>
       <header>
@@ -36,10 +40,7 @@ export default function Page({
       </header>
       <main>
         <h1>{currentPage.title}</h1>
-        <article
-          css={[tw`prose mx-auto`]}
-          dangerouslySetInnerHTML={{ __html: currentPage.html }}
-        ></article>
+        <article css={[tw`prose mx-auto`]}>{content}</article>
         <section>
           <h2>Pages</h2>
           <ul>
@@ -64,7 +65,7 @@ export const getStaticProps = async (
   // the slug to render (if empty then default to home page "/")
   const slug = `/${((context.params?.slug ?? []) as string[]).join("/")}`;
 
-  const result = await client.query<SlugPageQuery, SlugPageQueryVariables>({
+  let result = await client.query<SlugPageQuery, SlugPageQueryVariables>({
     query: gql`
       #graphql
       query SlugPage($currentSlug: String!) {
@@ -75,7 +76,7 @@ export const getStaticProps = async (
         currentPage: page(where: { slug: $currentSlug }) {
           slug
           title
-          html
+          content
           pages {
             slug
             title
@@ -87,15 +88,19 @@ export const getStaticProps = async (
       currentSlug: slug,
     },
   });
-  console.log(result);
+
+  // modify the data by adding mdx to it
+  let modifiedData = await addMdxToData(result.data);
 
   return {
-    props: result.data,
+    props: modifiedData,
   };
 };
 
 // see https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-export const getStaticPaths = async (context: GetStaticPathsContext) => {
+export const getStaticPaths = async (
+  context: any /*GetStaticPathsContext*/
+) => {
   const result = await client.query<
     SlugStaticPathsQuery,
     SlugStaticPathsQueryVariables
@@ -117,3 +122,61 @@ export const getStaticPaths = async (context: GetStaticPathsContext) => {
     fallback: false,
   };
 };
+
+/**
+ * Function to add mdx to a result
+ * @returns
+ */
+async function addMdxToData(data: SlugPageQuery) {
+  // create a copy of the data object
+  data = JSON.parse(JSON.stringify(data));
+
+  // create the mdx
+  const mdx = await renderToString(data.currentPage!.content, {
+    components: mdxComponents(data.currentPage!.slug),
+  });
+
+  // add the mdx to the current page
+  data.currentPage = Object.assign(data.currentPage, {
+    mdx: mdx,
+  });
+
+  // type helper for modifying a type by overriding keys
+  type Modify<T, R> = Omit<T, keyof R> & R;
+
+  // create the modified result type
+  // modifies data.currentPage by adding mdx
+  type ModifiedDataType = Modify<
+    typeof data,
+    {
+      currentPage: Modify<
+        typeof data.currentPage,
+        {
+          mdx: MdxRemote.Source;
+        }
+      >;
+    }
+  >;
+
+  return Object.freeze(data) as ModifiedDataType;
+}
+
+function mdxComponents(slug: string): MdxRemote.Components {
+  const components: MdxRemote.Components = {
+    img: (
+      props: React.ClassAttributes<HTMLImageElement> &
+        React.ImgHTMLAttributes<HTMLImageElement> & {
+          css?: Interpolation<Theme>;
+        }
+    ) => {
+      const { src, ...otherProps } = props;
+      return (
+        <img
+          {...otherProps}
+          src={require(`../content${slug}/${props.src}`).default}
+        />
+      );
+    },
+  };
+  return components;
+}

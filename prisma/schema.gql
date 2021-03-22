@@ -215,9 +215,6 @@ type Page {
   firstSectionPages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
   firstSectionSlug: String
 
-  """the html content of the page"""
-  html: String!
-
   """True if the page is the home page"""
   isHome: Boolean!
 
@@ -248,7 +245,6 @@ type PageCountAggregate {
   draft: Int
   filePath: Int
   firstSectionSlug: Int
-  html: Int
   isHome: Int
   isSection: Int
   kind: Int
@@ -266,7 +262,6 @@ input PageCreateInput {
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
-  html: String!
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -339,7 +334,6 @@ input PageCreateWithoutFileInput {
   draft: Boolean
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
-  html: String!
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -357,7 +351,6 @@ input PageCreateWithoutFirstSectionInput {
   draft: Boolean
   file: FileCreateNestedOneWithoutPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
-  html: String!
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -375,7 +368,6 @@ input PageCreateWithoutFirstSectionPagesInput {
   draft: Boolean
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
-  html: String!
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -394,7 +386,6 @@ input PageCreateWithoutPagesInput {
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
-  html: String!
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -412,7 +403,6 @@ input PageCreateWithoutParentInput {
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
-  html: String!
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -435,7 +425,6 @@ type PageMaxAggregate {
   draft: Boolean
   filePath: String
   firstSectionSlug: String
-  html: String
   isHome: Boolean
   isSection: Boolean
   kind: String
@@ -452,7 +441,6 @@ type PageMinAggregate {
   draft: Boolean
   filePath: String
   firstSectionSlug: String
-  html: String
   isHome: Boolean
   isSection: Boolean
   kind: String
@@ -469,7 +457,6 @@ input PageOrderByInput {
   draft: SortOrder
   filePath: SortOrder
   firstSectionSlug: SortOrder
-  html: SortOrder
   isHome: SortOrder
   isSection: SortOrder
   kind: SortOrder
@@ -491,7 +478,6 @@ enum PageScalarFieldEnum {
   draft
   filePath
   firstSectionSlug
-  html
   isHome
   isSection
   kind
@@ -511,7 +497,6 @@ input PageScalarWhereInput {
   draft: BoolNullableFilter
   filePath: StringNullableFilter
   firstSectionSlug: StringNullableFilter
-  html: StringFilter
   isHome: BoolFilter
   isSection: BoolFilter
   kind: StringFilter
@@ -529,7 +514,6 @@ input PageUpdateInput {
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
-  html: StringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -545,7 +529,6 @@ input PageUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: NullableBoolFieldUpdateOperationsInput
-  html: StringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -650,7 +633,6 @@ input PageUpdateWithoutFileInput {
   draft: NullableBoolFieldUpdateOperationsInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
-  html: StringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -668,7 +650,6 @@ input PageUpdateWithoutFirstSectionInput {
   draft: NullableBoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
-  html: StringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -686,7 +667,6 @@ input PageUpdateWithoutFirstSectionPagesInput {
   draft: NullableBoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
-  html: StringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -705,7 +685,6 @@ input PageUpdateWithoutPagesInput {
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
-  html: StringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -723,7 +702,6 @@ input PageUpdateWithoutParentInput {
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
-  html: StringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -774,7 +752,6 @@ input PageWhereInput {
   firstSection: PageRelationFilter
   firstSectionPages: PageListRelationFilter
   firstSectionSlug: StringNullableFilter
-  html: StringFilter
   isHome: BoolFilter
   isSection: BoolFilter
   kind: StringFilter

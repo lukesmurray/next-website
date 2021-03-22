@@ -12,7 +12,7 @@ This is a proof of concept static blogging concept which parses markdown files i
   - This means the Page type is duplicated in the parsing and schema but that's alright for now
 - The graphql api is exposed in [`./pages/api/graphql.ts`](./pages/api/graphql.ts)
   - The graphql server is an apollo server and the playground can be viewed at `/api/graphql` in a browser during local development and in deployment
-  - The server is created from the prisma schema using [typegraphql-prisma](https://www.npmjs.com/package/typegraphql-prisma) integration
+  - The graphql schema is created from the prisma schema using [typegraphql-prisma](https://www.npmjs.com/package/typegraphql-prisma) integration
     - The final graphql schema is written to [`./prisma/schema.gql`](./prisma/schema.gql)
 - Graphql types are automatically generated for the graphql queries using [graphql-codegenerator](http://graphql-code-generator.com/)
 
@@ -23,13 +23,17 @@ This is a proof of concept static blogging concept which parses markdown files i
   - Any page can be overriden by creating a page for it's slug
   - For example blog pages could be overriden by creating a page `blog/[[...slug]].tsx`
 - The pages are styled with `emotion` and `twin.macro`
+- We use mdx (from [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)) to parse the markdown into mdx
+  - in order to place images next to markdown we use webpack file-loader and require the images dynamically in the mdx components
+    - see [this stack overflow post](https://stackoverflow.com/a/65681762/11499360) for instructions
 
 ## Development
 
-- `yarn update-data` to sync the content from the files with the content in the database
+- `yarn generate` to generate content and graphql schema types
+- `yarn generate:watch` to generate content and graphql schema code in watch mode
 - `yarn dev` to start the next js dev server (in watch mode)
-- `yarn generate` to generate all the automatically generated graphql and prisma code
-- `yarn generate:watch` to generate prisma and graphql code in watch mode
+
+Most of the time you want to run `yarn generate:watch` and `yarn dev` in separate terminals.
 
 ## Todos
 
