@@ -31,7 +31,7 @@ interface Page {
   /**
    * Content defined below frontmatter
    */
-  content: string | null;
+  content: string;
 
   /**
    * date field from frontmatter
@@ -59,7 +59,7 @@ interface Page {
   /**
    * information about the file associated with the page
    */
-  file: File | null;
+  file?: File;
 
   /**
    * true if this is the home page
@@ -79,60 +79,25 @@ interface Page {
   kind: "home" | "page" | "section";
 
   /**
-   * the next page in the entire tree
-   */
-  next: PageSlug | null;
-
-  /**
-   * the next page in the current section
-   */
-  nextInSection: PageSlug | null;
-
-  /**
-   * the prev page in the entire tree
-   */
-  prev: PageSlug | null;
-
-  /**
-   * the prev page in the current section
-   */
-  prevInSection: PageSlug | null;
-
-  /**
    * the title for this page
    * from title in frontmatter
    */
   title: string;
 
-  /**
-   * The section for the page (can be the page itself if the page is a section)
-   */
-  section: PageSlug;
+  // /**
+  //  * The section for the page (can be the page itself if the page is a section)
+  //  */
+  // sectionSlug: PageSlug;
 
   /**
    * The parent section for the page
    */
-  parent: PageSlug | null;
+  parentSlug: PageSlug | null;
 
   /**
-   * The page's first section below root
+   * The first section below root which is an ancestor of this page
    */
-  firstSection: PageSlug | null;
-
-  /**
-   * The sections below this page
-   */
-  sections: PageSlug[];
-
-  /**
-   * The regular pages below this page (does not include sections)
-   */
-  regularPages: PageSlug[];
-
-  /**
-   * The pages below this page (includes sections)
-   */
-  pages: PageSlug[];
+  firstSectionSlug: PageSlug | null;
 
   /**
    * The unique slug for this page
@@ -159,10 +124,6 @@ type FileInfo = {
  */
 type ParseContext = {
   /**
-   * Dictionary of slug to page
-   */
-  pageDict: Record<string, Page>;
-  /**
    * The root directory for the current parse context
    */
   rootDirectory: string;
@@ -176,37 +137,41 @@ type ParseContext = {
  * automatically considered sections.
  *
  * @param rootDir the root directory for the file tree
- * @returns the root of the file tree
  */
-export async function createFileTree(rootDir) {
+export async function* loadAllPagesInDir(
+  rootDir: string
+): AsyncGenerator<Page> {
   const parseContext: ParseContext = {
     rootDirectory: rootDir,
-    pageDict: {},
   };
   const root = await parseDirectory(rootDir, undefined, parseContext);
-  await walkFileTree(rootDir, root, parseContext);
-
-  // TODO(lukemurray): assign next and previous properties
-  return { root, pageDict: parseContext.pageDict };
+  if (root !== undefined) {
+    yield root;
+    yield* await walkFileTree(rootDir, root, parseContext);
+  }
 }
 
 /**
  * Recursively walk the file tree creating pages
  */
-async function walkFileTree(
+async function* walkFileTree(
   dir: string,
   parent: Page,
   parseContext: ParseContext
-) {
+): AsyncGenerator<Page> {
   for await (const dirEntry of await fs.promises.opendir(dir)) {
     const absPath = path.join(dir, dirEntry.name);
     if (dirEntry.isDirectory()) {
       const dirPage = await parseDirectory(absPath, parent, parseContext);
       if (dirPage !== undefined && dirPage.isSection) {
-        await walkFileTree(absPath, dirPage, parseContext);
+        yield dirPage;
+        yield* await walkFileTree(absPath, dirPage, parseContext);
       }
     } else if (dirEntry.isFile()) {
-      await parseFile(absPath, parent, parseContext);
+      const page = await parseFile(absPath, parent, parseContext);
+      if (page !== undefined) {
+        yield page;
+      }
     }
   }
 }
@@ -231,25 +196,18 @@ async function parseDirectory(
   }
 
   const page: Page = {
-    content: null,
+    content: "",
     date: null,
     description: null,
     dir: path.relative(parseContext.rootDirectory, dir),
     draft: false,
-    file: null,
-    firstSection: null,
+    file: undefined,
+    firstSectionSlug: null,
     isHome,
     isSection,
     kind: isHome ? "home" : isSection ? "section" : "page",
-    next: null,
-    nextInSection: null,
-    pages: [],
-    parent: parent?.slug ?? null,
-    prev: null,
-    prevInSection: null,
-    regularPages: [],
-    section: parent?.slug ?? null,
-    sections: [],
+    parentSlug: parent?.slug ?? null,
+    // sectionSlug: parent?.slug ?? "",
     slug: "",
     title: path.basename(dir),
   };
@@ -260,28 +218,13 @@ async function parseDirectory(
   }
 
   if (isSection) {
-    page.section = page.slug;
-    page.firstSection = isHome
+    // page.sectionSlug = page.slug;
+    page.firstSectionSlug = isHome
       ? null
-      : parent.isHome
+      : parent?.isHome
       ? page.slug
-      : parent.firstSection;
-    if (parent !== undefined) {
-      parent.sections.push(page.slug);
-    }
+      : parent?.firstSectionSlug ?? null;
   }
-
-  if (isPage) {
-    if (parent !== undefined) {
-      parent.regularPages.push(page.slug);
-    }
-  }
-
-  if (parent !== undefined) {
-    parent.pages.push(page.slug);
-  }
-
-  parseContext.pageDict[page.slug] = page;
 
   return page;
 }
@@ -302,37 +245,25 @@ async function parseFile(
   }
 
   const page: Page = {
-    content: null,
+    content: "",
     date: null,
     description: null,
-    draft: false,
     dir: parent.dir,
-    file: null,
+    draft: false,
+    file: undefined,
+    firstSectionSlug: parent.firstSectionSlug,
     isHome: false,
     isSection: false,
     kind: "page",
-    next: null,
-    nextInSection: null,
-    prev: null,
-    prevInSection: null,
-    title: path.basename(filePath).replace(/\.mdx?$/i, ""),
-    section: parent.slug,
-    parent: parent.slug,
-    firstSection: parent.firstSection,
-    sections: [],
-    regularPages: [],
-    pages: [],
+    parentSlug: parent.slug,
+    // sectionSlug: parent.slug,
     slug: "",
+    title: path.basename(filePath).replace(/\.mdx?$/i, ""),
   };
 
   page.slug = createPageSlug(page);
 
   assignFileInfo(filePath, page, parseContext);
-
-  parent.pages.push(page.slug);
-  parent.regularPages.push(page.slug);
-
-  parseContext.pageDict[page.slug] = page;
 
   return page;
 }
@@ -341,7 +272,7 @@ async function getDirectoryInfo(dir: string, parent: Page | undefined) {
   let isPage = false;
   // home is by default a section (parent === undefined)
   // directories in home are by default a section (parent.parent === undefined)
-  let isSection = parent === undefined || parent.parent === undefined;
+  let isSection = parent === undefined || parent.parentSlug === undefined;
 
   let indexPath = undefined;
   for await (const dirEntry of await fs.promises.opendir(dir)) {

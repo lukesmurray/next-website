@@ -1,10 +1,10 @@
 import path from "path";
-import { createFileTree } from "../fileTree";
+import { loadAllPagesInDir } from "../fileTree";
 
 describe("file tree works", () => {
   it("can parse a fake root", async () => {
     const rootDirectory = path.join(__dirname, "fakeRoot");
-    const { root: tree } = await createFileTree(rootDirectory);
+    const { root: tree } = await loadAllPagesInDir(rootDirectory);
     expect(tree.isHome).toBe(true);
     expect(tree.isSection).toBe(true);
     expect(tree.regularPages.length).toBe(2);
