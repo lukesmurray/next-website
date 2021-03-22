@@ -40,7 +40,7 @@ model Page {
   /// comes from the draft field in frontmatter
   draft Boolean?
 
-  /// information about the file associated with the page
+  // /// information about the file associated with the page
   file File? @relation(fields: [filePath], references: [path])
 
   /// The path to the file. Relative to the root directory.
@@ -61,24 +61,16 @@ model Page {
   /// The title for this page
   title String
 
-  // /// The section a page is in, could be the page itself if the page is a section
-  // section      Page   @relation("sectionHierarchy", fields: [sectionSlug], references: [slug])
-  // /// The pages in a section, includes the section itself
-  // sectionPages Page[] @relation("sectionHierarchy")
-  // sectionSlug  String // relation scalar field
-
-  /// The parent of the current page, null on the home page
+  // /// The parent of the current page, null on the home page
   parent     Page?   @relation("parentHierarchy", fields: [parentSlug], references: [slug])
-  /// The direct children of the current page
+  // /// The direct children of the current page
   pages      Page[]  @relation("parentHierarchy")
   parentSlug String? //relation scalar field
 
-
-  /// The first section below the root which is an ancestor of this page
+  // /// The first section below the root which is an ancestor of this page
   firstSection      Page?   @relation("firstSectionHierarchy", fields: [firstSectionSlug], references: [slug])
-  /// The direct children of the current page
+  // /// The direct children of the current page
   firstSectionPages Page[]  @relation("firstSectionHierarchy")
   firstSectionSlug  String? //relation scalar field
-
 
 }

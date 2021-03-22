@@ -24,7 +24,7 @@ export const getStaticProps = async (
   context: GetStaticPropsContext<ParsedUrlQuery>
 ) => {
   // the slug to render
-  const slug = `/${((context.params.slug ?? []) as string[]).join("/")}`;
+  const slug = `/${((context.params?.slug ?? []) as string[]).join("/")}`;
   // get the content
   const { root, pageDict } = await getAllContent();
   // the page to render

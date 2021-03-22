@@ -1,52 +1,77 @@
 import { PrismaClient } from "@prisma/client";
 import path from "path";
-import { loadAllPagesInDir } from "../lib/fileTree";
+import { parseAllPagesInDir } from "../lib/fileTree";
 
 const prisma = new PrismaClient();
 
 async function seedPages() {
   const rootDirectory = path.join(process.cwd(), "content");
-  for await (let page of loadAllPagesInDir(rootDirectory)) {
-    const {
-      // sectionSlug,
-      parentSlug,
-      firstSectionSlug,
-      ...pageWithoutRelationships
-    } = page;
-    const newPageInput = {
-      ...pageWithoutRelationships,
-      // section: {
-      //   connect: {
-      //     slug: page.sectionSlug,
-      //   },
-      // },
-      ...(page.parentSlug !== null
-        ? {
-            parent: {
-              connect: {
-                slug: page.parentSlug,
-              },
-            },
-          }
-        : {}),
-      ...(page.firstSectionSlug !== null
-        ? {
-            firstSection: {
-              connect: {
-                slug: page.firstSectionSlug,
-              },
-            },
-          }
-        : {}),
-    };
-    await prisma.page.upsert({
-      where: { slug: page.slug },
-      create: { ...newPageInput },
-      update: {
-        ...newPageInput,
-        file: undefined,
-      },
-    });
+  for await (let page of parseAllPagesInDir(rootDirectory)) {
+    try {
+      await prisma.page.upsert({
+        where: { slug: page.slug },
+        create: {
+          content: page.content,
+          dir: page.dir,
+          isHome: page.isHome,
+          isSection: page.isSection,
+          kind: page.kind,
+          slug: page.slug,
+          title: page.title,
+          date: page.date,
+          description: page.description,
+          draft: page.draft,
+          file:
+            page.file === null
+              ? undefined
+              : {
+                  create: {
+                    path: page.file.path,
+                  },
+                },
+          parent:
+            page.parentSlug === null
+              ? undefined
+              : {
+                  connect: {
+                    slug: page.parentSlug,
+                  },
+                },
+        },
+        update: {
+          content: page.content,
+          dir: page.dir,
+          isHome: page.isHome,
+          isSection: page.isSection,
+          kind: page.kind,
+          slug: page.slug,
+          title: page.title,
+          date: page.date,
+          description: page.description,
+          draft: page.draft,
+          parent:
+            page.parentSlug === null
+              ? undefined
+              : {
+                  connect: {
+                    slug: page.parentSlug,
+                  },
+                },
+          file:
+            page.file === null
+              ? undefined
+              : {
+                  update: {
+                    path: page.file.path,
+                  },
+                },
+        },
+      });
+      console.log("pushed page", page);
+    } catch (e) {
+      console.log("failed to push", page);
+      throw e;
+    }
   }
 }
 

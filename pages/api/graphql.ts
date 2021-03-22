@@ -12,7 +12,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    sayHello(parent, args, context) {
+    sayHello() {
       return "Hello World!";
     },
   },

@@ -3,7 +3,7 @@ import matter from "gray-matter";
 import path from "path";
 
 /**
- * The interface for a file
+ * The interface for a file. This information is stored along with the page.
  */
 interface File {
   /**
@@ -16,12 +16,15 @@ interface File {
  * interface for required frontmatter for any page
  */
 interface PageFrontmatter {
-  date: string;
-  description: string;
-  draft: boolean;
-  title: string;
+  date?: string;
+  description?: string;
+  draft?: boolean;
+  title?: string;
 }
 
+/**
+ * Type to identify the page slug, makes it easier to read the code
+ */
 type PageSlug = string;
 
 /**
@@ -59,7 +62,7 @@ interface Page {
   /**
    * information about the file associated with the page
    */
-  file?: File;
+  file: File | null;
 
   /**
    * true if this is the home page
@@ -84,20 +87,10 @@ interface Page {
    */
   title: string;
 
-  // /**
-  //  * The section for the page (can be the page itself if the page is a section)
-  //  */
-  // sectionSlug: PageSlug;
-
   /**
    * The parent section for the page
    */
   parentSlug: PageSlug | null;
-
-  /**
-   * The first section below root which is an ancestor of this page
-   */
-  firstSectionSlug: PageSlug | null;
 
   /**
    * The unique slug for this page
@@ -106,9 +99,10 @@ interface Page {
 }
 
 /**
- * File info used in parsing
+ * File info used in parsing the directory tree.
+ * Contains the frontmatter and the page content.
  */
-type FileInfo = {
+type FileParseInfo = {
   /**
    * front matter for the page
    */
@@ -120,7 +114,8 @@ type FileInfo = {
 };
 
 /**
- * Parse context used in parsing
+ * Parse context used in parsing.
+ * Contains information relevant for the entire parsing process.
  */
 type ParseContext = {
   /**
@@ -138,7 +133,7 @@ type ParseContext = {
  *
  * @param rootDir the root directory for the file tree
  */
-export async function* loadAllPagesInDir(
+export async function* parseAllPagesInDir(
   rootDir: string
 ): AsyncGenerator<Page> {
   const parseContext: ParseContext = {
@@ -147,12 +142,12 @@ export async function* loadAllPagesInDir(
   const root = await parseDirectory(rootDir, undefined, parseContext);
   if (root !== undefined) {
     yield root;
-    yield* await walkFileTree(rootDir, root, parseContext);
+    yield* walkFileTree(rootDir, root, parseContext);
   }
 }
 
 /**
- * Recursively walk the file tree creating pages
+ * Recursively walk the file tree parsing pages
  */
 async function* walkFileTree(
   dir: string,
@@ -165,7 +160,7 @@ async function* walkFileTree(
       const dirPage = await parseDirectory(absPath, parent, parseContext);
       if (dirPage !== undefined && dirPage.isSection) {
         yield dirPage;
-        yield* await walkFileTree(absPath, dirPage, parseContext);
+        yield* walkFileTree(absPath, dirPage, parseContext);
       }
     } else if (dirEntry.isFile()) {
       const page = await parseFile(absPath, parent, parseContext);
@@ -189,7 +184,10 @@ async function parseDirectory(
   parseContext: ParseContext
 ): Promise<Page | undefined> {
   const isHome = parent === undefined;
-  const { isPage, isSection, indexPath } = await getDirectoryInfo(dir, parent);
+  const { isPage, isSection, indexPath } = await getDirectoryParseInfo(
+    dir,
+    parent
+  );
 
   if (!isPage && !isSection) {
     return undefined;
@@ -201,13 +199,11 @@ async function parseDirectory(
     description: null,
     dir: path.relative(parseContext.rootDirectory, dir),
     draft: false,
-    file: undefined,
-    firstSectionSlug: null,
+    file: null,
     isHome,
     isSection,
     kind: isHome ? "home" : isSection ? "section" : "page",
     parentSlug: parent?.slug ?? null,
-    // sectionSlug: parent?.slug ?? "",
     slug: "",
     title: path.basename(dir),
   };
@@ -215,15 +211,6 @@ async function parseDirectory(
 
   if (indexPath !== undefined) {
     assignFileInfo(indexPath, page, parseContext);
-  }
-
-  if (isSection) {
-    // page.sectionSlug = page.slug;
-    page.firstSectionSlug = isHome
-      ? null
-      : parent?.isHome
-      ? page.slug
-      : parent?.firstSectionSlug ?? null;
   }
 
   return page;
@@ -250,13 +237,11 @@ async function parseFile(
     description: null,
     dir: parent.dir,
     draft: false,
-    file: undefined,
-    firstSectionSlug: parent.firstSectionSlug,
+    file: null,
     isHome: false,
     isSection: false,
     kind: "page",
     parentSlug: parent.slug,
-    // sectionSlug: parent.slug,
     slug: "",
     title: path.basename(filePath).replace(/\.mdx?$/i, ""),
   };
@@ -268,7 +253,16 @@ async function parseFile(
   return page;
 }
 
-async function getDirectoryInfo(dir: string, parent: Page | undefined) {
+/**
+ * Gets information about a directory based on the contents of the directory.
+ * Determines if the directory represents a bundle or a leaf and finds the
+ * index file.
+ *
+ * @param dir the directory to get info about
+ * @param parent the parent page of the directory
+ * @returns Information about the directory
+ */
+async function getDirectoryParseInfo(dir: string, parent: Page | undefined) {
   let isPage = false;
   // home is by default a section (parent === undefined)
   // directories in home are by default a section (parent.parent === undefined)
@@ -293,7 +287,12 @@ async function getDirectoryInfo(dir: string, parent: Page | undefined) {
   return { isPage, isSection, indexPath };
 }
 
-function getFileInfo(file: string): FileInfo {
+/**
+ * Gets the content and front matter from a file
+ * @param file the file to get parse info from
+ * @returns the file parse info
+ */
+function getFileParseInfo(file: string): FileParseInfo {
   const fileContents = fs.readFileSync(file, "utf8");
   const { data, content } = matter(fileContents);
   return {
@@ -303,7 +302,9 @@ function getFileInfo(file: string): FileInfo {
 }
 
 /**
- * Assigns the file info from the file found at filePath to the passed in page
+ * Assigns all the properties on the page which can only be set after parsing
+ * the file.
+ *
  * @param filePath Path to a file
  * @param page the page to assign the file info to
  */
@@ -312,7 +313,7 @@ function assignFileInfo(
   page: Page,
   parseContext: ParseContext
 ) {
-  const { frontMatter, content } = getFileInfo(filePath);
+  const { frontMatter, content } = getFileParseInfo(filePath);
   page.content = content;
   if (frontMatter.description !== undefined) {
     page.description = frontMatter.description;
@@ -328,25 +329,58 @@ function assignFileInfo(
     page.title = frontMatter.title;
   }
 
+  const relativeFilePath = path.relative(parseContext.rootDirectory, filePath);
   page.file = {
-    path: path.relative(parseContext.rootDirectory, filePath),
+    path: relativeFilePath,
   };
 }
 
+/**
+ * Creates a unique slug for the page
+ * @param page the page to create a slug for
+ * @returns unique slug identifying the page
+ */
 function createPageSlug(page: Page): string {
   return `${path.join(
     ...(page.isSection ? ["/", page.dir] : ["/", page.dir, page.title])
   )}`.toLowerCase();
 }
 
+/**
+ * Determine if a file path represents a section index.
+ * A section index is an _index.md or _index.mdx file.
+ * Basically any index file which starts with an underscore
+ * @param entry a file path
+ * @returns boolean if the file is a section index
+ */
 function isSectionIndex(entry: string) {
   return entry.match(/_index\.mdx?$/i) !== null;
 }
 
+/**
+ * Determine if a file path represents a page index.
+ * A page index is an index.md or index.mdx file.
+ * Basically any index file which does not start with an underscore
+ * @param entry a file path
+ * @returns boolean if the file is a page index
+ */
 function isPageIndex(entry: string) {
   return entry.match(/(?<!_)index\.mdx?$/i) !== null;
 }
 
+/**
+ * A page file is any file which is not an index file.
+ * page files allow for top level pages
+ *
+ * For example the section foo can have a page called page.md.
+ *
+ * /foo
+ *   _index.md
+ *   page.md
+ *
+ * @param entry a file path
+ * @returns boolean if the file is a page file
+ */
 function isPageFile(entry: string) {
   return (
     !isPageIndex(entry) && !isSectionIndex(entry) && entry.match(/\.mdx?$/i)
