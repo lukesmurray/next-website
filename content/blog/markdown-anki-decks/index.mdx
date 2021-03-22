@@ -1,0 +1,24 @@
+---
+title: "Markdown Anki Decks"
+date: "2020-12-23T14:00:02"
+description: "A command line program to convert markdown files into anki decks."
+draft: false
+# image: /path/to/image
+---
+
+Today I published my second python cli tool, [markdown-anki-decks](https://pypi.org/project/markdown-anki-decks/).
+The tool takes a directory of markdown files and converts them into a directory of anki decks.
+Basically all of the code is glue code, the library builds on top of [commonmark](https://pypi.org/project/commonmark/), [beautifulsoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/), and [genanki](https://github.com/kerrickstaley/genanki).
+But for a side project glue code is ideal.
+There is very little to maintain.
+
+I like the tool because it uses a straightforward syntax with `h2` headers converted to questions and everything between `h2` headers converted to answers. *Most importantly the tool automatically updates cards on follow up imports rather than duplicating them and losing your anki progress*. 
+
+I can now edit my anki decks using plain text, publish my anki decks as web pages using gatsby, and automatically generate my anki decks whenever I want to import them.
+
+There are already several libraries which can be used to write anki decks in markdown but none of them quite do what I want.
+
+- [Ankdown](https://github.com/benwr/ankdown) supports latex with Mathjax (my library does not), but Ankdown uses a very odd syntax for specifying cards and Ankdown card syncing breaks when cards are removed from the markdown file.
+- [mdanki](https://github.com/ashlinchak/mdanki) is actually very close to what I want but has issues with syncing and updating cards. If you try to reload the same deck every single card is duplicated. That problem might be solved soon but it makes the library useless since cards cannot be added to a deck without losing all progress.
+
+If you like `Ankdown` or `mdanki` but are frustrated by the same things I am then you may like `markdown-anki-decks`. Check out the [github repo](https://github.com/lukesmurray/markdown-anki-decks) and let me know if you find it useful.

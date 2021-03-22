@@ -1,0 +1,26 @@
+---
+title: "Fishbone lab diagrams"
+date: "2021-01-19T16:51:21"
+description: "Implementing fishbone lab diagrams as svg elements for the web"
+draft: false
+image:  images/chem7.png
+---
+
+Fishbone charts are a type of shorthand found in medicine so that doctors do not have to write out the names and units for common measurements.
+
+The most common fishbone charts are the Complete Blood Count chart, the Chem 7 Chart, the Chem 10 chart, and the Liver Enzyme chart.
+
+Although these charts originated in paper notes they are now used as simple data visualizations in some electronic health record applications because they can rapidly convey common information with fewer labels than an equivalent table.
+
+There seems to be a lack of information about fishbone charts online with most practitioners describing them as intrinsic knowledge which is passed on without being formally recorded.
+
+I was able to find some examples on [stack exchange](https://medicalsciences.stackexchange.com/questions/17847/which-lab-value-skeleton-diagrams-are-used-to-display-results-for-cbc-chemistry) and [khan academy](https://www.khanacademy.org/science/health-and-medicine/lab-values-unit/lab-values/v/introduction-to-lab-values-and-normal-ranges) and [twitter](https://twitter.com/DavidSteensma/status/1280900821639553025). The khan academy reference is by far the best reference I found.
+
+They also seem to show up when you type [lab value diagram](https://www.google.com/search?q=lab+value+diagrams&sxsrf=ALeKk01xpV7Pa_0MJvkjtJ0rWSrprTqZ4Q:1611089189019&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiD7b_27qjuAhXGnuAKHVviAIUQ_AUoAXoECCIQAw&cshid=1611089258669345&biw=2560&bih=1328) into google images.
+
+I spent a bit of time today creating SVG representations of the complete blood count and chem 7 fishbone diagrams. Check them out below or on [observablehq](https://observablehq.com/@lukesmurray/medical-lab-diagrams).
+If you find these useful and would want to use them in your own projects, let me know and I can try to package them into a component library.
+The current code is a bit messy since it will be translated to react eventually.
+
+<iframe width="100%" height="370" frameborder="0" title="Medical Lab Diagrams"
+  src="https://observablehq.com/embed/@lukesmurray/medical-lab-diagrams?cell=chem7Title&cell=chem7&cell=cbcTitle&cell=cbc"></iframe>

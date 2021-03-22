@@ -11,14 +11,9 @@
  * https://www.npmjs.com/package/typegraphql-prisma
  * https://www.apollographql.com/docs/apollo-server/
  */
-
-// import "reflect-metadata"; must be at the top of this file
-import "reflect-metadata";
-import { resolvers } from "@generated/type-graphql";
 import { ApolloServer } from "apollo-server-micro";
-import path from "path";
-import { buildSchema } from "type-graphql";
 import { prisma } from "../prisma/db";
+import { buildGraphqlSchema } from "./buildGraphqlSchema";
 
 declare global {
   var apolloServer: ApolloServer;
@@ -46,11 +41,7 @@ export async function getGraphqlServer() {
 
   // We have to use this function indirection because we can't buildSchema
   // at the top levelwith a top level await
-  const schema = await buildSchema({
-    resolvers,
-    validate: false,
-    emitSchemaFile: path.join(process.cwd(), "prisma", "schema.gql"),
-  });
+  const schema = await buildGraphqlSchema();
 
   // create the server
   const apolloServer = new ApolloServer({

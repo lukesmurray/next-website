@@ -1,0 +1,38 @@
+---
+title: "Replacing Tmux With Kitty"
+date: "2021-02-23T08:57:58"
+description: "Steps to replace the useful aspects of my tmux workflow with kitty"
+draft: true
+# image: /path/to/image
+---
+
+<!-- TODO(lukemurray): record gifs with https://gist.github.com/Vestride/278e13915894821e1d6f -->
+
+I recently decided to switch my terminal from iTerm to Kitty.
+Kitty is simply faster, much nicer to my battery, and more fun to work with since a lot of the internals are hackable with end user scripts.
+
+In my last post I wrote about [replicating iTerm's quake-like dropdown functionality](../quake-applications-for-mac/) using [Phoenix](https://github.com/kasper/phoenix), a scriptable window manager for macOS.
+In this post I'll show how I replicated a bunch of the behavior from [gpakosz's famous tmux config](https://github.com/gpakosz/.tmux) using native Kitty.
+If you absolutely must have persistent sessions and daemons then you'll need to wait for [those to be implemented in kitty](https://github.com/kovidgoyal/kitty/issues/391).
+But in the meantime you can replicate 90% of the pane and window behavior from gpakosz's config with just a few additions to your kitty config.
+At the end you'll have a snappy terminal which has much nicer [energy and performance](https://github.com/kovidgoyal/kitty/issues/391#issuecomment-638320745).
+
+The final kitty config files (which you can place in `~/.config/kitty`) can be found [here](https://github.com/lukesmurray/bootstrap/tree/75b51d1/.config/kitty).
+
+- adding panes
+- moving panes
+- navigating panes
+- closing panes
+- resizing window
+
+- navigating window
+- closing windows
+
+- moving windows
+
+- toggling zoom
+
+- Future
+  - sessions
+  - persistence
+  - copy mode vi
