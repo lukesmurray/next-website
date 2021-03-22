@@ -2,7 +2,7 @@ overwrite: true
 schema: "./prisma/schema.gql"
 documents: "{pages,lib,content}/**/*.{graphql,js,ts,jsx,tsx,mdx}"
 generates:
-  lib/graphql.tsx:
+  prisma/graphql.tsx:
     plugins:
       - "typescript"
       - "typescript-operations"

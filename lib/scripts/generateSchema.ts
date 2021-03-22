@@ -1,6 +1,9 @@
+/**
+ * Script to generate the graphql schema.gql file
+ */
+import "reflect-metadata";
 import { resolvers } from "@generated/type-graphql";
 import path from "path";
-import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 
 // TODO(lukemurray): this isn't dry, we also build schema in graphqlServer

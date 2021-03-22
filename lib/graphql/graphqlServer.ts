@@ -1,6 +1,6 @@
 /**
  * Create the graphql server as a singleton
- * 
+ *
  * The server is created using a apollo-server which is backed with resolvers
  * and schema generated using typegraphql-prisma
  *
@@ -18,7 +18,7 @@ import { resolvers } from "@generated/type-graphql";
 import { ApolloServer } from "apollo-server-micro";
 import path from "path";
 import { buildSchema } from "type-graphql";
-import { prisma } from "./db";
+import { prisma } from "../prisma/db";
 
 declare global {
   var apolloServer: ApolloServer;

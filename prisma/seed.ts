@@ -11,7 +11,7 @@
  */
 import { PrismaClient } from "@prisma/client";
 import path from "path";
-import { parseAllPagesInDir } from "../lib/fileTreeParser";
+import { parseAllPagesInDir } from "../lib/fileParser/fileTreeParser";
 
 const prisma = new PrismaClient();
 

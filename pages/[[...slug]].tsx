@@ -11,13 +11,13 @@ import Link from "next/link";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
 import tw from "twin.macro";
-import { client } from "../lib/client";
+import { client } from "../lib/graphql/client";
 import {
   SlugPageQuery,
   SlugPageQueryVariables,
   SlugStaticPathsQuery,
   SlugStaticPathsQueryVariables,
-} from "../lib/graphql";
+} from "../prisma/graphql";
 
 export default function Page({
   root,
@@ -173,7 +173,7 @@ function mdxComponents(slug: string): MdxRemote.Components {
       return (
         <img
           {...otherProps}
-          src={require(`../content${slug}/${props.src}`).default}
+          // src={require(`../content${slug}/${props.src}`).default}
         />
       );
     },

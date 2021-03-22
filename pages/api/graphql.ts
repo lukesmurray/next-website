@@ -2,7 +2,7 @@
  * Graphql endpoint.
  */
 import { IncomingMessage, ServerResponse } from "http";
-import { getGraphqlServer } from "../../lib/graphqlServer";
+import { getGraphqlServer } from "../../lib/graphql/graphqlServer";
 
 // disable body parsing (next js default) since it breaks graphql
 export const config = {

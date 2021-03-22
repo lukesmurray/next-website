@@ -11,12 +11,12 @@
     "ts-node": "ts-node --compiler-options '{\"module\":\"CommonJS\"}'",
     "generate:graphqltypes": "graphql-codegen --config codegen.yml",
     "generate:graphqltypes:watch": "yarn generate:graphqltypes --watch",
-    "generate:graphqlschema": "yarn prisma generate && yarn ts-node ./lib/generateSchema.ts",
-    "generate:graphqlschema:watch": "chokidar \"./prisma/schema.prisma\" -c 'yarn generate:graphqlschema'",
+    "generate:prisma": "yarn prisma generate && yarn ts-node ./lib/scripts/generateSchema.ts",
+    "generate:prisma:watch": "chokidar \"./prisma/schema.prisma\" -c 'yarn generate:prisma'",
     "generate:markdown": "yarn prisma db seed --preview-feature && yarn refresh",
     "generate:markdown:watch": "chokidar \"./content/**/*.{md,mdx}\" -c 'yarn generate:markdown'",
-    "watch": "yarn generate && concurrently --kill-others \"yarn dev\" \"yarn generate:graphqltypes:watch\" \"yarn generate:graphqlschema:watch\" \"yarn generate:markdown:watch\"",
-    "generate": "yarn generate:graphqlschema && yarn generate:graphqltypes && yarn generate:markdown",
+    "watch": "yarn generate && concurrently --kill-others \"yarn dev\" \"yarn generate:graphqltypes:watch\" \"yarn generate:prisma:watch\" \"yarn generate:markdown:watch\"",
+    "generate": "yarn generate:prisma && yarn generate:graphqltypes && yarn generate:markdown",
     "refresh": "curl -s --header \"Content-Type: application/json\" --request POST http://localhost:3000/__next_reload || true"
   },
   "dependencies": {

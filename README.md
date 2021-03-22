@@ -29,15 +29,18 @@ This is a proof of concept static blogging concept which parses markdown files i
 
 ## Development
 
-- `yarn generate` to generate content and graphql schema types
-- `yarn generate:watch` to generate content and graphql schema code in watch mode
-- `yarn dev` to start the next js dev server (in watch mode)
+**TLDR** Run `yarn watch` to run the dev server.
 
-Most of the time you want to run `yarn generate:watch` and `yarn dev` in separate terminals.
+This project works by generating a bunch of assets automatically.
+Each type of asset is generated using different scripts
 
-## Todos
+- `yarn generate:prisma`
+  - prisma is in charge of generating a database client and a graphql server
+    - the graphql server is in charge of generating the graphql schema
+- `yarn generate:graphqltypes`
+  - graphql-codegen is used to generate graphql types for graphql queries
+- `yarn generate:markdown`
+  - prisma db seed is used to convert markdown files in the content directory into rows in the database
+  - we use next-remote-watch to reload the dev server when the markdown has finished generating
 
-- hot reloading
-  - when you edit prisma.schema `prisma/schema.gql` should update but it doesn't since it only updates when the server changes and the server is a singleton. We can use chokidar to watch files and update schema.gql when the prisma schema changes
-  - would be nice to run all code through one command but it doesn't work because the generated types sometimes don't get generated and next breaks. Have to restart next separately. The solution is to run `yarn dev` and `yarn watch` in two terminals
-  - upadting markdown content uses [next-remote-watch](https://github.com/hashicorp/next-remote-watch). but next-remote-watch is broken on dev and we really don't need to seed the whole database we could update individual pages
+You can generate all the assets and run the dev server using `yarn watch`
