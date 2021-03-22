@@ -1,13 +1,12 @@
 /**
  * https://nextjs.org/docs/routing/dynamic-routes
  */
-import { gql } from "@apollo/client";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
 import tw from "twin.macro";
-import { client } from "../lib/graphql/client";
+import { queryGraphql } from "../lib/graphql/queryGraphql";
 import { addMdxToData } from "../lib/mdx/addMdxToData";
 import { hydrateMdxData } from "../lib/mdx/hydrateMdxData";
 import {
@@ -61,9 +60,8 @@ export const getStaticProps = async (
   // the slug to render (if empty then default to home page "/")
   const slug = `/${((context.params?.slug ?? []) as string[]).join("/")}`;
 
-  let result = await client.query<SlugPageQuery, SlugPageQueryVariables>({
-    query: gql`
-      #graphql
+  let result = await queryGraphql<SlugPageQuery, SlugPageQueryVariables>(
+    /* GraphQL */ `
       query SlugPage($currentSlug: String!) {
         root: page(where: { slug: "/" }) {
           slug
@@ -80,13 +78,13 @@ export const getStaticProps = async (
         }
       }
     `,
-    variables: {
+    {
       currentSlug: slug,
-    },
-  });
+    }
+  );
 
   // modify the data by adding mdx to it
-  let modifiedData = await addMdxToData(result.data);
+  let modifiedData = await addMdxToData(result.data!);
 
   return {
     props: modifiedData,
@@ -97,20 +95,18 @@ export const getStaticProps = async (
 export const getStaticPaths = async (
   context: any /*GetStaticPathsContext*/
 ) => {
-  const result = await client.query<
+  const result = await queryGraphql<
     SlugStaticPathsQuery,
     SlugStaticPathsQueryVariables
-  >({
-    query: gql`
-      query SlugStaticPaths {
-        pages {
-          slug
-        }
+  >(/* GraphQL */ `
+    query SlugStaticPaths {
+      pages {
+        slug
       }
-    `,
-  });
+    }
+  `);
   return {
-    paths: result.data.pages.map((s) => ({
+    paths: result.data!.pages.map((s) => ({
       params: {
         slug: s.slug.split("/").filter((v) => v),
       },
