@@ -64,6 +64,7 @@ export const getStaticProps = async (
             slug
             title
             kind
+            draft
           }
         }
         currentPage: page(where: { slug: $currentSlug }) {
