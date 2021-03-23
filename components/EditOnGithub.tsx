@@ -10,6 +10,7 @@ export const EditOnGithub: React.VFC<{ filePath: string }> = (props) => {
       css={tw`hover:underline`}
       href={githubFilePath(filePath)}
       target="_blank"
+      rel="noopener noreferrer"
     >
       Edit on Github
     </a>
