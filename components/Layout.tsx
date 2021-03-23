@@ -19,7 +19,9 @@ export const Layout: React.FC<
       >
         {props.children}
       </main>
-      <footer></footer>
+      <footer css={tw`pt-20 pb-2 mx-auto text-gray-500 text-center`}>
+        © Luke Murray {new Date().getFullYear()}
+      </footer>
     </>
   );
 };

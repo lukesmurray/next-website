@@ -16,12 +16,8 @@ export function mdxComponents(slug: string): MdxRemote.Components {
         }
     ) => {
       const { src, ...otherProps } = props;
-      return (
-        <img
-          {...otherProps}
-          src={require(`../../content${slug}/${src}`).default}
-        />
-      );
+      const imgSrc = require(`../../content${slug}/${src}`).default;
+      return <img {...otherProps} src={imgSrc} />;
     },
   };
   return components;

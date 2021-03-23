@@ -12,6 +12,15 @@ export const globalStyles = css`
   }
 
   body {
-    ${tw`p-2 md:p-4`}
+    ${tw`p-2 md:p-4 pb-0`}
+  }
+
+  #__next {
+    display: flex;
+    flex-direction: column;
+
+    & > main {
+      flex-grow: 1;
+    }
   }
 `;

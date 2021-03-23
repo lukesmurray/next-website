@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 module.exports = {
   webpack: (config, { isServer }) => {
     // Fixes packages that depend on fs/module module
@@ -18,6 +20,9 @@ module.exports = {
         },
       ],
     });
+
+    // ignore markdown files
+    config.plugins.push(new webpack.IgnorePlugin(/\.mdx?$/));
 
     return config;
   },
