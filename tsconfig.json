@@ -15,14 +15,17 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react", // for the css prop
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": [
     "global.d.ts",
     "next-env.d.ts",
     "twin.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "./types"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./types"]
 }

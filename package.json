@@ -63,6 +63,8 @@
     "postcss": "^8.2.8",
     "prisma": "^2.19.0",
     "reflect-metadata": "^0.1.13",
+    "remark-footnotes": "^3.0.0",
+    "remark-numbered-footnotes": "^3.0.0",
     "tailwindcss": "^2.0.4",
     "ts-node": "^9.1.1",
     "twin.macro": "^2.3.0",
