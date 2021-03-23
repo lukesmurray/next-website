@@ -11,7 +11,7 @@ export async function queryGraphql<
   TVariables = Record<string, any> | null | undefined,
   TExtensions = { [key: string]: any }
 >(query: string | Source, variableValues?: TVariables) {
-  const schema = _schema ?? (await buildGraphqlSchema());
+  const schema = _schema ?? (await buildGraphqlSchema(false));
   _schema = schema;
   return (await graphql({
     schema,

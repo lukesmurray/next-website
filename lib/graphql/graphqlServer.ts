@@ -41,7 +41,7 @@ export async function getGraphqlServer() {
 
   // We have to use this function indirection because we can't buildSchema
   // at the top levelwith a top level await
-  const schema = await buildGraphqlSchema();
+  const schema = await buildGraphqlSchema(false);
 
   // create the server
   const apolloServer = new ApolloServer({
