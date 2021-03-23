@@ -1,8 +1,12 @@
+import { isDefined } from "lib/types/isDefined";
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { Maybe } from "prisma/graphql";
 import React from "react";
-import tw from "twin.macro";
+import tw, { css, styled } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
+import { formatDate } from "./formatters/formatDate";
 import { formatPageTitle } from "./formatters/formatPageTitle";
 
 export const PageList: React.VFC<
@@ -18,35 +22,87 @@ export const PageList: React.VFC<
   }
 
   return (
-    <section css={tw`prose mx-auto`}>
+    <PageListWrapper
+      css={[
+        tw`mx-auto max-w-prose`,
+        css`
+          ${SectionsWrapper} + ${PagesWrapper} {
+            ${tw`pt-16`}
+          }
+        `,
+      ]}
+    >
       {sections.length > 0 && (
-        <>
-          <h2>Sections</h2>
-          <ul>
-            {sections.map((page) => (
-              <li key={page.slug}>
-                <Link href={page.slug}>
-                  <a>{formatPageTitle(page)}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
+        <SectionsWrapper
+          css={[
+            tw`flex flex-row gap-3 flex-wrap`,
+            css`
+              & > li {
+                ${tw`p-3 shadow rounded-md hover:shadow-lg`}
+              }
+            `,
+          ]}
+        >
+          {sections.map((page) => (
+            <li key={page.slug}>
+              <PageSummaryLink page={page} />
+            </li>
+          ))}
+        </SectionsWrapper>
       )}
       {pages.length > 0 && (
-        <div>
-          <h2>Pages</h2>
-          <ul>
-            {pages.map((page) => (
-              <li key={page.slug}>
-                <Link href={page.slug}>
-                  <a>{formatPageTitle(page)}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <PagesWrapper css={tw`flex flex-col gap-14`}>
+          {pages.map((page) => (
+            <li key={page.slug}>
+              <PageSummaryLink page={page} />
+            </li>
+          ))}
+        </PagesWrapper>
       )}
-    </section>
+    </PageListWrapper>
+  );
+};
+
+const SectionsWrapper = styled.ul();
+const PagesWrapper = styled.ul();
+
+export const PageListWrapper = styled.section();
+
+const PageSummaryLink: React.VFC<{
+  page: {
+    slug: string;
+    title: string;
+    kind: string;
+    draft: boolean;
+    date?: any;
+    description?: Maybe<string> | undefined;
+  };
+}> = (props) => {
+  const { page } = props;
+  const router = useRouter();
+
+  return (
+    <div
+      css={page.kind !== "page" && tw`cursor-pointer`}
+      onClick={() => {
+        if (page.kind !== "page") {
+          router.push(page.slug);
+        }
+      }}
+    >
+      <Link href={page.slug}>
+        <a>
+          <span css={tw`text-lg hover:underline font-semibold`}>
+            {formatPageTitle(page)}
+          </span>
+        </a>
+      </Link>
+      {isDefined(page.date) && page.kind === "page" && (
+        <div css={tw`text-sm`}>{formatDate(page.date)}</div>
+      )}
+      {isDefined(page.description) && (
+        <div css={tw`text-gray-600`}>{page.description}</div>
+      )}
+    </div>
   );
 };

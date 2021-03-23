@@ -108,6 +108,8 @@ export const getStaticProps = async (
             title
             kind
             draft
+            date
+            description
           }
         }
       }

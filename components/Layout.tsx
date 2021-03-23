@@ -4,6 +4,8 @@ import tw, { css } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { PageListWrapper } from "./PageList";
+import { PostBodyWrapper } from "./PostBody";
 
 export const Layout: React.FC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -13,8 +15,8 @@ export const Layout: React.FC<
       <Header {...props} />
       <main
         css={css`
-          article + section {
-            ${tw`pt-14`}
+          ${PostBodyWrapper} + ${PageListWrapper} {
+            ${tw`pt-20`}
           }
         `}
       >

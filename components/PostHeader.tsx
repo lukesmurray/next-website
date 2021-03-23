@@ -11,7 +11,7 @@ export const PostHeader: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
   const { currentPage } = props;
-  if (currentPage.kind !== "page") {
+  if (currentPage.kind === "home") {
     return null;
   }
   return (
@@ -19,17 +19,20 @@ export const PostHeader: React.VFC<
       <h1>
         <Link href={currentPage.slug}>
           <a>
-            <span css={tw`text-3xl font-semibold hover:underline`}>
+            <span css={tw`text-5xl font-semibold hover:underline`}>
               {formatPageTitle(currentPage)}
             </span>
           </a>
         </Link>
       </h1>
-      <div css={tw`text-gray-600 flex gap-6 flex-wrap`}>
-        {isDefined(currentPage.date) && (
-          <span>{formatDate(currentPage.date)}</span>
-        )}
-      </div>
+      {/* page only details, keep's sections cleaner */}
+      {currentPage.kind === "page" && (
+        <div css={tw`text-gray-600 flex gap-6 flex-wrap`}>
+          {isDefined(currentPage.date) && (
+            <span>{formatDate(currentPage.date)}</span>
+          )}
+        </div>
+      )}
     </div>
   );
 };
