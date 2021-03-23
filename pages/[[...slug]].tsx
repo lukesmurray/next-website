@@ -2,10 +2,10 @@
  * https://nextjs.org/docs/routing/dynamic-routes
  */
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
-import Link from "next/link";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
 import tw from "twin.macro";
+import { Layout } from "../components/Layout";
 import { queryGraphql } from "../lib/graphql/queryGraphql";
 import { addMdxToData } from "../lib/mdx/addMdxToData";
 import { hydrateMdxData } from "../lib/mdx/hydrateMdxData";
@@ -16,10 +16,10 @@ import {
   SlugStaticPathsQueryVariables,
 } from "../prisma/graphql";
 
-export default function Page({
-  root,
-  currentPage,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Page(
+  props: InferGetStaticPropsType<typeof getStaticProps>
+) {
+  const { root, currentPage } = props;
   if (root === undefined || currentPage === undefined) {
     throw new Error("expected all pages to be defined");
   }
@@ -28,27 +28,9 @@ export default function Page({
 
   return (
     <>
-      <header>
-        <Link href={root.slug}>
-          <a>{root.title}</a>
-        </Link>
-      </header>
-      <main>
-        <h1>{currentPage.title}</h1>
+      <Layout {...props}>
         <article css={[tw`prose mx-auto`]}>{content}</article>
-        <section>
-          <h2>Pages</h2>
-          <ul>
-            {currentPage.pages.map((p) => (
-              <li key={p.slug}>
-                <Link href={p.slug}>
-                  <a>{p.title}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </main>
+      </Layout>
     </>
   );
 }
@@ -70,10 +52,22 @@ export const getStaticProps = async (
         currentPage: page(where: { slug: $currentSlug }) {
           slug
           title
+          kind
           content
+          parent {
+            slug
+            title
+            kind
+            pages {
+              slug
+              title
+              kind
+            }
+          }
           pages {
             slug
             title
+            kind
           }
         }
       }
@@ -86,8 +80,16 @@ export const getStaticProps = async (
   // modify the data by adding mdx to it
   let modifiedData = await addMdxToData(result.data!);
 
+  type NonNullableProperties<T> = {
+    [K in keyof T]-?: NonNullable<T[K]>;
+  };
+
+  const nonNullableModifiedData = modifiedData as NonNullableProperties<
+    typeof modifiedData
+  >;
+
   return {
-    props: modifiedData,
+    props: nonNullableModifiedData,
   };
 };
 

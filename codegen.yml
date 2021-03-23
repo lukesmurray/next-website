@@ -17,6 +17,6 @@ generates:
       # remove duplicate operation suffixes
       dedupeOperationSuffix: true
       # don't include null in the maybeValue
-      maybeValue: T | undefined
+      # maybeValue: T | undefined
       # don't include typename unless it is specified
       skipTypename: true

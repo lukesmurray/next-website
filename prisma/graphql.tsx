@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-export type Maybe<T> = T | undefined;
+export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -979,7 +979,7 @@ export type SlugPageQueryVariables = Exact<{
 }>;
 
 
-export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string }>, currentPage?: Maybe<{ slug: string, title: string, content: string, pages: Array<{ slug: string, title: string }> }> };
+export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, parent?: Maybe<{ slug: string, title: string, kind: string, pages: Array<{ slug: string, title: string, kind: string }> }>, pages: Array<{ slug: string, title: string, kind: string }> }> };
 
 export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -996,10 +996,22 @@ export const SlugPageDocument = gql`
   currentPage: page(where: {slug: $currentSlug}) {
     slug
     title
+    kind
     content
+    parent {
+      slug
+      title
+      kind
+      pages {
+        slug
+        title
+        kind
+      }
+    }
     pages {
       slug
       title
+      kind
     }
   }
 }
