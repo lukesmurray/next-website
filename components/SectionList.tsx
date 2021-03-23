@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import tw from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
+import { formatPageTitle } from "./formatters/formatPageTitle";
 
 export const SectionList: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -25,7 +26,7 @@ export const SectionList: React.VFC<
             {sections.map((page) => (
               <li key={page.slug}>
                 <Link href={page.slug}>
-                  <a>{page.title}</a>
+                  <a>{formatPageTitle(page)}</a>
                 </Link>
               </li>
             ))}
@@ -39,7 +40,7 @@ export const SectionList: React.VFC<
             {pages.map((page) => (
               <li key={page.slug}>
                 <Link href={page.slug}>
-                  <a>{page.title}</a>
+                  <a>{formatPageTitle(page)}</a>
                 </Link>
               </li>
             ))}

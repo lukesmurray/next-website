@@ -46,8 +46,6 @@ export async function getGraphqlServer() {
   // create the server
   const apolloServer = new ApolloServer({
     schema,
-    playground: true,
-    introspection: true,
     context: () => ({ prisma }),
   });
 

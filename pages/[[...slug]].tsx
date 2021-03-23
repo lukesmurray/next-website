@@ -8,6 +8,7 @@ import { Layout } from "../components/Layout";
 import { PageContent } from "../components/PageContent";
 import { PageTitle } from "../components/PageTitle";
 import { SectionList } from "../components/SectionList";
+import { gql } from "../lib/graphql/gql";
 import { queryGraphql } from "../lib/graphql/queryGraphql";
 import { addMdxToData } from "../lib/mdx/addMdxToData";
 import {
@@ -45,12 +46,12 @@ export const getStaticProps = async (
   const slug = `/${((context.params?.slug ?? []) as string[]).join("/")}`;
 
   let result = await queryGraphql<SlugPageQuery, SlugPageQueryVariables>(
-    /* GraphQL */ `
+    gql`
       query SlugPage($currentSlug: String!) {
         root: page(where: { slug: "/" }) {
           slug
           title
-          pages {
+          pages(orderBy: { date: desc }) {
             slug
             title
             kind
@@ -66,16 +67,17 @@ export const getStaticProps = async (
             slug
             title
             kind
-            pages {
+            pages(orderBy: { date: desc }) {
               slug
               title
               kind
             }
           }
-          pages {
+          pages(orderBy: { date: desc }) {
             slug
             title
             kind
+            draft
           }
         }
       }
@@ -108,7 +110,7 @@ export const getStaticPaths = async (
   const result = await queryGraphql<
     SlugStaticPathsQuery,
     SlugStaticPathsQueryVariables
-  >(/* GraphQL */ `
+  >(gql`
     query SlugStaticPaths {
       pages {
         slug
