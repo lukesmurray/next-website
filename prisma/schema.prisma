@@ -32,7 +32,7 @@ model Page {
   content String
 
   /// the date field from the page frontmatter
-  date String?
+  date DateTime?
 
   /// the description string from the frontmatter
   description String?

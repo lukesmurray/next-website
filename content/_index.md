@@ -1,5 +1,9 @@
 ---
-title: Luke Murray
+title: "Luke Murray"
+date: "2021-03-23T16:24:53"
+description: "Luke Murray's website!"
+draft: false
+# image: /path/to/image
 ---
 
 # Welcome 👋!

@@ -28,6 +28,22 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
 type File {
   """The Pages that this file is associated with"""
   Pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
@@ -142,6 +158,17 @@ input NestedBoolFilter {
   not: NestedBoolFilter
 }
 
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
 input NestedStringFilter {
   contains: String
   endsWith: String
@@ -170,6 +197,10 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
 input NullableStringFieldUpdateOperationsInput {
   set: String
 }
@@ -179,7 +210,7 @@ type Page {
   content: String!
 
   """the date field from the page frontmatter"""
-  date: String
+  date: DateTime
 
   """the description string from the frontmatter"""
   description: String
@@ -241,7 +272,7 @@ type PageCountAggregate {
 
 input PageCreateInput {
   content: String!
-  date: String
+  date: DateTime
   description: String
   dir: String!
   draft: Boolean!
@@ -314,7 +345,7 @@ input PageCreateOrConnectWithoutParentInput {
 
 input PageCreateWithoutFileInput {
   content: String!
-  date: String
+  date: DateTime
   description: String
   dir: String!
   draft: Boolean!
@@ -331,7 +362,7 @@ input PageCreateWithoutFileInput {
 
 input PageCreateWithoutFirstSectionInput {
   content: String!
-  date: String
+  date: DateTime
   description: String
   dir: String!
   draft: Boolean!
@@ -348,7 +379,7 @@ input PageCreateWithoutFirstSectionInput {
 
 input PageCreateWithoutFirstSectionPagesInput {
   content: String!
-  date: String
+  date: DateTime
   description: String
   dir: String!
   draft: Boolean!
@@ -365,7 +396,7 @@ input PageCreateWithoutFirstSectionPagesInput {
 
 input PageCreateWithoutPagesInput {
   content: String!
-  date: String
+  date: DateTime
   description: String
   dir: String!
   draft: Boolean!
@@ -382,7 +413,7 @@ input PageCreateWithoutPagesInput {
 
 input PageCreateWithoutParentInput {
   content: String!
-  date: String
+  date: DateTime
   description: String
   dir: String!
   draft: Boolean!
@@ -405,7 +436,7 @@ input PageListRelationFilter {
 
 type PageMaxAggregate {
   content: String
-  date: String
+  date: DateTime
   description: String
   dir: String
   draft: Boolean
@@ -421,7 +452,7 @@ type PageMaxAggregate {
 
 type PageMinAggregate {
   content: String
-  date: String
+  date: DateTime
   description: String
   dir: String
   draft: Boolean
@@ -477,7 +508,7 @@ input PageScalarWhereInput {
   NOT: [PageScalarWhereInput!]
   OR: [PageScalarWhereInput!]
   content: StringFilter
-  date: StringNullableFilter
+  date: DateTimeNullableFilter
   description: StringNullableFilter
   dir: StringFilter
   draft: BoolFilter
@@ -493,7 +524,7 @@ input PageScalarWhereInput {
 
 input PageUpdateInput {
   content: StringFieldUpdateOperationsInput
-  date: NullableStringFieldUpdateOperationsInput
+  date: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
@@ -511,7 +542,7 @@ input PageUpdateInput {
 
 input PageUpdateManyMutationInput {
   content: StringFieldUpdateOperationsInput
-  date: NullableStringFieldUpdateOperationsInput
+  date: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
@@ -613,7 +644,7 @@ input PageUpdateWithWhereUniqueWithoutParentInput {
 
 input PageUpdateWithoutFileInput {
   content: StringFieldUpdateOperationsInput
-  date: NullableStringFieldUpdateOperationsInput
+  date: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
@@ -630,7 +661,7 @@ input PageUpdateWithoutFileInput {
 
 input PageUpdateWithoutFirstSectionInput {
   content: StringFieldUpdateOperationsInput
-  date: NullableStringFieldUpdateOperationsInput
+  date: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
@@ -647,7 +678,7 @@ input PageUpdateWithoutFirstSectionInput {
 
 input PageUpdateWithoutFirstSectionPagesInput {
   content: StringFieldUpdateOperationsInput
-  date: NullableStringFieldUpdateOperationsInput
+  date: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
@@ -664,7 +695,7 @@ input PageUpdateWithoutFirstSectionPagesInput {
 
 input PageUpdateWithoutPagesInput {
   content: StringFieldUpdateOperationsInput
-  date: NullableStringFieldUpdateOperationsInput
+  date: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
@@ -681,7 +712,7 @@ input PageUpdateWithoutPagesInput {
 
 input PageUpdateWithoutParentInput {
   content: StringFieldUpdateOperationsInput
-  date: NullableStringFieldUpdateOperationsInput
+  date: NullableDateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
@@ -729,7 +760,7 @@ input PageWhereInput {
   NOT: [PageWhereInput!]
   OR: [PageWhereInput!]
   content: StringFilter
-  date: StringNullableFilter
+  date: DateTimeNullableFilter
   description: StringNullableFilter
   dir: StringFilter
   draft: BoolFilter

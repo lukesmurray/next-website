@@ -37,9 +37,17 @@ interface Page {
   content: string;
 
   /**
-   * date field from frontmatter
+   * date field from frontmatter.
+   * Assumed to be in one of the following formats.
+   *  - "2011-10-10" (date-only form)
+   *  - "2011-10-10T14:48:00" (date-time form)
+   *  - "2011-10-10T14:48:00.000+09:00"
+   *
+   * For more info look at the date.parse method in javascript
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse#date_time_string_format
    */
-  date: string | null;
+  date: Date | null;
 
   /**
    * Description of the page
@@ -322,7 +330,7 @@ function assignFileInfo(
     page.description = frontMatter.description;
   }
   if (frontMatter.date !== undefined) {
-    page.date = frontMatter.date;
+    page.date = new Date(Date.parse(frontMatter.date));
   }
   if (frontMatter.draft !== undefined) {
     page.draft = frontMatter.draft;

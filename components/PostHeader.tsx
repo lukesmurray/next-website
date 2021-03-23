@@ -4,7 +4,7 @@ import React from "react";
 import tw from "twin.macro";
 import { isDefined } from "../lib/types/isDefined";
 import { getStaticProps } from "../pages/[[...slug]]";
-import { EditOnGithub } from "./EditOnGithub";
+import { formatDate } from "./formatters/formatDate";
 import { formatPageTitle } from "./formatters/formatPageTitle";
 
 export const PostHeader: React.VFC<
@@ -16,17 +16,18 @@ export const PostHeader: React.VFC<
   }
   return (
     <div css={tw` max-w-prose mx-auto pt-12 pb-10`}>
-      <h1 css={tw`text-3xl font-semibold hover:underline`}>
+      <h1>
         <Link href={currentPage.slug}>
-          <a>{formatPageTitle(currentPage)}</a>
+          <a>
+            <span css={tw`text-3xl font-semibold hover:underline`}>
+              {formatPageTitle(currentPage)}
+            </span>
+          </a>
         </Link>
       </h1>
       <div css={tw`text-gray-600 flex gap-6 flex-wrap`}>
-        {isDefined(currentPage.date) && <span>{currentPage.date}</span>}
-        {isDefined(currentPage.filePath) && (
-          <span>
-            <EditOnGithub filePath={currentPage.filePath} />
-          </span>
+        {isDefined(currentPage.date) && (
+          <span>{formatDate(currentPage.date)}</span>
         )}
       </div>
     </div>

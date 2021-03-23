@@ -1,4 +1,5 @@
 import { InferGetStaticPropsType } from "next";
+import { proseStyles } from "styles/proseStyles";
 import tw from "twin.macro";
 import { hydrateMdxData } from "../lib/mdx/hydrateMdxData";
 import { getStaticProps } from "../pages/[[...slug]]";
@@ -12,5 +13,5 @@ export const PostBody: React.VFC<
   }
 
   const content = hydrateMdxData(currentPage.mdx, currentPage.slug);
-  return <article css={tw`prose mx-auto`}>{content}</article>;
+  return <article css={[proseStyles, tw`mx-auto`]}>{content}</article>;
 };
