@@ -5,9 +5,10 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
 import { Layout } from "../components/Layout";
-import { PageContent } from "../components/PageContent";
-import { PageTitle } from "../components/PageTitle";
-import { SectionList } from "../components/SectionList";
+import { PageList } from "../components/PageList";
+import { PostBody } from "../components/PostBody";
+import { PostHeader } from "../components/PostHeader";
+import { publishDrafts } from "../lib/constants/publishDrafts";
 import { gql } from "../lib/graphql/gql";
 import { queryGraphql } from "../lib/graphql/queryGraphql";
 import { addMdxToData } from "../lib/mdx/addMdxToData";
@@ -30,9 +31,9 @@ export default function Page(
     <>
       {/* TODO(lukemurray): we need to exract these into components */}
       <Layout {...props}>
-        <PageTitle {...props} />
-        <PageContent {...props} />
-        <SectionList {...props} />
+        <PostHeader {...props} />
+        <PostBody {...props} />
+        <PageList {...props} />
       </Layout>
     </>
   );
@@ -47,11 +48,19 @@ export const getStaticProps = async (
 
   let result = await queryGraphql<SlugPageQuery, SlugPageQueryVariables>(
     gql`
-      query SlugPage($currentSlug: String!) {
+      query SlugPage($currentSlug: String!, $publishDrafts: Boolean!) {
         root: page(where: { slug: "/" }) {
           slug
           title
-          pages(orderBy: { date: desc }) {
+          pages(
+            orderBy: { date: desc }
+            where: {
+              OR: [
+                { draft: { not: { equals: true } } }
+                { draft: { equals: $publishDrafts } }
+              ]
+            }
+          ) {
             slug
             title
             kind
@@ -63,17 +72,36 @@ export const getStaticProps = async (
           kind
           content
           date
+          draft
           parent {
             slug
             title
             kind
-            pages(orderBy: { date: desc }) {
+            draft
+            pages(
+              orderBy: { date: desc }
+              where: {
+                OR: [
+                  { draft: { not: { equals: true } } }
+                  { draft: { equals: $publishDrafts } }
+                ]
+              }
+            ) {
               slug
               title
               kind
+              draft
             }
           }
-          pages(orderBy: { date: desc }) {
+          pages(
+            orderBy: { date: desc }
+            where: {
+              OR: [
+                { draft: { not: { equals: true } } }
+                { draft: { equals: $publishDrafts } }
+              ]
+            }
+          ) {
             slug
             title
             kind
@@ -84,6 +112,7 @@ export const getStaticProps = async (
     `,
     {
       currentSlug: slug,
+      publishDrafts,
     }
   );
 

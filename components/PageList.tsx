@@ -5,7 +5,7 @@ import tw from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
 import { formatPageTitle } from "./formatters/formatPageTitle";
 
-export const SectionList: React.VFC<
+export const PageList: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
   const { currentPage } = props;

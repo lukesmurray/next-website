@@ -28,11 +28,6 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
-input BoolNullableFilter {
-  equals: Boolean
-  not: NestedBoolNullableFilter
-}
-
 type File {
   """The Pages that this file is associated with"""
   Pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
@@ -147,11 +142,6 @@ input NestedBoolFilter {
   not: NestedBoolFilter
 }
 
-input NestedBoolNullableFilter {
-  equals: Boolean
-  not: NestedBoolNullableFilter
-}
-
 input NestedStringFilter {
   contains: String
   endsWith: String
@@ -180,10 +170,6 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
-input NullableBoolFieldUpdateOperationsInput {
-  set: Boolean
-}
-
 input NullableStringFieldUpdateOperationsInput {
   set: String
 }
@@ -206,7 +192,7 @@ type Page {
   """
   true if the content is a draftcomes from the draft field in frontmatter
   """
-  draft: Boolean
+  draft: Boolean!
   file: File
 
   """The path to the file. Relative to the root directory."""
@@ -258,7 +244,7 @@ input PageCreateInput {
   date: String
   description: String
   dir: String!
-  draft: Boolean
+  draft: Boolean!
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
@@ -331,7 +317,7 @@ input PageCreateWithoutFileInput {
   date: String
   description: String
   dir: String!
-  draft: Boolean
+  draft: Boolean!
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
   isHome: Boolean!
@@ -348,7 +334,7 @@ input PageCreateWithoutFirstSectionInput {
   date: String
   description: String
   dir: String!
-  draft: Boolean
+  draft: Boolean!
   file: FileCreateNestedOneWithoutPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
   isHome: Boolean!
@@ -365,7 +351,7 @@ input PageCreateWithoutFirstSectionPagesInput {
   date: String
   description: String
   dir: String!
-  draft: Boolean
+  draft: Boolean!
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   isHome: Boolean!
@@ -382,7 +368,7 @@ input PageCreateWithoutPagesInput {
   date: String
   description: String
   dir: String!
-  draft: Boolean
+  draft: Boolean!
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
@@ -399,7 +385,7 @@ input PageCreateWithoutParentInput {
   date: String
   description: String
   dir: String!
-  draft: Boolean
+  draft: Boolean!
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
@@ -494,7 +480,7 @@ input PageScalarWhereInput {
   date: StringNullableFilter
   description: StringNullableFilter
   dir: StringFilter
-  draft: BoolNullableFilter
+  draft: BoolFilter
   filePath: StringNullableFilter
   firstSectionSlug: StringNullableFilter
   isHome: BoolFilter
@@ -510,7 +496,7 @@ input PageUpdateInput {
   date: NullableStringFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
-  draft: NullableBoolFieldUpdateOperationsInput
+  draft: BoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
@@ -528,7 +514,7 @@ input PageUpdateManyMutationInput {
   date: NullableStringFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
-  draft: NullableBoolFieldUpdateOperationsInput
+  draft: BoolFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -630,7 +616,7 @@ input PageUpdateWithoutFileInput {
   date: NullableStringFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
-  draft: NullableBoolFieldUpdateOperationsInput
+  draft: BoolFieldUpdateOperationsInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
   isHome: BoolFieldUpdateOperationsInput
@@ -647,7 +633,7 @@ input PageUpdateWithoutFirstSectionInput {
   date: NullableStringFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
-  draft: NullableBoolFieldUpdateOperationsInput
+  draft: BoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
   isHome: BoolFieldUpdateOperationsInput
@@ -664,7 +650,7 @@ input PageUpdateWithoutFirstSectionPagesInput {
   date: NullableStringFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
-  draft: NullableBoolFieldUpdateOperationsInput
+  draft: BoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   isHome: BoolFieldUpdateOperationsInput
@@ -681,7 +667,7 @@ input PageUpdateWithoutPagesInput {
   date: NullableStringFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
-  draft: NullableBoolFieldUpdateOperationsInput
+  draft: BoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
@@ -698,7 +684,7 @@ input PageUpdateWithoutParentInput {
   date: NullableStringFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
-  draft: NullableBoolFieldUpdateOperationsInput
+  draft: BoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
@@ -746,7 +732,7 @@ input PageWhereInput {
   date: StringNullableFilter
   description: StringNullableFilter
   dir: StringFilter
-  draft: BoolNullableFilter
+  draft: BoolFilter
   file: FileRelationFilter
   filePath: StringNullableFilter
   firstSection: PageRelationFilter

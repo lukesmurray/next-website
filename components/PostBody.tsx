@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import { hydrateMdxData } from "../lib/mdx/hydrateMdxData";
 import { getStaticProps } from "../pages/[[...slug]]";
 
-export const PageContent: React.VFC<
+export const PostBody: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
   const { currentPage } = props;

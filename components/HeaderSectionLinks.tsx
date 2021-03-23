@@ -3,11 +3,12 @@ import Link from "next/link";
 import React from "react";
 import tw from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
+import { formatPageTitle } from "./formatters/formatPageTitle";
 
 /**
  * Top level navigation links for the site
  */
-export const TopLinks: React.VFC<
+export const HeaderSectionLinks: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
   return (
@@ -18,7 +19,7 @@ export const TopLinks: React.VFC<
           .map((page) => (
             <li key={page.slug}>
               <Link href={page.slug}>
-                <a>{page.title}</a>
+                <a>{formatPageTitle(page)}</a>
               </Link>
             </li>
           ))}

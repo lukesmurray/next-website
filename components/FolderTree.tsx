@@ -5,6 +5,7 @@ import { VscFile, VscFolder, VscFolderOpened } from "react-icons/vsc";
 import tw, { css, styled } from "twin.macro";
 import { isDefined } from "../lib/types/isDefined";
 import { getStaticProps } from "../pages/[[...slug]]";
+import { formatPageTitle } from "./formatters/formatPageTitle";
 
 export const Folders: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -73,7 +74,7 @@ const CurrentPageList: React.FC<
  * React component representing a page list item
  */
 const PageListItem: React.FC<{
-  page: { slug: string; title: string; kind: string };
+  page: { slug: string; title: string; kind: string; draft: boolean };
   open: boolean;
 }> = (props) => {
   const { page } = props;
@@ -87,7 +88,7 @@ const PageListItem: React.FC<{
         <FolderIcon />
       )}
       <Link href={page.slug}>
-        <a>{page.title}</a>
+        <a>{formatPageTitle(page)}</a>
       </Link>
       {props.children}
     </li>

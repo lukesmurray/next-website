@@ -42,7 +42,7 @@ model Page {
 
   /// true if the content is a draft
   /// comes from the draft field in frontmatter
-  draft Boolean?
+  draft Boolean
 
   // /// information about the file associated with the page
   file File? @relation(fields: [filePath], references: [path])
