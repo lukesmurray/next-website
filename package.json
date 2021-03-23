@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next-remote-watch",
     "dev:inspect": "NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
+    "build": "yarn prisma db push --preview-feature --force-reset && yarn generate && next build",
     "start": "next start",
     "test": "jest",
     "ts-node": "ts-node --compiler-options '{\"module\":\"CommonJS\"}'",
