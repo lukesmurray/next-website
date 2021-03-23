@@ -2,6 +2,7 @@ import { InferGetStaticPropsType } from "next";
 import React from "react";
 import tw, { css } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
+import { Footer } from "./Footer";
 import { Header } from "./Header";
 
 export const Layout: React.FC<
@@ -19,9 +20,7 @@ export const Layout: React.FC<
       >
         {props.children}
       </main>
-      <footer css={tw`pt-20 pb-2 mx-auto text-gray-500 text-center`}>
-        © Luke Murray {new Date().getFullYear()}
-      </footer>
+      <Footer {...props} />
     </>
   );
 };

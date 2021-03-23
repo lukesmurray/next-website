@@ -74,6 +74,7 @@ export const getStaticProps = async (
           content
           date
           draft
+          filePath
           parent {
             slug
             title

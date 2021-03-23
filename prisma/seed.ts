@@ -9,15 +9,12 @@
  * https://www.prisma.io/docs/reference/api-reference/command-reference#db-push--preview
  * https://www.prisma.io/docs/reference/api-reference/command-reference#db-seed-preview
  */
-import { PrismaClient } from "@prisma/client";
-import path from "path";
+import { rootDirectoryPath } from "../lib/constants/rootDirectory";
 import { parseAllPagesInDir } from "../lib/fileParser/fileTreeParser";
-
-const prisma = new PrismaClient();
+import { prisma } from "../lib/prisma/db";
 
 async function seedPages() {
-  const rootDirectory = path.join(process.cwd(), "content");
-  for await (let page of parseAllPagesInDir(rootDirectory)) {
+  for await (let page of parseAllPagesInDir(rootDirectoryPath)) {
     try {
       await prisma.page.upsert({
         where: { slug: page.slug },

@@ -13,11 +13,15 @@ export const Header: React.VFC<
   return (
     <header>
       <HeaderSectionLinks {...props} />
-      <Link href={"/"}>
-        <a>
-          <h2 css={tw`text-5xl font-semibold block`}>{root.title}</h2>
-        </a>
-      </Link>
+      <h2>
+        <Link href={"/"}>
+          <a>
+            <span css={tw`text-5xl font-semibold hover:underline`}>
+              {root.title}
+            </span>
+          </a>
+        </Link>
+      </h2>
       <Breadcrumbs {...props} />
     </header>
   );

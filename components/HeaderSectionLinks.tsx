@@ -19,7 +19,9 @@ export const HeaderSectionLinks: React.VFC<
           .map((page) => (
             <li key={page.slug}>
               <Link href={page.slug}>
-                <a>{formatPageTitle(page)}</a>
+                <a>
+                  <span css={tw`hover:underline`}>{formatPageTitle(page)}</span>
+                </a>
               </Link>
             </li>
           ))}
