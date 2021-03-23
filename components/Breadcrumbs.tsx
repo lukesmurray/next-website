@@ -7,7 +7,6 @@ import { getStaticProps } from "../pages/[[...slug]]";
 /**
  * Filepath-like breadcrumbs for the site
  */
-
 export const Breadcrumbs: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
@@ -17,7 +16,7 @@ export const Breadcrumbs: React.VFC<
     ...props.currentPage.slug.split("/").filter((v) => v),
   ];
   return (
-    <nav>
+    <nav css={tw`text-gray-600 text-xl`}>
       <ul
         css={css`
           & li {

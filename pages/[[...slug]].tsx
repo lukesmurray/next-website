@@ -4,11 +4,12 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
-import tw from "twin.macro";
 import { Layout } from "../components/Layout";
+import { PageContent } from "../components/PageContent";
+import { PageTitle } from "../components/PageTitle";
+import { SectionList } from "../components/SectionList";
 import { queryGraphql } from "../lib/graphql/queryGraphql";
 import { addMdxToData } from "../lib/mdx/addMdxToData";
-import { hydrateMdxData } from "../lib/mdx/hydrateMdxData";
 import {
   SlugPageQuery,
   SlugPageQueryVariables,
@@ -24,12 +25,13 @@ export default function Page(
     throw new Error("expected all pages to be defined");
   }
 
-  const content = hydrateMdxData(currentPage.mdx, currentPage.slug);
-
   return (
     <>
+      {/* TODO(lukemurray): we need to exract these into components */}
       <Layout {...props}>
-        <article css={[tw`prose mx-auto`]}>{content}</article>
+        <PageTitle {...props} />
+        <PageContent {...props} />
+        <SectionList {...props} />
       </Layout>
     </>
   );
@@ -48,12 +50,18 @@ export const getStaticProps = async (
         root: page(where: { slug: "/" }) {
           slug
           title
+          pages {
+            slug
+            title
+            kind
+          }
         }
         currentPage: page(where: { slug: $currentSlug }) {
           slug
           title
           kind
           content
+          date
           parent {
             slug
             title

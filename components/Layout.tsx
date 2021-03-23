@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from "next";
 import React from "react";
+import tw, { css } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
 import { Header } from "./Header";
 
@@ -9,7 +10,15 @@ export const Layout: React.FC<
   return (
     <>
       <Header {...props} />
-      <main>{props.children}</main>
+      <main
+        css={css`
+          article + section {
+            ${tw`pt-14`}
+          }
+        `}
+      >
+        {props.children}
+      </main>
       <footer></footer>
     </>
   );

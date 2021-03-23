@@ -979,7 +979,7 @@ export type SlugPageQueryVariables = Exact<{
 }>;
 
 
-export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, parent?: Maybe<{ slug: string, title: string, kind: string, pages: Array<{ slug: string, title: string, kind: string }> }>, pages: Array<{ slug: string, title: string, kind: string }> }> };
+export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string }> }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, date?: Maybe<string>, parent?: Maybe<{ slug: string, title: string, kind: string, pages: Array<{ slug: string, title: string, kind: string }> }>, pages: Array<{ slug: string, title: string, kind: string }> }> };
 
 export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -992,12 +992,18 @@ export const SlugPageDocument = gql`
   root: page(where: {slug: "/"}) {
     slug
     title
+    pages {
+      slug
+      title
+      kind
+    }
   }
   currentPage: page(where: {slug: $currentSlug}) {
     slug
     title
     kind
     content
+    date
     parent {
       slug
       title
