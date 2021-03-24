@@ -10,12 +10,14 @@ export const Footer: React.VFC<
 > = (props) => {
   const { currentPage } = props;
   return (
-    <footer css={tw`pt-20 pb-2 text-gray-500 text-center`}>
+    <footer css={tw`text-gray-500 text-center`}>
+      {/* if the page has a file then add an edit on github link */}
       {isDefined(currentPage.filePath) && (
         <div css={tw`flex justify-end`}>
           <EditOnGithub filePath={currentPage.filePath} />
         </div>
       )}
+      {/* render the footer text */}
       <div> © Luke Murray {new Date().getFullYear()}</div>
     </footer>
   );

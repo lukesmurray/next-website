@@ -15,7 +15,8 @@ export const PostHeader: React.VFC<
     return null;
   }
   return (
-    <div css={tw` max-w-prose mx-auto pt-12 pb-10`}>
+    <header>
+      {/* render the title as an h1 */}
       <h1>
         <Link href={currentPage.slug}>
           <a>
@@ -33,6 +34,6 @@ export const PostHeader: React.VFC<
           )}
         </div>
       )}
-    </div>
+    </header>
   );
 };

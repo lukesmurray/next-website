@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Maybe } from "prisma/graphql";
 import React from "react";
-import tw, { css, styled } from "twin.macro";
+import tw, { css } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
+import Stack from "./every-layout/Stack";
 import { formatDate } from "./formatters/formatDate";
 import { formatPageTitle } from "./formatters/formatPageTitle";
 
@@ -22,18 +23,9 @@ export const PageList: React.VFC<
   }
 
   return (
-    <PageListWrapper
-      css={[
-        tw`mx-auto max-w-prose`,
-        css`
-          ${SectionsWrapper} + ${PagesWrapper} {
-            ${tw`pt-16`}
-          }
-        `,
-      ]}
-    >
+    <section>
       {sections.length > 0 && (
-        <SectionsWrapper
+        <ul
           css={[
             tw`flex flex-row gap-3 flex-wrap`,
             css`
@@ -48,25 +40,20 @@ export const PageList: React.VFC<
               <PageSummaryLink page={page} />
             </li>
           ))}
-        </SectionsWrapper>
+        </ul>
       )}
       {pages.length > 0 && (
-        <PagesWrapper css={tw`flex flex-col gap-14`}>
+        <Stack as="ul">
           {pages.map((page) => (
             <li key={page.slug}>
               <PageSummaryLink page={page} />
             </li>
           ))}
-        </PagesWrapper>
+        </Stack>
       )}
-    </PageListWrapper>
+    </section>
   );
 };
-
-const SectionsWrapper = styled.ul();
-const PagesWrapper = styled.ul();
-
-export const PageListWrapper = styled.section();
 
 const PageSummaryLink: React.VFC<{
   page: {
