@@ -40,7 +40,12 @@ Sure I could simply put my posts in a database and call it a day, but instead I 
 - [graphql-code-generator](https://www.graphql-code-generator.com/) to generate typescript types from graphql queries
 - [Next.js](https://nextjs.org/) to statically generate all my pages from this for a static site.
 
-All of these dependencies could break and I'm sure they would be annoying to fix. But hey _we're having fun... right?_ In addition, I would never bring any of this to a production site. As soon as you need to query at runtime the automatically generated apis and type safety lead to a bunch of performance issues. Luckily with a blog all my assets are statically generated so the performance issues are not a problem.
+All of these dependencies could break and I'm sure they would be annoying to fix. But hey _we're having fun... right?_ In addition, I would never bring any of this to a production site. As soon as you need to query at runtime the automatically generated apis and type safety lead to a bunch of performance issues. Luckily with a blog all my assets are statically generated so the performance issues are not a problem[^lighthouse].
+
+[^lighthouse]:
+    Check it out 😉, but [don't get too excited](https://www.matuzo.at/blog/building-the-most-inaccessible-site-possible-with-a-perfect-lighthouse-score/).
+
+    ![Lighthouse Scores](images/lighthouse-scores.png)
 
 ---
 

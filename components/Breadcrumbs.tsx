@@ -16,7 +16,7 @@ export const Breadcrumbs: React.VFC<
     ...props.currentPage.slug.split("/").filter((v) => v),
   ];
   return (
-    <nav css={tw`text-gray-600 text-xl`}>
+    <nav css={tw`text-gray-600 text-2xl sm:text-xl pt-2`}>
       <ul
         css={css`
           & li {
