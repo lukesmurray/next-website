@@ -18,7 +18,8 @@
     "watch": "yarn reset:db && yarn generate && concurrently --kill-others \"yarn dev\" \"yarn generate:graphqltypes:watch\" \"yarn generate:prisma:watch\" \"yarn generate:markdown:watch\"",
     "generate": "yarn generate:prisma && yarn generate:graphqltypes && yarn generate:markdown",
     "refresh": "curl -s --header \"Content-Type: application/json\" --request POST http://localhost:3000/__next_reload || true",
-    "reset:db": "yarn prisma db push --preview-feature --force-reset"
+    "reset:db": "yarn prisma db push --preview-feature --force-reset",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@emotion/css": "^11.1.3",
@@ -26,7 +27,8 @@
     "@emotion/server": "^11.0.0",
     "@emotion/styled": "^11.1.5",
     "@tailwindcss/typography": "^0.4.0",
-    "next": "9.5.5",
+    "next": "10.0.9",
+    "patch-package": "^6.4.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-icons": "^4.2.0"
