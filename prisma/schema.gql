@@ -232,6 +232,9 @@ type Page {
   firstSectionPages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
   firstSectionSlug: String
 
+  """The path to an image. Relative to the file."""
+  image: String
+
   """True if the page is the home page"""
   isHome: Boolean!
 
@@ -262,6 +265,7 @@ type PageCountAggregate {
   draft: Int
   filePath: Int
   firstSectionSlug: Int
+  image: Int
   isHome: Int
   isSection: Int
   kind: Int
@@ -279,6 +283,7 @@ input PageCreateInput {
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
+  image: String
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -351,6 +356,7 @@ input PageCreateWithoutFileInput {
   draft: Boolean!
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
+  image: String
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -368,6 +374,7 @@ input PageCreateWithoutFirstSectionInput {
   draft: Boolean!
   file: FileCreateNestedOneWithoutPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
+  image: String
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -385,6 +392,7 @@ input PageCreateWithoutFirstSectionPagesInput {
   draft: Boolean!
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
+  image: String
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -403,6 +411,7 @@ input PageCreateWithoutPagesInput {
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
+  image: String
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -420,6 +429,7 @@ input PageCreateWithoutParentInput {
   file: FileCreateNestedOneWithoutPagesInput
   firstSection: PageCreateNestedOneWithoutFirstSectionPagesInput
   firstSectionPages: PageCreateNestedManyWithoutFirstSectionInput
+  image: String
   isHome: Boolean!
   isSection: Boolean!
   kind: String!
@@ -442,6 +452,7 @@ type PageMaxAggregate {
   draft: Boolean
   filePath: String
   firstSectionSlug: String
+  image: String
   isHome: Boolean
   isSection: Boolean
   kind: String
@@ -458,6 +469,7 @@ type PageMinAggregate {
   draft: Boolean
   filePath: String
   firstSectionSlug: String
+  image: String
   isHome: Boolean
   isSection: Boolean
   kind: String
@@ -474,6 +486,7 @@ input PageOrderByInput {
   draft: SortOrder
   filePath: SortOrder
   firstSectionSlug: SortOrder
+  image: SortOrder
   isHome: SortOrder
   isSection: SortOrder
   kind: SortOrder
@@ -495,6 +508,7 @@ enum PageScalarFieldEnum {
   draft
   filePath
   firstSectionSlug
+  image
   isHome
   isSection
   kind
@@ -514,6 +528,7 @@ input PageScalarWhereInput {
   draft: BoolFilter
   filePath: StringNullableFilter
   firstSectionSlug: StringNullableFilter
+  image: StringNullableFilter
   isHome: BoolFilter
   isSection: BoolFilter
   kind: StringFilter
@@ -531,6 +546,7 @@ input PageUpdateInput {
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
+  image: NullableStringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -546,6 +562,7 @@ input PageUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   dir: StringFieldUpdateOperationsInput
   draft: BoolFieldUpdateOperationsInput
+  image: NullableStringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -650,6 +667,7 @@ input PageUpdateWithoutFileInput {
   draft: BoolFieldUpdateOperationsInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
+  image: NullableStringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -667,6 +685,7 @@ input PageUpdateWithoutFirstSectionInput {
   draft: BoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
+  image: NullableStringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -684,6 +703,7 @@ input PageUpdateWithoutFirstSectionPagesInput {
   draft: BoolFieldUpdateOperationsInput
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
+  image: NullableStringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -702,6 +722,7 @@ input PageUpdateWithoutPagesInput {
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
+  image: NullableStringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -719,6 +740,7 @@ input PageUpdateWithoutParentInput {
   file: FileUpdateOneWithoutPagesInput
   firstSection: PageUpdateOneWithoutFirstSectionPagesInput
   firstSectionPages: PageUpdateManyWithoutFirstSectionInput
+  image: NullableStringFieldUpdateOperationsInput
   isHome: BoolFieldUpdateOperationsInput
   isSection: BoolFieldUpdateOperationsInput
   kind: StringFieldUpdateOperationsInput
@@ -769,6 +791,7 @@ input PageWhereInput {
   firstSection: PageRelationFilter
   firstSectionPages: PageListRelationFilter
   firstSectionSlug: StringNullableFilter
+  image: StringNullableFilter
   isHome: BoolFilter
   isSection: BoolFilter
   kind: StringFilter

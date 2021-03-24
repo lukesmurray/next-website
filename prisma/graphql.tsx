@@ -308,6 +308,8 @@ export type Page = {
   firstSection?: Maybe<Page>;
   firstSectionPages: Array<Page>;
   firstSectionSlug?: Maybe<Scalars['String']>;
+  /** The path to an image. Relative to the file. */
+  image?: Maybe<Scalars['String']>;
   /** True if the page is the home page */
   isHome: Scalars['Boolean'];
   /** True if the page is a section */
@@ -352,6 +354,7 @@ export type PageCountAggregate = {
   draft?: Maybe<Scalars['Int']>;
   filePath?: Maybe<Scalars['Int']>;
   firstSectionSlug?: Maybe<Scalars['Int']>;
+  image?: Maybe<Scalars['Int']>;
   isHome?: Maybe<Scalars['Int']>;
   isSection?: Maybe<Scalars['Int']>;
   kind?: Maybe<Scalars['Int']>;
@@ -369,6 +372,7 @@ export type PageCreateInput = {
   file?: Maybe<FileCreateNestedOneWithoutPagesInput>;
   firstSection?: Maybe<PageCreateNestedOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageCreateNestedManyWithoutFirstSectionInput>;
+  image?: Maybe<Scalars['String']>;
   isHome: Scalars['Boolean'];
   isSection: Scalars['Boolean'];
   kind: Scalars['String'];
@@ -441,6 +445,7 @@ export type PageCreateWithoutFileInput = {
   draft: Scalars['Boolean'];
   firstSection?: Maybe<PageCreateNestedOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageCreateNestedManyWithoutFirstSectionInput>;
+  image?: Maybe<Scalars['String']>;
   isHome: Scalars['Boolean'];
   isSection: Scalars['Boolean'];
   kind: Scalars['String'];
@@ -458,6 +463,7 @@ export type PageCreateWithoutFirstSectionInput = {
   draft: Scalars['Boolean'];
   file?: Maybe<FileCreateNestedOneWithoutPagesInput>;
   firstSectionPages?: Maybe<PageCreateNestedManyWithoutFirstSectionInput>;
+  image?: Maybe<Scalars['String']>;
   isHome: Scalars['Boolean'];
   isSection: Scalars['Boolean'];
   kind: Scalars['String'];
@@ -475,6 +481,7 @@ export type PageCreateWithoutFirstSectionPagesInput = {
   draft: Scalars['Boolean'];
   file?: Maybe<FileCreateNestedOneWithoutPagesInput>;
   firstSection?: Maybe<PageCreateNestedOneWithoutFirstSectionPagesInput>;
+  image?: Maybe<Scalars['String']>;
   isHome: Scalars['Boolean'];
   isSection: Scalars['Boolean'];
   kind: Scalars['String'];
@@ -493,6 +500,7 @@ export type PageCreateWithoutPagesInput = {
   file?: Maybe<FileCreateNestedOneWithoutPagesInput>;
   firstSection?: Maybe<PageCreateNestedOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageCreateNestedManyWithoutFirstSectionInput>;
+  image?: Maybe<Scalars['String']>;
   isHome: Scalars['Boolean'];
   isSection: Scalars['Boolean'];
   kind: Scalars['String'];
@@ -510,6 +518,7 @@ export type PageCreateWithoutParentInput = {
   file?: Maybe<FileCreateNestedOneWithoutPagesInput>;
   firstSection?: Maybe<PageCreateNestedOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageCreateNestedManyWithoutFirstSectionInput>;
+  image?: Maybe<Scalars['String']>;
   isHome: Scalars['Boolean'];
   isSection: Scalars['Boolean'];
   kind: Scalars['String'];
@@ -532,6 +541,7 @@ export type PageMaxAggregate = {
   draft?: Maybe<Scalars['Boolean']>;
   filePath?: Maybe<Scalars['String']>;
   firstSectionSlug?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   isHome?: Maybe<Scalars['Boolean']>;
   isSection?: Maybe<Scalars['Boolean']>;
   kind?: Maybe<Scalars['String']>;
@@ -548,6 +558,7 @@ export type PageMinAggregate = {
   draft?: Maybe<Scalars['Boolean']>;
   filePath?: Maybe<Scalars['String']>;
   firstSectionSlug?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   isHome?: Maybe<Scalars['Boolean']>;
   isSection?: Maybe<Scalars['Boolean']>;
   kind?: Maybe<Scalars['String']>;
@@ -564,6 +575,7 @@ export type PageOrderByInput = {
   draft?: Maybe<SortOrder>;
   filePath?: Maybe<SortOrder>;
   firstSectionSlug?: Maybe<SortOrder>;
+  image?: Maybe<SortOrder>;
   isHome?: Maybe<SortOrder>;
   isSection?: Maybe<SortOrder>;
   kind?: Maybe<SortOrder>;
@@ -585,6 +597,7 @@ export enum PageScalarFieldEnum {
   Draft = 'draft',
   FilePath = 'filePath',
   FirstSectionSlug = 'firstSectionSlug',
+  Image = 'image',
   IsHome = 'isHome',
   IsSection = 'isSection',
   Kind = 'kind',
@@ -604,6 +617,7 @@ export type PageScalarWhereInput = {
   draft?: Maybe<BoolFilter>;
   filePath?: Maybe<StringNullableFilter>;
   firstSectionSlug?: Maybe<StringNullableFilter>;
+  image?: Maybe<StringNullableFilter>;
   isHome?: Maybe<BoolFilter>;
   isSection?: Maybe<BoolFilter>;
   kind?: Maybe<StringFilter>;
@@ -621,6 +635,7 @@ export type PageUpdateInput = {
   file?: Maybe<FileUpdateOneWithoutPagesInput>;
   firstSection?: Maybe<PageUpdateOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageUpdateManyWithoutFirstSectionInput>;
+  image?: Maybe<NullableStringFieldUpdateOperationsInput>;
   isHome?: Maybe<BoolFieldUpdateOperationsInput>;
   isSection?: Maybe<BoolFieldUpdateOperationsInput>;
   kind?: Maybe<StringFieldUpdateOperationsInput>;
@@ -636,6 +651,7 @@ export type PageUpdateManyMutationInput = {
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
   dir?: Maybe<StringFieldUpdateOperationsInput>;
   draft?: Maybe<BoolFieldUpdateOperationsInput>;
+  image?: Maybe<NullableStringFieldUpdateOperationsInput>;
   isHome?: Maybe<BoolFieldUpdateOperationsInput>;
   isSection?: Maybe<BoolFieldUpdateOperationsInput>;
   kind?: Maybe<StringFieldUpdateOperationsInput>;
@@ -740,6 +756,7 @@ export type PageUpdateWithoutFileInput = {
   draft?: Maybe<BoolFieldUpdateOperationsInput>;
   firstSection?: Maybe<PageUpdateOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageUpdateManyWithoutFirstSectionInput>;
+  image?: Maybe<NullableStringFieldUpdateOperationsInput>;
   isHome?: Maybe<BoolFieldUpdateOperationsInput>;
   isSection?: Maybe<BoolFieldUpdateOperationsInput>;
   kind?: Maybe<StringFieldUpdateOperationsInput>;
@@ -757,6 +774,7 @@ export type PageUpdateWithoutFirstSectionInput = {
   draft?: Maybe<BoolFieldUpdateOperationsInput>;
   file?: Maybe<FileUpdateOneWithoutPagesInput>;
   firstSectionPages?: Maybe<PageUpdateManyWithoutFirstSectionInput>;
+  image?: Maybe<NullableStringFieldUpdateOperationsInput>;
   isHome?: Maybe<BoolFieldUpdateOperationsInput>;
   isSection?: Maybe<BoolFieldUpdateOperationsInput>;
   kind?: Maybe<StringFieldUpdateOperationsInput>;
@@ -774,6 +792,7 @@ export type PageUpdateWithoutFirstSectionPagesInput = {
   draft?: Maybe<BoolFieldUpdateOperationsInput>;
   file?: Maybe<FileUpdateOneWithoutPagesInput>;
   firstSection?: Maybe<PageUpdateOneWithoutFirstSectionPagesInput>;
+  image?: Maybe<NullableStringFieldUpdateOperationsInput>;
   isHome?: Maybe<BoolFieldUpdateOperationsInput>;
   isSection?: Maybe<BoolFieldUpdateOperationsInput>;
   kind?: Maybe<StringFieldUpdateOperationsInput>;
@@ -792,6 +811,7 @@ export type PageUpdateWithoutPagesInput = {
   file?: Maybe<FileUpdateOneWithoutPagesInput>;
   firstSection?: Maybe<PageUpdateOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageUpdateManyWithoutFirstSectionInput>;
+  image?: Maybe<NullableStringFieldUpdateOperationsInput>;
   isHome?: Maybe<BoolFieldUpdateOperationsInput>;
   isSection?: Maybe<BoolFieldUpdateOperationsInput>;
   kind?: Maybe<StringFieldUpdateOperationsInput>;
@@ -809,6 +829,7 @@ export type PageUpdateWithoutParentInput = {
   file?: Maybe<FileUpdateOneWithoutPagesInput>;
   firstSection?: Maybe<PageUpdateOneWithoutFirstSectionPagesInput>;
   firstSectionPages?: Maybe<PageUpdateManyWithoutFirstSectionInput>;
+  image?: Maybe<NullableStringFieldUpdateOperationsInput>;
   isHome?: Maybe<BoolFieldUpdateOperationsInput>;
   isSection?: Maybe<BoolFieldUpdateOperationsInput>;
   kind?: Maybe<StringFieldUpdateOperationsInput>;
@@ -859,6 +880,7 @@ export type PageWhereInput = {
   firstSection?: Maybe<PageRelationFilter>;
   firstSectionPages?: Maybe<PageListRelationFilter>;
   firstSectionSlug?: Maybe<StringNullableFilter>;
+  image?: Maybe<StringNullableFilter>;
   isHome?: Maybe<BoolFilter>;
   isSection?: Maybe<BoolFilter>;
   kind?: Maybe<StringFilter>;
@@ -995,7 +1017,7 @@ export type SlugPageQueryVariables = Exact<{
 }>;
 
 
-export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, date?: Maybe<any>, draft: boolean, filePath?: Maybe<string>, parent?: Maybe<{ slug: string, title: string, kind: string, draft: boolean, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, pages: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> }> };
+export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, date?: Maybe<any>, draft: boolean, description?: Maybe<string>, filePath?: Maybe<string>, image?: Maybe<string>, parent?: Maybe<{ slug: string, title: string, kind: string, draft: boolean, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, pages: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> }> };
 
 export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1025,7 +1047,9 @@ export const SlugPageDocument = gql`
     content
     date
     draft
+    description
     filePath
+    image
     parent {
       slug
       title

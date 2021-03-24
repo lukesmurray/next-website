@@ -56,6 +56,9 @@ model Page {
   /// True if the page is a section
   isSection Boolean
 
+  /// The path to an image. Relative to the file.
+  image String?
+
   /// The kind of the page. One of "home" | "page" | "section"
   ///
   /// Note that a home page is also a section. It is a superset of the section

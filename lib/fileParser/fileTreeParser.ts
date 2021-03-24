@@ -20,6 +20,7 @@ interface PageFrontmatter {
   description?: string;
   draft?: boolean;
   title?: string;
+  image?: string;
 }
 
 /**
@@ -81,6 +82,11 @@ interface Page {
    * True if kind is section
    */
   isSection: boolean;
+
+  /**
+   * The path to an image. Relative to the file.
+   */
+  image: string | null;
 
   /**
    * The kind of the page. Note that a home page is also a section. It is a
@@ -212,6 +218,7 @@ async function parseDirectory(
     file: null,
     isHome,
     isSection,
+    image: null,
     kind: isHome ? "home" : isSection ? "section" : "page",
     parentSlug: parent?.slug ?? null,
     slug: "",
@@ -251,6 +258,7 @@ async function parseFile(
     file: null,
     isHome: false,
     isSection: false,
+    image: null,
     kind: "page",
     parentSlug: parent.slug,
     slug: "",
@@ -335,9 +343,11 @@ function assignFileInfo(
   if (frontMatter.draft !== undefined) {
     page.draft = frontMatter.draft;
   }
-
   if (frontMatter.title !== undefined) {
     page.title = frontMatter.title;
+  }
+  if (frontMatter.image !== undefined) {
+    page.image = frontMatter.image;
   }
 
   const relativeFilePath = path.relative(parseContext.rootDirectory, filePath);

@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
-import { githubSlug } from "../lib/constants/githubSlug";
+import { githubRepoSlug } from "../lib/constants/githubRepoSlug";
 import { rootDirectory } from "../lib/constants/rootDirectory";
 
 export const EditOnGithub: React.VFC<{ filePath: string }> = (props) => {
@@ -17,5 +17,5 @@ export const EditOnGithub: React.VFC<{ filePath: string }> = (props) => {
   );
 };
 export function githubFilePath(filePath: string): string {
-  return `${githubSlug}/${rootDirectory}/${filePath}`;
+  return `${githubRepoSlug}/${rootDirectory}/${filePath}`;
 }

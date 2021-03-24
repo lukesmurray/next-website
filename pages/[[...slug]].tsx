@@ -1,6 +1,7 @@
 /**
  * https://nextjs.org/docs/routing/dynamic-routes
  */
+import { SEO } from "components/SEO";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
@@ -31,6 +32,7 @@ export default function Page(
     <>
       {/* TODO(lukemurray): we need to exract these into components */}
       <Layout {...props}>
+        <SEO {...props} />
         <PostHeader {...props} />
         <PostBody {...props} />
         <PageList {...props} />
@@ -74,7 +76,9 @@ export const getStaticProps = async (
           content
           date
           draft
+          description
           filePath
+          image
           parent {
             slug
             title
