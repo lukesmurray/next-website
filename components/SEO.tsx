@@ -16,6 +16,8 @@ export const SEO: React.VFC<InferGetStaticPropsType<typeof getStaticProps>> = (
       }`
     : undefined;
 
+  const pageUrl = `${publicUrl}${currentPage.slug}`;
+
   return (
     <Head>
       <title>{`${currentPage.title} | ${root.title}`}</title>
@@ -24,6 +26,7 @@ export const SEO: React.VFC<InferGetStaticPropsType<typeof getStaticProps>> = (
       )}
       <meta property="og:type" content="website" />
       <meta property="og:title" content={currentPage.title} />
+      <meta property="og:url" content={pageUrl} />
       {isDefined(currentPage.description) && (
         <meta property="og:description" content={currentPage.description} />
       )}
