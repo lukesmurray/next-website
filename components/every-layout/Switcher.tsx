@@ -5,7 +5,7 @@ type SwitcherProps = {
   /**
    * The container width at which the component switches between a horizontal and vertical layout
    */
-  threshold: string;
+  threshold?: string;
 
   /**
    * The margin between the child elements
@@ -19,10 +19,8 @@ type SwitcherProps = {
 };
 
 /**
- * Create a responsive sidebar component.
- * If the sidebar is on the left it rotates to the top.
- * If the sidebar is on the rigth it rotates to the bottom.
- * The sidebar requires a nested container component
+ * The switcher places a limited number of elements side by side then stacks them.
+ * Requires a nested container component.
  */
 export const Switcher = styled.div<SwitcherProps>`
   & > * {

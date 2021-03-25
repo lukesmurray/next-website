@@ -1,5 +1,5 @@
 import React from "react";
-import tw from "twin.macro";
+import { captionStyles, linkStyles } from "styles/proseStyles";
 import { githubRepoSlug } from "../lib/constants/githubRepoSlug";
 import { rootDirectory } from "../lib/constants/rootDirectory";
 
@@ -7,7 +7,7 @@ export const EditOnGithub: React.VFC<{ filePath: string }> = (props) => {
   const { filePath } = props;
   return (
     <a
-      css={tw`hover:underline`}
+      css={[captionStyles, linkStyles]}
       href={githubFilePath(filePath)}
       target="_blank"
       rel="noopener noreferrer"

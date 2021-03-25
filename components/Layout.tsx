@@ -15,7 +15,7 @@ export const Layout: React.FC<
     <HeaderMainFooterLayout gutter={spacing[4]}>
       <Header {...props} />
       <Center>
-        <Stack as="main" space={spacing["14"]}>
+        <Stack as="main" space={spacing["12"]}>
           {props.children}
         </Stack>
       </Center>
@@ -36,6 +36,7 @@ const HeaderMainFooterLayout = styled.div<HeaderMainFooterLayoutProps>`
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  gap: ${spacing[16]};
   box-sizing: content-box;
   margin-left: ${(props) => props.gutter};
   margin-right: ${(props) => props.gutter};

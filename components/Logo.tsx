@@ -1,7 +1,7 @@
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import React from "react";
-import tw from "twin.macro";
+import { h2Styles, linkStyles } from "styles/proseStyles";
 import { getStaticProps } from "../pages/[[...slug]]";
 
 export const Logo: React.VFC<InferGetStaticPropsType<typeof getStaticProps>> = (
@@ -10,12 +10,8 @@ export const Logo: React.VFC<InferGetStaticPropsType<typeof getStaticProps>> = (
   const { root } = props;
   return (
     <h2>
-      <Link href={"/"}>
-        <a>
-          <span css={tw`text-5xl font-semibold hover:underline`}>
-            {root.title}
-          </span>
-        </a>
+      <Link href={"/"} passHref>
+        <a css={[h2Styles, linkStyles]}>{root.title}</a>
       </Link>
     </h2>
   );
