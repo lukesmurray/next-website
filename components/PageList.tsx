@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Maybe } from "prisma/graphql";
 import React from "react";
+import { spacing } from "styles/spacing";
 import tw, { css } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
-import Stack from "./every-layout/Stack";
+import { Cluster } from "./every-layout/Cluster";
+import { Stack } from "./every-layout/Stack";
 import { formatDate } from "./formatters/formatDate";
 import { formatPageTitle } from "./formatters/formatPageTitle";
 
@@ -23,24 +25,25 @@ export const PageList: React.VFC<
   }
 
   return (
-    <section>
+    <Stack as={"section"} space={spacing[14]}>
       {sections.length > 0 && (
-        <ul
-          css={[
-            tw`flex flex-row gap-3 flex-wrap`,
-            css`
-              & > li {
-                ${tw`p-3 shadow rounded-md hover:shadow-lg`}
-              }
-            `,
-          ]}
-        >
-          {sections.map((page) => (
-            <li key={page.slug}>
-              <PageSummaryLink page={page} />
-            </li>
-          ))}
-        </ul>
+        <Cluster>
+          <ul
+            css={[
+              css`
+                & > li {
+                  ${tw`p-3 rounded-md border-gray-100 border-solid border-2`}
+                }
+              `,
+            ]}
+          >
+            {sections.map((page) => (
+              <li key={page.slug}>
+                <PageSummaryLink page={page} />
+              </li>
+            ))}
+          </ul>
+        </Cluster>
       )}
       {pages.length > 0 && (
         <Stack as="ul">
@@ -51,7 +54,7 @@ export const PageList: React.VFC<
           ))}
         </Stack>
       )}
-    </section>
+    </Stack>
   );
 };
 

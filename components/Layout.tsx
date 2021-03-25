@@ -3,7 +3,7 @@ import React from "react";
 import { spacing } from "styles/spacing";
 import { getStaticProps } from "../pages/[[...slug]]";
 import { Center } from "./every-layout/Center";
-import Stack from "./every-layout/Stack";
+import { Stack } from "./every-layout/Stack";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 

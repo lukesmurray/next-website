@@ -2,12 +2,24 @@ import { spacing } from "styles/spacing";
 import { css, styled } from "twin.macro";
 
 type StackProps = {
+  /**
+   * Whether to apply the spacing recursively to all children
+   */
   recursive?: boolean;
+
+  /**
+   * The element after which to split the stack.
+   * Elements below this are pushed to the bottom
+   */
   splitAfter?: number;
+
+  /**
+   * The space between successive elements
+   */
   space?: string;
 };
 
-const Stack = styled.div<StackProps>`
+export const Stack = styled.div<StackProps>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -39,5 +51,3 @@ Stack.defaultProps = {
   recursive: false,
   space: spacing[8],
 };
-
-export default Stack;
