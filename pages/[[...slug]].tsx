@@ -29,15 +29,12 @@ export default function Page(
   }
 
   return (
-    <>
-      {/* TODO(lukemurray): we need to exract these into components */}
-      <Layout {...props}>
-        <SEO {...props} />
-        <PostHeader {...props} />
-        <PostBody {...props} />
-        <PageList {...props} />
-      </Layout>
-    </>
+    <Layout {...props}>
+      <SEO {...props} />
+      <PostHeader {...props} />
+      <PostBody {...props} />
+      <PageList {...props} />
+    </Layout>
   );
 }
 

@@ -2,18 +2,15 @@ import tw, { css } from "twin.macro";
 import { textSizes } from "./proseStyles";
 
 export const globalStyles = css`
-  html {
-  }
-
+  /* normalize the html/body height */
   html,
   body,
   #__next {
     height: 100%;
   }
 
+  /* create global inherited styles */
   body {
-    ${tw`p-2 md:p-4 pb-0`}
-
     /* set the default font to be sans-serif */
     ${tw`font-sans`}
 
@@ -21,12 +18,25 @@ export const globalStyles = css`
     ${textSizes}
   }
 
-  #__next {
-    display: flex;
-    flex-direction: column;
-
-    & > main {
-      flex-grow: 1;
-    }
+  /* hide emotion style tags (these can show up in ssr content) */
+  style {
+    display: none !important;
   }
+
+  /* cheap theme switcher  */
+  /* https://inclusive-components.design/a-theme-switcher/ */
+  /* :root {
+    filter: invert(100%);
+    background-color: #fff;
+  }
+
+  * {
+    background-color: inherit;
+  }
+
+  img:not([src*=".svg"]),
+  video,
+  iframe {
+    filter: invert(100%);
+  } */
 `;

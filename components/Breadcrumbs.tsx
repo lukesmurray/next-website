@@ -1,8 +1,10 @@
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import React from "react";
+import { captionStyles, linkStyles } from "styles/proseStyles";
 import tw, { css } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
+import { Cluster } from "./every-layout/Cluster";
 
 /**
  * Filepath-like breadcrumbs for the site
@@ -16,28 +18,17 @@ export const Breadcrumbs: React.VFC<
     ...props.currentPage.slug.split("/").filter((v) => v),
   ];
   return (
-    <nav css={tw`text-gray-600 text-2xl sm:text-xl pt-2`}>
-      <ul
+    <Cluster as="nav" space="0" aria-label="breadcrumb" role="navigation">
+      <ol
         css={css`
-          & li {
-            display: inline;
-
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-
           /* put slashes between the slugs */
           & li + li:before {
             content: "/";
 
-            /* need inline-block to remove text-decoration */
+            /* put padding around slashes */
             ${tw`px-1`}
-            display: inline-block;
 
-            &:hover {
-              text-decoration: none;
-            }
+            ${captionStyles}
           }
         `}
       >
@@ -45,13 +36,14 @@ export const Breadcrumbs: React.VFC<
           const crumbSlug = `/${breadCrumbs.slice(1, i + 1).join("/")}`;
           return (
             <li key={crumbSlug}>
-              <Link href={crumbSlug}>
-                <a>{crumb}</a>
+              <Link href={crumbSlug} passHref>
+                {/* TODO(lukemurray): would be nice to have an aria-label here with the link title */}
+                <a css={[linkStyles, captionStyles]}>{crumb}</a>
               </Link>
             </li>
           );
         })}
-      </ul>
-    </nav>
+      </ol>
+    </Cluster>
   );
 };

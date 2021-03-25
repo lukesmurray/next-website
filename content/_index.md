@@ -6,7 +6,7 @@ draft: false
 # image: /path/to/image
 ---
 
-# Welcome 👋!
+# Welcome!
 
 My name is Luke and I am currently a PhD candidate at MIT working in [David Karger's](http://people.csail.mit.edu/karger/) [Haystack group](http://haystack.csail.mit.edu/)!
 
