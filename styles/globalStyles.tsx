@@ -22,4 +22,21 @@ export const globalStyles = css`
   style {
     display: none !important;
   }
+
+  /* cheap theme switcher  */
+  /* https://inclusive-components.design/a-theme-switcher/ */
+  /* :root {
+    filter: invert(100%);
+    background-color: #fff;
+  }
+
+  * {
+    background-color: inherit;
+  }
+
+  img:not([src*=".svg"]),
+  video,
+  iframe {
+    filter: invert(100%);
+  } */
 `;
