@@ -11,7 +11,7 @@ type SidebarProps = {
    * The narrowest the content element can be before wrapping.
    * Should be a percentage
    */
-  contentMinimumWidth: string;
+  contentMinimumWidth?: string;
 
   /**
    * The margin between the sidebar and the non sidebar
@@ -51,7 +51,9 @@ export const Sidebar = styled.div<SidebarProps>`
     flex-grow: 1;
   }
 
-  & > * > :first-child {
+  /* prettier-ignore */
+  & > * > ${(props) =>
+    props.sideBarOnRight ? ":first-child" : ":last-child"} {
     flex-basis: 0;
     flex-grow: 999;
     min-width: calc(

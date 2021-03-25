@@ -29,8 +29,8 @@ export const Cluster = styled.div<ClusterProps>`
   & > * {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: ${(props) => props.justify};
+    align-items: ${(props) => props.align};
     margin: calc(${(props) => props.space} / 2 * -1);
   }
 
