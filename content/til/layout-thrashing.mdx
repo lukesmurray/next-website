@@ -1,0 +1,18 @@
+---
+title: "Javascript functions can cause layout thrashing"
+date: "2021-03-25T14:06:52"
+description: "How javascript methods can cause layout thrashing and greatly reduce your application's performance"
+draft: false
+# image: /path/to/image
+---
+
+Today I was profiling an application which uses autocomplete and I noticed that in the chrome dev tools it said ther ewas a forced layout occuring.
+
+Turns out many of the javascript APIs which ask for the size or location of a DOM element will cause the browser to synchronously calculate the style and layout. [Paul Irish has an excellent list of most of these methods](https://gist.github.com/paulirish/5d52fb081b3570c81e3a)
+
+In my case I am positioning a dropdown based on the current [window selection's](https://developer.mozilla.org/en-US/docs/Web/API/Selection) [range](https://developer.mozilla.org/en-US/docs/Web/API/Range). Whenever the user types a character I call `range.getBoundingClientRect()` which is triggering a layout reflow in the browser.
+
+I don't have a great solution for this yet but I did find one other place in my application that was triggering forced layouts.
+
+If you use [tippyjs](https://github.com/atomiks/tippyjs) or [popperjs](https://github.com/popperjs/popper-core) then you may ant to set your [boundary](https://popper.js.org/docs/v2/utils/detect-overflow/#boundary) to `"viewport"`.
+The default is to use `"clippingParents"` which will cause a layout to occur.

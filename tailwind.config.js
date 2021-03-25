@@ -9,5 +9,19 @@ module.exports = {
       xl: `1280px`,
       "2xl": `1536px`,
     },
+    typography: {
+      default: {
+        css: {
+          // disable backticks in inline code blocks
+          "code::before": {
+            content: '""',
+          },
+          "code::after": {
+            content: '""',
+          },
+          // ...
+        },
+      },
+    },
   },
 };
