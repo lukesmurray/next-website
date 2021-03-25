@@ -17,4 +17,9 @@ export const globalStyles = css`
     /* set font sizes to follow prose sizes */
     ${textSizes}
   }
+
+  /* hide emotion style tags (these can show up in ssr content) */
+  style {
+    display: none !important;
+  }
 `;
