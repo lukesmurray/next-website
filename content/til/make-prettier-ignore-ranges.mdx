@@ -1,0 +1,35 @@
+---
+title: "Make Prettier Ignore Ranges"
+date: "2021-03-24T10:30:11"
+description: "How to make the prettier default formatter ignore ranges"
+draft: false
+# image: /path/to/image
+---
+
+I used [prettier-vscode](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) to keep my code consistently formatted.
+I also have VSCode automatically format my code on save.
+This is super nice because when I make changes I don't need to worry about creating weird diffs due to small formatting changes.
+I simply save and get something which looks good enough.
+
+```json
+"editor.formatOnSave": true,
+```
+
+## Problem
+
+Sometimes I have code which I don't want prettier to change.
+For example in my post [Fuzzy search Json Files](./fuzzy-search-json-file.md) I have some exmaple json which is purposefully minified.
+Prettier tries to be super helpful and unminmize the json for me whenever I save.
+Sometimes I work around this issue by executing the vscode command _Save without Formatting_ (`cmd + k s`) but that can get tedious if you're working in a file that is being changed quite a bit.
+
+## Solution
+
+Prettier supports [disabling formatting for ranges using html comments](https://prettier.io/docs/en/ignore.html#range-ignore)!
+
+````md
+<!-- prettier-ignore-start -->
+```json
+{"my": "minimized", "json": "object"}
+```
+<!-- prettier-ignore-end -->
+````
