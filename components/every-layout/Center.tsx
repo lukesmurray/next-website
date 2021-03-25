@@ -1,3 +1,4 @@
+import { spacing } from "styles/spacing";
 import { css, styled } from "twin.macro";
 
 type CenterProps = {
@@ -52,5 +53,5 @@ Center.defaultProps = {
   andText: false,
   gutters: "0",
   intrinsic: false,
-  max: "var(--measure)",
+  max: spacing.prose,
 };

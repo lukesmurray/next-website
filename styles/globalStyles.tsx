@@ -2,12 +2,6 @@ import tw, { css } from "twin.macro";
 import { textSizes } from "./proseStyles";
 
 export const globalStyles = css`
-  /* css variables */
-  :root {
-    /* from tw'max-width-prose' */
-    --measure: 65ch;
-  }
-
   /* normalize the html/body height */
   html,
   body,
