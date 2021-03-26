@@ -34,14 +34,22 @@ export const Breadcrumbs: React.VFC<
       >
         {breadCrumbs.map((crumb, i) => {
           const crumbSlug = `/${breadCrumbs.slice(1, i + 1).join("/")}`;
-          return (
-            <li key={crumbSlug}>
-              <Link href={crumbSlug} passHref>
-                {/* TODO(lukemurray): would be nice to have an aria-label here with the link title */}
-                <a css={[linkStyles, captionStyles]}>{crumb}</a>
-              </Link>
-            </li>
-          );
+
+          if (crumbSlug === props.currentPage.slug) {
+            return (
+              <li key={crumbSlug}>
+                <span css={[captionStyles]}>{crumb}</span>
+              </li>
+            );
+          } else {
+            return (
+              <li key={crumbSlug}>
+                <Link href={crumbSlug} passHref>
+                  <a css={[linkStyles, captionStyles]}>{crumb}</a>
+                </Link>
+              </li>
+            );
+          }
         })}
       </ol>
     </Cluster>
