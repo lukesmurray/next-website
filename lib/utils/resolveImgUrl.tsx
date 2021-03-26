@@ -1,9 +1,7 @@
 import { isValidHttpUrl } from "lib/utils/isValidHttpUrl";
+import path from "path";
 
-/**
- * Resolve an image url (assumes that if the image is local the path is relative to the markdown file)
- */
-export const resolveImgUrl = (
+export const resolveImgUrlInWeb = (
   src: string | undefined,
   slug: string
 ): string | undefined => {
@@ -13,4 +11,16 @@ export const resolveImgUrl = (
   return isValidHttpUrl(src)
     ? src
     : require(`../../content${slug}/${src}`).default;
+};
+
+export const resolveImgUrlInBuild = (
+  src: string | undefined,
+  slug: string
+): string | undefined => {
+  if (src === undefined) {
+    return src;
+  }
+  return isValidHttpUrl(src)
+    ? src
+    : path.join(process.cwd(), "content", slug, src);
 };

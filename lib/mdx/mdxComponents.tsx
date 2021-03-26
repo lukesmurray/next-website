@@ -1,11 +1,12 @@
 import { Interpolation, Theme } from "@emotion/react";
 import { LazyTippy } from "components/tippy/LazyTippy";
 import { MdxRemote } from "next-mdx-remote/types";
+import Image from "next/image";
 import React, { useMemo } from "react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import { ClonedFootnote } from "../../components/ClonedFootnote";
-import { resolveImgUrl } from "../utils/resolveImgUrl";
+import { resolveImgUrlInWeb } from "../utils/resolveImgUrl";
 
 /**
  * Create mdx components
@@ -20,9 +21,20 @@ export function mdxComponents(slug: string): MdxRemote.Components {
           css?: Interpolation<Theme>;
         }
     ) => {
-      const { src, ...otherProps } = props;
-      const imgSrc = useMemo(() => resolveImgUrl(src, slug), [src, slug]);
-      return <img {...otherProps} src={imgSrc} />;
+      const { src, height, width, ...rest } = props;
+      const imgSrc = useMemo(() => resolveImgUrlInWeb(src, slug), [src, slug]);
+      if (height !== undefined && width !== undefined && imgSrc !== undefined) {
+        return (
+          <Image
+            layout="responsive"
+            src={imgSrc}
+            height={height}
+            width={width}
+            {...rest}
+          />
+        );
+      }
+      return <img {...rest} src={imgSrc} />;
     },
     sup: (
       props: React.ClassAttributes<HTMLElement> &
