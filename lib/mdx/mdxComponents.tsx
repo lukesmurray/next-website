@@ -1,6 +1,10 @@
 import { Interpolation, Theme } from "@emotion/react";
+import { LazyTippy } from "components/tippy/LazyTippy";
 import { MdxRemote } from "next-mdx-remote/types";
 import React from "react";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
+import { ClonedFootnote } from "../../components/ClonedFootnote";
 
 /**
  * Create mdx components
@@ -18,6 +22,38 @@ export function mdxComponents(slug: string): MdxRemote.Components {
       const { src, ...otherProps } = props;
       const imgSrc = require(`../../content${slug}/${src}`).default;
       return <img {...otherProps} src={imgSrc} />;
+    },
+    sup: (
+      props: React.ClassAttributes<HTMLElement> &
+        React.ImgHTMLAttributes<HTMLElement> & {
+          css?: Interpolation<Theme>;
+        }
+    ) => {
+      const { children, ...otherProps } = props;
+      // if we found a remark footnote ref
+      const fnRefId = otherProps.id;
+      if (fnRefId !== undefined && fnRefId.match(/^fnref-.*$/)) {
+        // use a tippy to render the footnote contents inline
+        return (
+          <sup {...otherProps}>
+            <LazyTippy
+              interactive={true}
+              appendTo={() => document.body}
+              theme={"light"}
+              trigger={"mouseenter focus"}
+              content={<ClonedFootnote fnRefId={fnRefId} />}
+              interactiveBorder={5}
+              interactiveDebounce={75}
+              touch={false}
+            >
+              <span>{props.children}</span>
+            </LazyTippy>
+          </sup>
+        );
+      } else {
+        // not a remark footnote so just render the sup
+        return <sup {...otherProps}>{children}</sup>;
+      }
     },
   };
   return components;
