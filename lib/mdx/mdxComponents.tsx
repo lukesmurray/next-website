@@ -1,10 +1,11 @@
 import { Interpolation, Theme } from "@emotion/react";
 import { LazyTippy } from "components/tippy/LazyTippy";
 import { MdxRemote } from "next-mdx-remote/types";
-import React from "react";
+import React, { useMemo } from "react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import { ClonedFootnote } from "../../components/ClonedFootnote";
+import { resolveImgUrl } from "../utils/resolveImgUrl";
 
 /**
  * Create mdx components
@@ -20,7 +21,7 @@ export function mdxComponents(slug: string): MdxRemote.Components {
         }
     ) => {
       const { src, ...otherProps } = props;
-      const imgSrc = require(`../../content${slug}/${src}`).default;
+      const imgSrc = useMemo(() => resolveImgUrl(src, slug), [src, slug]);
       return <img {...otherProps} src={imgSrc} />;
     },
     sup: (
