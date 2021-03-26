@@ -9,7 +9,6 @@ import { Logo } from "./Logo";
 export const Header: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
-  const { root } = props;
   return (
     <header>
       <Cluster justify="space-between" align="center">
