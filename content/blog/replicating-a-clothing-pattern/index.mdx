@@ -23,7 +23,6 @@ The design is essentially a repeating grid of bullseye patterns cut out into a s
 The simplest way to create this type of cut out bullseye is to use the svg itself as the boundaries of the square and then stack circles on top of each other to create the rings.
 The circles all increment by the same amount so we can map a javascript array to a list of [svg `circle` elements](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle).
 
-
 ```js
 {
   // width of a stroke
@@ -38,7 +37,7 @@ The circles all increment by the same amount so we can map a javascript array to
     .map(
       (_, i) =>
         svg`<circle cx="${center}" cy="${center}" r="${circleSize * i}" fill="${
-          i % 2 === 0 ? "red": "white 
+          i % 2 === 0 ? "red": "white
         }"/>`
     )
     .reverse() /* reverse the array so the smallest circle is on the top */ }
@@ -59,7 +58,6 @@ The trick is to use an [svg `pattern` element](https://developer.mozilla.org/en-
 We draw our bullseye in the pattern, then we use the pattern as the fill on full size rect.
 The effect is our bullseye is repeated across the entire svg.
 
-
 ```js
 {
   // width of a stroke
@@ -76,7 +74,7 @@ The effect is our bullseye is repeated across the entire svg.
     .map(
       (_, i) =>
         svg`<circle cx="${center}" cy="${center}" r="${circleSize * i}" fill="${
-          i % 2 === 0 ? "red": "white"
+          i % 2 === 0 ? "red" : "white"
         }"/>`
     )
     .reverse()}
@@ -117,7 +115,6 @@ It's actually very easy we just need to swap the ordering of the color in our fi
 
 ![repeating bullseye with swapped colors](images/alternating-pattern-result.png)
 
-
 Now we have the basic building blocks of our visualization but we want to overlay the two visualizations on top of one another with circular cut outs.
 In order to create the cutouts we'll use an [svg `mask` elements](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/mask).
 
@@ -140,8 +137,9 @@ The part in the circle will be hidden and the part outside the circle will be re
   const numCircles = Math.ceil(size / circleSize);
   return svg`<svg width="${width}" height="${height}">
 <defs>
-    <pattern id="outlineMaskCircles" x="${size /
-      2}" y="0" width="${size}" height="${size}" patternUnits="userSpaceOnUse">
+    <pattern id="outlineMaskCircles" x="${
+      size / 2
+    }" y="0" width="${size}" height="${size}" patternUnits="userSpaceOnUse">
 <circle cx="${center}" cy="${center}" r="${size / 2}" fill="black"/>
     </pattern>
  <mask id="outlineMask">
@@ -159,7 +157,6 @@ The part in the circle will be hidden and the part outside the circle will be re
 ![the final mask pattern](images/pattern-mask.png)
 
 Now that we have all the individual components we can bring them together and compare them to the original design.
-
 
 ```js
 {
@@ -225,5 +222,10 @@ I've embedded the final visualization below and you can also [play with it and s
 
 ## Visualization
 
-<iframe width="100%" height="885" frameborder="0" title="Svg Spirals"
-  src="https://observablehq.com/embed/@lukesmurray/svg-spirals?cell=circles&cell=viewof+squareSize&cell=viewof+circleSize&cell=viewof+innerCircleSize&cell=viewof+gap&cell=viewof+color1&cell=viewof+color2"></iframe>
+<iframe
+  width="100%"
+  height="885"
+  frameBorder="0"
+  title="Svg Spirals"
+  src="https://observablehq.com/embed/@lukesmurray/svg-spirals?cell=circles&cell=viewof+squareSize&cell=viewof+circleSize&cell=viewof+innerCircleSize&cell=viewof+gap&cell=viewof+color1&cell=viewof+color2"
+></iframe>

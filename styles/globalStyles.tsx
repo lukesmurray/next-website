@@ -1,5 +1,6 @@
 import tw, { css } from "twin.macro";
 import { textSizes } from "./proseStyles";
+import { syntaxStyles } from "./syntaxStyles";
 
 export const globalStyles = css`
   /* normalize the html/body height */
@@ -22,6 +23,8 @@ export const globalStyles = css`
   style {
     display: none !important;
   }
+
+  ${syntaxStyles}
 
   /* cheap theme switcher  */
   /* https://inclusive-components.design/a-theme-switcher/ */
