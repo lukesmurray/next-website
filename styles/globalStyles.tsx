@@ -1,5 +1,6 @@
 import tw, { css } from "twin.macro";
 import { textSizes } from "./proseStyles";
+import { stylesBase } from "./stylesBase";
 import { syntaxStyles } from "./syntaxStyles";
 
 export const globalStyles = css`
@@ -24,22 +25,9 @@ export const globalStyles = css`
     display: none !important;
   }
 
+  /* add prism code highlighting */
   ${syntaxStyles}
 
-  /* cheap theme switcher  */
-  /* https://inclusive-components.design/a-theme-switcher/ */
-  /* :root {
-    filter: invert(100%);
-    background-color: #fff;
-  }
-
-  * {
-    background-color: inherit;
-  }
-
-  img:not([src*=".svg"]),
-  video,
-  iframe {
-    filter: invert(100%);
-  } */
+  /* add theme styles */
+  ${stylesBase}
 `;

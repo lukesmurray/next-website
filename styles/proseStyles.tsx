@@ -23,12 +23,12 @@ export const proseStyles = css`
  */
 export const textSizes = tw`text-base sm:text-base lg:text-lg`;
 
-export const h1Styles = tw`text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900`;
-export const h2Styles = tw`text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900`;
-export const h3Styles = tw`text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900`;
-export const h4Styles = tw`text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900`;
+export const h1Styles = tw`text-4xl sm:text-5xl lg:text-6xl font-extrabold text-strong`;
+export const h2Styles = tw`text-2xl sm:text-3xl lg:text-4xl font-bold text-strong`;
+export const h3Styles = tw`text-xl sm:text-2xl lg:text-3xl font-semibold text-strong`;
+export const h4Styles = tw`text-lg sm:text-xl lg:text-2xl font-semibold text-strong`;
 export const captionStyles = css`
   ${textSizes}
-  ${tw`text-gray-500`}
+  ${tw`text-caption`}
 `;
 export const linkStyles = tw`hover:underline`;

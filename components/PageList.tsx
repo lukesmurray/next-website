@@ -28,12 +28,12 @@ export const PageList: React.VFC<
   return (
     <Stack as={"section"} space={spacing[14]}>
       {sections.length > 0 && (
-        <ClusterGrid>
+        <ClusterGrid min={`calc(${spacing.prose}/2.5)`}>
           <ul
             css={[
               css`
                 & > li {
-                  ${tw`p-3 rounded-md shadow hover:cursor-pointer focus-within:cursor-pointer hover:shadow-md`}
+                  ${tw`p-3 rounded-md shadow hover:cursor-pointer focus-within:cursor-pointer hover:shadow-md bg-surface hover:bg-surfaceLifted`}
                 }
               `,
             ]}

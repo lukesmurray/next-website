@@ -17,18 +17,21 @@ export const Breadcrumbs: React.VFC<
     HomeCrumb,
     ...props.currentPage.slug.split("/").filter((v) => v),
   ];
+
+
   return (
     <Cluster as="nav" space="0" aria-label="breadcrumb" role="navigation">
       <ol
         css={css`
+          & li {
+            ${captionStyles}
+          }
           /* put slashes between the slugs */
           & li + li:before {
             content: "/";
 
             /* put padding around slashes */
             ${tw`px-1`}
-
-            ${captionStyles}
           }
         `}
       >
@@ -38,14 +41,14 @@ export const Breadcrumbs: React.VFC<
           if (crumbSlug === props.currentPage.slug) {
             return (
               <li key={crumbSlug}>
-                <span css={[captionStyles]}>{crumb}</span>
+                <span>{crumb}</span>
               </li>
             );
           } else {
             return (
               <li key={crumbSlug}>
                 <Link href={crumbSlug} passHref>
-                  <a css={[linkStyles, captionStyles]}>{crumb}</a>
+                  <a css={linkStyles}>{crumb}</a>
                 </Link>
               </li>
             );

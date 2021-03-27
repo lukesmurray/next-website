@@ -5,6 +5,7 @@ import { Breadcrumbs } from "./Breadcrumbs";
 import { Cluster } from "./every-layout/Cluster";
 import { HeaderSectionLinks } from "./HeaderSectionLinks";
 import { Logo } from "./Logo";
+import ThemeToggle from "./theme/ThemeToggle";
 
 export const Header: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -14,7 +15,12 @@ export const Header: React.VFC<
       <Cluster justify="space-between" align="center">
         <div>
           <Logo {...props} />
-          <HeaderSectionLinks {...props} />
+          <Cluster>
+            <div>
+              <HeaderSectionLinks {...props} />
+              <ThemeToggle />
+            </div>
+          </Cluster>
         </div>
       </Cluster>
       <Breadcrumbs {...props} />
