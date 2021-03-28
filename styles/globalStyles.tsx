@@ -11,6 +11,11 @@ export const globalStyles = css`
     height: 100%;
   }
 
+  html {
+    /* enable smooth scrolling */
+    scroll-behavior: smooth;
+  }
+
   /* create global inherited styles */
   body {
     /* set the default font to be sans-serif */
