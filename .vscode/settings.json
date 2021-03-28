@@ -1,0 +1,5 @@
+{
+  "vscodeMarkdownNotes.workspaceFilenameConvention": "relativePaths",
+  "vscodeMarkdownNotes.allowPipedWikiLinks": true,
+  "vscodeMarkdownNotes.pipedWikiLinksSyntax": "file|desc"
+}

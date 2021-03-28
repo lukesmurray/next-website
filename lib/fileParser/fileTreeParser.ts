@@ -366,7 +366,9 @@ function createPageSlug(page: Page): string {
     page.file !== null &&
     (isPageIndex(page.file.path) || isSectionIndex(page.file.path));
   return `${path.join(
-    ...(isIndex ? ["/", page.dir] : ["/", page.dir, page.title])
+    ...(isIndex
+      ? ["/", page.dir]
+      : ["/", page.dir, path.basename(page.file!.path.replace(/\.mdx?$/i, ""))])
   )}`.toLowerCase();
 }
 
