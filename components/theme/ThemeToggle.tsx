@@ -12,6 +12,7 @@ const ThemeToggle: React.VFC = () => {
   return (
     <button
       tw="w-6 h-6 focus:outline-none fill-current"
+      aria-label="dark mode toggle"
       onClick={() => setTheme(isDark() ? "light" : "dark")}
     >
       {isDark() ? <Moon /> : <Sun />}
