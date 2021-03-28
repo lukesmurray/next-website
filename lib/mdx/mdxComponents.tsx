@@ -4,7 +4,6 @@ import { MdxRemote } from "next-mdx-remote/types";
 import Image from "next/image";
 import React, { useMemo } from "react";
 import "tippy.js/dist/tippy.css";
-import "tippy.js/themes/light.css";
 import { ClonedFootnote } from "../../components/ClonedFootnote";
 import { resolveImgUrlInWeb } from "../utils/resolveImgUrl";
 
@@ -52,12 +51,13 @@ export function mdxComponents(slug: string): MdxRemote.Components {
             <LazyTippy
               interactive={true}
               appendTo={() => document.body}
-              theme={"light"}
               trigger={"mouseenter focus"}
               content={<ClonedFootnote fnRefId={fnRefId} />}
               interactiveBorder={5}
               interactiveDebounce={75}
               touch={false}
+              animation={"tippyFootnoteAnimation"}
+              theme={"custom"}
             >
               <span>{props.children}</span>
             </LazyTippy>

@@ -2,6 +2,8 @@ import tw, { css } from "twin.macro";
 import { textSizes } from "./proseStyles";
 import { stylesBase } from "./stylesBase";
 import { syntaxStyles } from "./syntaxStyles";
+import { tippyFootnoteAnimation } from "./tippyAnimation";
+import { tippyCustomTheme } from "./tippyTheme";
 
 export const globalStyles = css`
   /* normalize the html/body height */
@@ -35,4 +37,8 @@ export const globalStyles = css`
 
   /* add theme styles */
   ${stylesBase}
+
+  ${tippyFootnoteAnimation}
+
+  ${tippyCustomTheme}
 `;
