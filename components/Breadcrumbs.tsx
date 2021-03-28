@@ -18,7 +18,6 @@ export const Breadcrumbs: React.VFC<
     ...props.currentPage.slug.split("/").filter((v) => v),
   ];
 
-
   return (
     <Cluster as="nav" space="0" aria-label="breadcrumb" role="navigation">
       <ol
@@ -48,7 +47,10 @@ export const Breadcrumbs: React.VFC<
             return (
               <li key={crumbSlug}>
                 <Link href={crumbSlug} passHref>
-                  <a css={linkStyles}>{crumb}</a>
+                  {/* increase tap target size  */}
+                  <a css={[linkStyles, tw`inline-block py-4 sm:py-2 lg:py-0`]}>
+                    {crumb}
+                  </a>
                 </Link>
               </li>
             );
