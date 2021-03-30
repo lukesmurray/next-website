@@ -5753,6 +5753,13 @@ hast-to-hyperscript@^9.0.0:
     unist-util-is "^4.0.0"
     web-namespaces "^1.0.0"
 
+hast-util-classnames@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hast-util-classnames/-/hast-util-classnames-1.0.2.tgz#eeb0694012724668501baa16ce574a6201ca97e4"
+  integrity sha512-suUYsfOfu88WFvAhJvXvaPbbSRaIaX6fYvv1Jmq33Q2YXGfPDYe6MJhmp4bIgntqYMWlxlWMZ3f3+cbZ82go9Q==
+  dependencies:
+    space-separated-tokens "^1.0.0"
+
 hast-util-from-parse5@^6.0.0:
   version "6.0.1"
   resolved "https://registry.npmjs.org/hast-util-from-parse5/-/hast-util-from-parse5-6.0.1.tgz"

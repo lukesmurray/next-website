@@ -62,6 +62,7 @@
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.9.0",
     "gray-matter": "^4.0.2",
+    "hast-util-classnames": "^1.0.2",
     "image-size": "^0.9.7",
     "jest": "^26.6.3",
     "micro": "^9.3.4",

@@ -3,7 +3,7 @@ import { css } from "twin.macro";
 
 const slideInFwdBottomKeyFrames = keyframes`
 0% {
-    transform: translateZ(-1400px) translateY(800px);
+    transform: translateZ(-1400px) translateY(400px);
     opacity: 0;
   }
   100% {

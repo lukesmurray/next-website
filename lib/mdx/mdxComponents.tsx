@@ -3,7 +3,10 @@ import { LazyTippy } from "components/tippy/LazyTippy";
 import { MdxRemote } from "next-mdx-remote/types";
 import Image from "next/image";
 import React, { useMemo } from "react";
+import { spacing } from "styles/spacing";
+import "tippy.js/animations/scale-extreme.css";
 import "tippy.js/dist/tippy.css";
+import { css } from "twin.macro";
 import { ClonedFootnote } from "../../components/ClonedFootnote";
 import { resolveImgUrlInWeb } from "../utils/resolveImgUrl";
 
@@ -35,24 +38,26 @@ export function mdxComponents(slug: string): MdxRemote.Components {
       }
       return <img {...rest} src={imgSrc} />;
     },
-    sup: (
-      props: React.ClassAttributes<HTMLElement> &
-        React.ImgHTMLAttributes<HTMLElement> & {
+    a: (
+      props: React.ClassAttributes<HTMLAnchorElement> &
+        React.AnchorHTMLAttributes<HTMLAnchorElement> & {
           css?: Interpolation<Theme>;
         }
     ) => {
       const { children, ...otherProps } = props;
-      // if we found a remark footnote ref
-      const fnRefId = otherProps.id;
-      if (fnRefId !== undefined && fnRefId.match(/^fnref-.*$/)) {
-        // use a tippy to render the footnote contents inline
-        return (
-          <sup {...otherProps}>
+      const classNames = otherProps.className?.split(" ") ?? [];
+      const isInternal = classNames.indexOf("internal") !== -1;
+      const isFnRef = classNames.indexOf("footnote-ref") !== -1;
+      const isFnBackRef = classNames.indexOf("footnote-backref") !== -1;
+      if (isInternal && !isFnBackRef) {
+        if (isFnRef) {
+          // render footnote tippy
+          <a {...otherProps}>
             <LazyTippy
               interactive={true}
               appendTo={() => document.body}
               trigger={"mouseenter focus"}
-              content={<ClonedFootnote fnRefId={fnRefId} />}
+              content={<ClonedFootnote fnRefId={props.href!.slice(1)} />}
               interactiveBorder={5}
               interactiveDebounce={75}
               touch={false}
@@ -61,12 +66,40 @@ export function mdxComponents(slug: string): MdxRemote.Components {
             >
               <span>{props.children}</span>
             </LazyTippy>
-          </sup>
-        );
-      } else {
-        // not a remark footnote so just render the sup
-        return <sup {...otherProps}>{children}</sup>;
+          </a>;
+        } else {
+          // render internal link tippy
+          return (
+            <a {...otherProps}>
+              <LazyTippy
+                interactive={true}
+                appendTo={() => document.body}
+                trigger={"mouseenter focus"}
+                maxWidth={"none"}
+                content={
+                  <iframe
+                    css={css`
+                      width: max(${spacing.prose}, 50vw);
+                      max-width: 100vw;
+                      height: 450px;
+                      max-height: 100vh;
+                    `}
+                    src={otherProps.href}
+                  />
+                }
+                interactiveBorder={5}
+                interactiveDebounce={75}
+                touch={false}
+                animation={"scale-extreme"}
+                theme={"custom"}
+              >
+                <span>{props.children}</span>
+              </LazyTippy>
+            </a>
+          );
+        }
       }
+      return <a {...otherProps}>{children}</a>;
     },
   };
   return components;

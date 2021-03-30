@@ -5,6 +5,7 @@ import numberedFootnotes from "remark-numbered-footnotes";
 import remarkPrism from "remark-prism";
 import remarkWikilink from "remark-wiki-link";
 import { mdxComponents } from "./mdxComponents";
+import { anchorMetadata } from "./plugins/anchorMetadata";
 import { imageMetadata } from "./plugins/imageMetadata";
 
 export function renderMdxDataToString(content: string, slug: string) {
@@ -24,6 +25,7 @@ export function renderMdxDataToString(content: string, slug: string) {
           remarkWikilink,
           {
             pageResolver: (permalink: string) => {
+              console.log(slug, path.join(slug, permalink));
               return [
                 path
                   .resolve(path.join(slug, permalink))
@@ -35,10 +37,15 @@ export function renderMdxDataToString(content: string, slug: string) {
               return `${permalink}`;
             },
             aliasDivider: "|",
+            newClassName: " ",
+            wikiLinkClassName: " ",
           },
         ],
       ],
-      rehypePlugins: [[imageMetadata as any, { slug } as any]],
+      rehypePlugins: [
+        [imageMetadata as any, { slug } as any],
+        [anchorMetadata as any],
+      ],
     },
   });
 }
