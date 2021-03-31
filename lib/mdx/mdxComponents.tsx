@@ -52,21 +52,23 @@ export function mdxComponents(slug: string): MdxRemote.Components {
       if (isInternal && !isFnBackRef) {
         if (isFnRef) {
           // render footnote tippy
-          <a {...otherProps}>
-            <LazyTippy
-              interactive={true}
-              appendTo={() => document.body}
-              trigger={"mouseenter focus"}
-              content={<ClonedFootnote fnRefId={props.href!.slice(1)} />}
-              interactiveBorder={5}
-              interactiveDebounce={75}
-              touch={false}
-              animation={"tippyFootnoteAnimation"}
-              theme={"custom"}
-            >
-              <span>{props.children}</span>
-            </LazyTippy>
-          </a>;
+          return (
+            <a {...otherProps}>
+              <LazyTippy
+                interactive={true}
+                appendTo={() => document.body}
+                trigger={"mouseenter focus"}
+                content={<ClonedFootnote fnId={props.href!.slice(1)} />}
+                interactiveBorder={5}
+                interactiveDebounce={75}
+                touch={false}
+                animation={"tippyFootnoteAnimation"}
+                theme={"custom"}
+              >
+                <span>{props.children}</span>
+              </LazyTippy>
+            </a>
+          );
         } else {
           // render internal link tippy
           return (

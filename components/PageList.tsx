@@ -108,10 +108,12 @@ const PageSummaryLink: React.VFC<{
         <a css={[h3Styles, linkStyles]}>{formatPageTitle(page)}</a>
       </Link>
       {isDefined(page.date) && (
-        <div css={captionStyles}>{formatDate(page.date)}</div>
+        <div css={[captionStyles]}>{formatDate(page.date)}</div>
       )}
       {isDefined(page.description) && (
-        <div css={captionStyles}>{page.description}</div>
+        <div css={[captionStyles, tw`text-primaryLight`]}>
+          {page.description}
+        </div>
       )}
     </div>
   );
