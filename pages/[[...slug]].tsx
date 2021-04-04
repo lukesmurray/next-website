@@ -154,6 +154,7 @@ export const getStaticPaths = async (
         date
         kind
         draft
+        content
       }
     }
   `);
