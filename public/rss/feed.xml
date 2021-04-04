@@ -4,7 +4,7 @@
         <title>Feed Title</title>
         <link>https://lsmurray.com</link>
         <description>This is my personal feed!</description>
-        <lastBuildDate>Sun, 04 Apr 2021 13:47:52 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 04 Apr 2021 14:13:24 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>Feed for Node.js</generator>
         <language>en</language>

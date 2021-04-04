@@ -1,6 +1,6 @@
 import { publicUrl } from "lib/constants/publicUrl";
 import { twitterHandle } from "lib/constants/social";
-import { feedBaseUrl, feedSlugs, feedTitle } from "lib/feed/generateRssFeed";
+import { feedBaseUrl, feedSlugs, feedTitle } from "lib/feed/feedConstants";
 import { isDefined } from "lib/types/isDefined";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";

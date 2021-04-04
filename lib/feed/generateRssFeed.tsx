@@ -2,21 +2,7 @@ import { Feed } from "feed";
 import fs from "fs/promises";
 import { publishDrafts } from "lib/constants/publishDrafts";
 import { SlugStaticPathsQuery } from "../../prisma/graphql";
-
-export const feedBaseUrl = "https://lsmurray.com";
-export const feedSlugs = {
-  rss: "/rss/feed.xml",
-  json: "/rss/feed.json",
-  atom: "/rss/atom.xml",
-  directory: "/rss",
-};
-export const feedTitle = "Luke Murray's Site";
-
-const author = {
-  name: "Luke Murray",
-  email: "luke@lukesmurray.com",
-  link: feedBaseUrl,
-};
+import { author, feedBaseUrl, feedSlugs } from "./feedConstants";
 
 export async function generateRssFeed(data: SlugStaticPathsQuery | undefined) {
   if (data === undefined) {
