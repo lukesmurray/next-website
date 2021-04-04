@@ -11,7 +11,11 @@ I created a bookmarklet which enables pressing <kbd>Shift</kbd> to insert pencil
 ## Want to use the bookmarklet?
 
 - Drag this link into your bookmark bar
-  - <a href="javascript:(function()%7Bdocument.addEventListener(%22keydown%22%2C%20(e)%20%3D%3E%20%7Bif%20(event.key%20%3D%3D%3D%20%22Shift%22)%20%7Bdocument.querySelector(%22div.game-controls-item.game-controls-pencil%22).click()%3B%7D%7D)%3Bdocument.addEventListener(%22keyup%22%2C%20(e)%20%3D%3E%20%7Bif%20(event.key%20%3D%3D%3D%20%22Shift%22)%20%7Bdocument.querySelector(%22div.game-controls-item.game-controls-pencil%22).click()%3B%7D%7D)%7D)()">Sudoku.com keyboard shortcuts</a> 
+  - <span
+      dangerouslySetInnerHTML={{
+        __html: `<a href="javascript:(function()%7Bdocument.addEventListener(%22keydown%22%2C%20(e)%20%3D%3E%20%7Bif%20(event.key%20%3D%3D%3D%20%22Shift%22)%20%7Bdocument.querySelector(%22div.game-controls-item.game-controls-pencil%22).click()%3B%7D%7D)%3Bdocument.addEventListener(%22keyup%22%2C%20(e)%20%3D%3E%20%7Bif%20(event.key%20%3D%3D%3D%20%22Shift%22)%20%7Bdocument.querySelector(%22div.game-controls-item.game-controls-pencil%22).click()%3B%7D%7D)%7D)()">Sudoku.com keyboard shortcuts</a>`,
+      }}
+    />
 
 Or
 
@@ -45,20 +49,24 @@ The code is pretty straightforward and I've added an annotated version below.
 
 ```js
 // if the bookmarklet hasn't been run
-if (window._sudoku_bookmarklet !== true){
+if (window._sudoku_bookmarklet !== true) {
   // when user presses shift click the pencil mark
   document.addEventListener("keydown", (e) => {
     if (event.key === "Shift") {
-      document.querySelector("div.game-controls-item.game-controls-pencil").click();
+      document
+        .querySelector("div.game-controls-item.game-controls-pencil")
+        .click();
     }
   });
 
   // when user release shift click the pencil mark
   document.addEventListener("keyup", (e) => {
     if (event.key === "Shift") {
-      document.querySelector("div.game-controls-item.game-controls-pencil").click();
+      document
+        .querySelector("div.game-controls-item.game-controls-pencil")
+        .click();
     }
-  })
+  });
 }
 
 // mark that the bookmarklet has been run
@@ -80,5 +88,3 @@ Tools like tampermonkey and greasemonkey are interesting because they can run wh
 ## Want More?
 
 If you really truly enjoy bookmarklets and keyboard shortcuts check out [sudoku exchange](https://sudokuexchange.com/bookmarklets/) which has a set of bookmarklets for importing puzzles from other apps and has a bunch of nice keyboard shortcuts.
-
-

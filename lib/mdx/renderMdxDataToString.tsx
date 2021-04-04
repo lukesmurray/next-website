@@ -1,12 +1,13 @@
+import { MDX } from "components/MDX";
 import renderToString from "next-mdx-remote/render-to-string";
 import path from "path";
+import React from "react";
 import ReactDOMServer from "react-dom/server";
 import footnotes from "remark-footnotes";
 import numberedFootnotes from "remark-numbered-footnotes";
 import remarkPrism from "remark-prism";
 import remarkWikilink from "remark-wiki-link";
 import { Pluggable } from "unified";
-import { hydrateMdxData } from "./hydrateMdxData";
 import { mdxComponents } from "./mdxComponents";
 import { anchorMetadata } from "./plugins/anchorMetadata";
 import { imageMetadata } from "./plugins/imageMetadata";
@@ -23,7 +24,7 @@ export function renderMdxDataToString(content: string, slug: string) {
 
 export async function renderMdxDataToStaticHtml(content: string, slug: string) {
   const mdx = await renderMdxDataToString(content, slug);
-  return ReactDOMServer.renderToStaticMarkup(<>{hydrateMdxData(mdx, slug)}</>);
+  return ReactDOMServer.renderToStaticMarkup(<MDX mdx={mdx} slug={slug} />);
 }
 
 function getRehypePlugins(slug: string): Pluggable[] {

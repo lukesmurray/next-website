@@ -1,8 +1,9 @@
 import { InferGetStaticPropsType } from "next";
+import React from "react";
 import { proseStyles } from "styles/proseStyles";
 import { styled } from "twin.macro";
-import { hydrateMdxData } from "../lib/mdx/hydrateMdxData";
 import { getStaticProps } from "../pages/[[...slug]]";
+import { MDX } from "./MDX";
 
 export const PostBody: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -13,9 +14,11 @@ export const PostBody: React.VFC<
     return null;
   }
 
-  // render the mdx content
-  const content = hydrateMdxData(currentPage.mdx, currentPage.slug);
-  return <PostBodyWrapper>{content}</PostBodyWrapper>;
+  return (
+    <PostBodyWrapper>
+      <MDX mdx={currentPage.mdx} slug={currentPage.slug} />
+    </PostBodyWrapper>
+  );
 };
 
 export const PostBodyWrapper = styled.article`

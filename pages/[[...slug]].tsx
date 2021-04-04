@@ -2,7 +2,11 @@
  * https://nextjs.org/docs/routing/dynamic-routes
  */
 import { SEO } from "components/SEO";
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import {
+  GetStaticPathsContext,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from "next";
 import { ParsedUrlQuery } from "node:querystring";
 import React from "react";
 import { Layout } from "../components/Layout";
@@ -139,9 +143,7 @@ export const getStaticProps = async (
 };
 
 // see https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-export const getStaticPaths = async (
-  context: any /*GetStaticPathsContext*/
-) => {
+export const getStaticPaths = async (context: GetStaticPathsContext) => {
   const result = await queryGraphql<
     SlugStaticPathsQuery,
     SlugStaticPathsQueryVariables

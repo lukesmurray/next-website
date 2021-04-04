@@ -6,6 +6,7 @@ export const feedSlugs = {
   directory: "/rss",
 };
 export const feedTitle = "Luke Murray's Site";
+export const feedDescription = "Luke Murray's dev blog and personal site";
 export const author = {
   name: "Luke Murray",
   email: "luke@lukesmurray.com",

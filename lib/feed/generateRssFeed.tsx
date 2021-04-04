@@ -3,7 +3,13 @@ import fs from "fs/promises";
 import { publishDrafts } from "lib/constants/publishDrafts";
 import { renderMdxDataToStaticHtml } from "lib/mdx/renderMdxDataToString";
 import { SlugStaticPathsQuery } from "../../prisma/graphql";
-import { author, feedBaseUrl, feedSlugs } from "./feedConstants";
+import {
+  author,
+  feedBaseUrl,
+  feedDescription,
+  feedSlugs,
+  feedTitle,
+} from "./feedConstants";
 
 export async function generateRssFeed(data: SlugStaticPathsQuery | undefined) {
   if (data === undefined) {
@@ -11,8 +17,8 @@ export async function generateRssFeed(data: SlugStaticPathsQuery | undefined) {
   }
 
   const feed = new Feed({
-    title: "Feed Title",
-    description: "This is my personal feed!",
+    title: feedTitle,
+    description: feedDescription,
     id: feedBaseUrl,
     link: feedBaseUrl,
     language: "en",
