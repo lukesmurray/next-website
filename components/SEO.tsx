@@ -1,5 +1,6 @@
 import { publicUrl } from "lib/constants/publicUrl";
 import { twitterHandle } from "lib/constants/social";
+import { feedBaseUrl, feedSlugs, feedTitle } from "lib/feed/generateRssFeed";
 import { isDefined } from "lib/types/isDefined";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
@@ -47,6 +48,24 @@ export const SEO: React.VFC<InferGetStaticPropsType<typeof getStaticProps>> = (
       {isDefined(imageSlug) && (
         <meta property="twitter:image" content={imageSlug} />
       )}
+      <link
+        rel="alternate"
+        title={feedTitle}
+        type="application/rss+xml"
+        href={`${feedBaseUrl}${feedSlugs.rss}`}
+      />
+      <link
+        rel="alternate"
+        title={feedTitle}
+        type="application/json"
+        href={`${feedBaseUrl}${feedSlugs.json}`}
+      />
+      <link
+        rel="alternate"
+        title={feedTitle}
+        type="application/atom+xml"
+        href={`${feedBaseUrl}${feedSlugs.atom}`}
+      />
     </Head>
   );
 };
