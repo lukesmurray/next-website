@@ -10,6 +10,7 @@ import { PageList } from "../components/PageList";
 import { PostBody } from "../components/PostBody";
 import { PostHeader } from "../components/PostHeader";
 import { publishDrafts } from "../lib/constants/publishDrafts";
+import { generateRssFeed } from "../lib/feed/generateRssFeed";
 import { gql } from "../lib/graphql/gql";
 import { queryGraphql } from "../lib/graphql/queryGraphql";
 import { addMdxToData } from "../lib/mdx/addMdxToData";
@@ -148,9 +149,17 @@ export const getStaticPaths = async (
     query SlugStaticPaths {
       pages {
         slug
+        title
+        description
+        date
+        kind
+        draft
       }
     }
   `);
+
+  await generateRssFeed(result.data);
+
   return {
     paths: result.data!.pages.map((s) => ({
       params: {

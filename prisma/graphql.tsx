@@ -1022,7 +1022,7 @@ export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages:
 export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SlugStaticPathsQuery = { pages: Array<{ slug: string }> };
+export type SlugStaticPathsQuery = { pages: Array<{ slug: string, title: string, description?: Maybe<string>, date?: Maybe<any>, kind: string, draft: boolean }> };
 
 
 export const SlugPageDocument = gql`
@@ -1112,6 +1112,11 @@ export const SlugStaticPathsDocument = gql`
     query SlugStaticPaths {
   pages {
     slug
+    title
+    description
+    date
+    kind
+    draft
   }
 }
     `;

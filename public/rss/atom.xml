@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://lsmurray.com</id>
+    <title>Feed Title</title>
+    <updated>2021-04-04T13:47:52.749Z</updated>
+    <generator>Feed for Node.js</generator>
+    <author>
+        <name>Luke Murray</name>
+        <email>luke@lukesmurray.com</email>
+        <uri>https://lsmurray.com</uri>
+    </author>
+    <link rel="alternate" href="https://lsmurray.com"/>
+    <link rel="self" href="https://lsmurray.com/rss/atom.xml"/>
+    <subtitle>This is my personal feed!</subtitle>
+    <icon>https://lsmurray.com/favicon.ico</icon>
+    <rights>© 2021, Luke Murray</rights>
+    <entry>
+        <title type="html"><![CDATA[Another test post]]></title>
+        <id>https://lsmurray.com/test/another-test-post</id>
+        <link href="https://lsmurray.com/test/another-test-post"/>
+        <updated>2021-03-24T12:21:53.000Z</updated>
+        <summary type="html"><![CDATA[Another example post in the section for testing layouts]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Test Post]]></title>
+        <id>https://lsmurray.com/test/test-post</id>
+        <link href="https://lsmurray.com/test/test-post"/>
+        <updated>2021-03-24T12:21:53.000Z</updated>
+        <summary type="html"><![CDATA[An example post in the section for testing layouts]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Replicating a Clothing Pattern]]></title>
+        <id>https://lsmurray.com/blog/replicating-a-clothing-pattern</id>
+        <link href="https://lsmurray.com/blog/replicating-a-clothing-pattern"/>
+        <updated>2021-01-14T18:19:51.000Z</updated>
+        <summary type="html"><![CDATA[Using patterns and masks to replicate a design found on a pair of jeans.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sites which inspire the design of my own]]></title>
+        <id>https://lsmurray.com/blog/blog-inspiration</id>
+        <link href="https://lsmurray.com/blog/blog-inspiration"/>
+        <updated>2021-01-19T13:03:52.000Z</updated>
+        <summary type="html"><![CDATA[A collection of sites and ideas from around the web which inspire the design and organization of this one.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Using action driven animation]]></title>
+        <id>https://lsmurray.com/blog/using-action-driven-animation</id>
+        <link href="https://lsmurray.com/blog/using-action-driven-animation"/>
+        <updated>2021-03-30T22:59:56.000Z</updated>
+        <summary type="html"><![CDATA[Applying action driven animation techniques to render footnotes and link previews.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fishbone lab diagrams]]></title>
+        <id>https://lsmurray.com/blog/fishbone-lab-diagrams</id>
+        <link href="https://lsmurray.com/blog/fishbone-lab-diagrams"/>
+        <updated>2021-01-19T21:51:21.000Z</updated>
+        <summary type="html"><![CDATA[Implementing fishbone lab diagrams as svg elements for the web]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Typescript Algos]]></title>
+        <id>https://lsmurray.com/blog/typescript-algos</id>
+        <link href="https://lsmurray.com/blog/typescript-algos"/>
+        <updated>2020-12-31T17:42:34.000Z</updated>
+        <summary type="html"><![CDATA[A small collection of algorithms I've written for use in my projects.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Quake Applications For Mac]]></title>
+        <id>https://lsmurray.com/blog/quake-applications-for-mac</id>
+        <link href="https://lsmurray.com/blog/quake-applications-for-mac"/>
+        <updated>2021-02-20T16:42:46.000Z</updated>
+        <summary type="html"><![CDATA[Create quake style dropdown windows for any application.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Database First Development]]></title>
+        <id>https://lsmurray.com/blog/database-first-development</id>
+        <link href="https://lsmurray.com/blog/database-first-development"/>
+        <updated>2021-03-23T04:33:28.000Z</updated>
+        <summary type="html"><![CDATA[An interesting paradigm for creating websites and blogging using next.js]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Replacing Tmux With Kitty]]></title>
+        <id>https://lsmurray.com/blog/replacing-tmux-with-kitty</id>
+        <link href="https://lsmurray.com/blog/replacing-tmux-with-kitty"/>
+        <updated>2021-02-23T13:57:58.000Z</updated>
+        <summary type="html"><![CDATA[Steps to replace the useful aspects of my tmux workflow with kitty]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Becoming a better developer]]></title>
+        <id>https://lsmurray.com/blog/becoming-a-better-developer</id>
+        <link href="https://lsmurray.com/blog/becoming-a-better-developer"/>
+        <updated>2020-12-31T17:08:14.000Z</updated>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello world]]></title>
+        <id>https://lsmurray.com/blog/hello</id>
+        <link href="https://lsmurray.com/blog/hello"/>
+        <updated>2020-12-08T01:06:23.000Z</updated>
+        <summary type="html"><![CDATA[My first post on this blog and a commitment to share what I build.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Markdown Anki Decks]]></title>
+        <id>https://lsmurray.com/blog/markdown-anki-decks</id>
+        <link href="https://lsmurray.com/blog/markdown-anki-decks"/>
+        <updated>2020-12-23T19:00:02.000Z</updated>
+        <summary type="html"><![CDATA[A command line program to convert markdown files into anki decks.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sudoku.com bookmarklet]]></title>
+        <id>https://lsmurray.com/blog/sudoku-bookmarklet</id>
+        <link href="https://lsmurray.com/blog/sudoku-bookmarklet"/>
+        <updated>2021-01-12T21:21:02.000Z</updated>
+        <summary type="html"><![CDATA[Enable keyboard only input on sudoku.com]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Make Prettier Ignore Ranges]]></title>
+        <id>https://lsmurray.com/til/make-prettier-ignore-ranges</id>
+        <link href="https://lsmurray.com/til/make-prettier-ignore-ranges"/>
+        <updated>2021-03-24T14:30:11.000Z</updated>
+        <summary type="html"><![CDATA[How to make the prettier default formatter ignore ranges]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Javascript functions can cause layout thrashing]]></title>
+        <id>https://lsmurray.com/til/layout-thrashing</id>
+        <link href="https://lsmurray.com/til/layout-thrashing"/>
+        <updated>2021-03-25T18:06:52.000Z</updated>
+        <summary type="html"><![CDATA[How javascript methods can cause layout thrashing and greatly reduce your application's performance]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Fuzzy search Json Files]]></title>
+        <id>https://lsmurray.com/til/fuzzy-search-json-file</id>
+        <link href="https://lsmurray.com/til/fuzzy-search-json-file"/>
+        <updated>2021-03-24T14:09:03.000Z</updated>
+        <summary type="html"><![CDATA[How to use fzf and jq to fuzzy search a json file]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Great articles from around the web]]></title>
+        <id>https://lsmurray.com/til/great-articles</id>
+        <link href="https://lsmurray.com/til/great-articles"/>
+        <updated>2021-03-24T19:37:08.000Z</updated>
+        <summary type="html"><![CDATA[A collection of awesome articles and small summaries about why I like them. Basically my plain text equivalent of pocket.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Be cautious when you use symbol polyfills]]></title>
+        <id>https://lsmurray.com/til/polyfill-symbols-in-js</id>
+        <link href="https://lsmurray.com/til/polyfill-symbols-in-js"/>
+        <updated>2021-03-29T17:26:20.000Z</updated>
+        <summary type="html"><![CDATA[Polyfills can feel like a plug and play solution for supporting older browsers, but they can come with caveats which break expected behavior.]]></summary>
+        <author>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </author>
+        <contributor>
+            <name>Luke Murray</name>
+            <email>luke@lukesmurray.com</email>
+            <uri>https://lsmurray.com</uri>
+        </contributor>
+    </entry>
+</feed>

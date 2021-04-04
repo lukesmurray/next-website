@@ -1,0 +1,221 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Feed Title",
+    "home_page_url": "https://lsmurray.com",
+    "feed_url": "https://lsmurray.com/rss/feed.json",
+    "description": "This is my personal feed!",
+    "author": {
+        "name": "Luke Murray",
+        "url": "https://lsmurray.com"
+    },
+    "items": [
+        {
+            "id": "https://lsmurray.com/test/another-test-post",
+            "url": "https://lsmurray.com/test/another-test-post",
+            "title": "Another test post",
+            "summary": "Another example post in the section for testing layouts",
+            "date_modified": "2021-03-24T12:21:53.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/test/test-post",
+            "url": "https://lsmurray.com/test/test-post",
+            "title": "Test Post",
+            "summary": "An example post in the section for testing layouts",
+            "date_modified": "2021-03-24T12:21:53.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/replicating-a-clothing-pattern",
+            "url": "https://lsmurray.com/blog/replicating-a-clothing-pattern",
+            "title": "Replicating a Clothing Pattern",
+            "summary": "Using patterns and masks to replicate a design found on a pair of jeans.",
+            "date_modified": "2021-01-14T18:19:51.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/blog-inspiration",
+            "url": "https://lsmurray.com/blog/blog-inspiration",
+            "title": "Sites which inspire the design of my own",
+            "summary": "A collection of sites and ideas from around the web which inspire the design and organization of this one.",
+            "date_modified": "2021-01-19T13:03:52.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/using-action-driven-animation",
+            "url": "https://lsmurray.com/blog/using-action-driven-animation",
+            "title": "Using action driven animation",
+            "summary": "Applying action driven animation techniques to render footnotes and link previews.",
+            "date_modified": "2021-03-30T22:59:56.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/fishbone-lab-diagrams",
+            "url": "https://lsmurray.com/blog/fishbone-lab-diagrams",
+            "title": "Fishbone lab diagrams",
+            "summary": "Implementing fishbone lab diagrams as svg elements for the web",
+            "date_modified": "2021-01-19T21:51:21.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/typescript-algos",
+            "url": "https://lsmurray.com/blog/typescript-algos",
+            "title": "Typescript Algos",
+            "summary": "A small collection of algorithms I've written for use in my projects.",
+            "date_modified": "2020-12-31T17:42:34.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/quake-applications-for-mac",
+            "url": "https://lsmurray.com/blog/quake-applications-for-mac",
+            "title": "Quake Applications For Mac",
+            "summary": "Create quake style dropdown windows for any application.",
+            "date_modified": "2021-02-20T16:42:46.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/database-first-development",
+            "url": "https://lsmurray.com/blog/database-first-development",
+            "title": "Database First Development",
+            "summary": "An interesting paradigm for creating websites and blogging using next.js",
+            "date_modified": "2021-03-23T04:33:28.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/replacing-tmux-with-kitty",
+            "url": "https://lsmurray.com/blog/replacing-tmux-with-kitty",
+            "title": "Replacing Tmux With Kitty",
+            "summary": "Steps to replace the useful aspects of my tmux workflow with kitty",
+            "date_modified": "2021-02-23T13:57:58.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/becoming-a-better-developer",
+            "url": "https://lsmurray.com/blog/becoming-a-better-developer",
+            "title": "Becoming a better developer",
+            "date_modified": "2020-12-31T17:08:14.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/hello",
+            "url": "https://lsmurray.com/blog/hello",
+            "title": "Hello world",
+            "summary": "My first post on this blog and a commitment to share what I build.",
+            "date_modified": "2020-12-08T01:06:23.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/markdown-anki-decks",
+            "url": "https://lsmurray.com/blog/markdown-anki-decks",
+            "title": "Markdown Anki Decks",
+            "summary": "A command line program to convert markdown files into anki decks.",
+            "date_modified": "2020-12-23T19:00:02.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/blog/sudoku-bookmarklet",
+            "url": "https://lsmurray.com/blog/sudoku-bookmarklet",
+            "title": "Sudoku.com bookmarklet",
+            "summary": "Enable keyboard only input on sudoku.com",
+            "date_modified": "2021-01-12T21:21:02.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/til/make-prettier-ignore-ranges",
+            "url": "https://lsmurray.com/til/make-prettier-ignore-ranges",
+            "title": "Make Prettier Ignore Ranges",
+            "summary": "How to make the prettier default formatter ignore ranges",
+            "date_modified": "2021-03-24T14:30:11.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/til/layout-thrashing",
+            "url": "https://lsmurray.com/til/layout-thrashing",
+            "title": "Javascript functions can cause layout thrashing",
+            "summary": "How javascript methods can cause layout thrashing and greatly reduce your application's performance",
+            "date_modified": "2021-03-25T18:06:52.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/til/fuzzy-search-json-file",
+            "url": "https://lsmurray.com/til/fuzzy-search-json-file",
+            "title": "Fuzzy search Json Files",
+            "summary": "How to use fzf and jq to fuzzy search a json file",
+            "date_modified": "2021-03-24T14:09:03.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/til/great-articles",
+            "url": "https://lsmurray.com/til/great-articles",
+            "title": "Great articles from around the web",
+            "summary": "A collection of awesome articles and small summaries about why I like them. Basically my plain text equivalent of pocket.",
+            "date_modified": "2021-03-24T19:37:08.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        },
+        {
+            "id": "https://lsmurray.com/til/polyfill-symbols-in-js",
+            "url": "https://lsmurray.com/til/polyfill-symbols-in-js",
+            "title": "Be cautious when you use symbol polyfills",
+            "summary": "Polyfills can feel like a plug and play solution for supporting older browsers, but they can come with caveats which break expected behavior.",
+            "date_modified": "2021-03-29T17:26:20.000Z",
+            "author": {
+                "name": "Luke Murray",
+                "url": "https://lsmurray.com"
+            }
+        }
+    ]
+}

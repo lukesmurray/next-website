@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Feed Title</title>
+        <link>https://lsmurray.com</link>
+        <description>This is my personal feed!</description>
+        <lastBuildDate>Sun, 04 Apr 2021 13:47:52 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Feed for Node.js</generator>
+        <language>en</language>
+        <copyright>© 2021, Luke Murray</copyright>
+        <item>
+            <title><![CDATA[Another test post]]></title>
+            <link>https://lsmurray.com/test/another-test-post</link>
+            <guid>https://lsmurray.com/test/another-test-post</guid>
+            <pubDate>Wed, 24 Mar 2021 12:21:53 GMT</pubDate>
+            <description><![CDATA[Another example post in the section for testing layouts]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Test Post]]></title>
+            <link>https://lsmurray.com/test/test-post</link>
+            <guid>https://lsmurray.com/test/test-post</guid>
+            <pubDate>Wed, 24 Mar 2021 12:21:53 GMT</pubDate>
+            <description><![CDATA[An example post in the section for testing layouts]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Replicating a Clothing Pattern]]></title>
+            <link>https://lsmurray.com/blog/replicating-a-clothing-pattern</link>
+            <guid>https://lsmurray.com/blog/replicating-a-clothing-pattern</guid>
+            <pubDate>Thu, 14 Jan 2021 18:19:51 GMT</pubDate>
+            <description><![CDATA[Using patterns and masks to replicate a design found on a pair of jeans.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Sites which inspire the design of my own]]></title>
+            <link>https://lsmurray.com/blog/blog-inspiration</link>
+            <guid>https://lsmurray.com/blog/blog-inspiration</guid>
+            <pubDate>Tue, 19 Jan 2021 13:03:52 GMT</pubDate>
+            <description><![CDATA[A collection of sites and ideas from around the web which inspire the design and organization of this one.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Using action driven animation]]></title>
+            <link>https://lsmurray.com/blog/using-action-driven-animation</link>
+            <guid>https://lsmurray.com/blog/using-action-driven-animation</guid>
+            <pubDate>Tue, 30 Mar 2021 22:59:56 GMT</pubDate>
+            <description><![CDATA[Applying action driven animation techniques to render footnotes and link previews.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Fishbone lab diagrams]]></title>
+            <link>https://lsmurray.com/blog/fishbone-lab-diagrams</link>
+            <guid>https://lsmurray.com/blog/fishbone-lab-diagrams</guid>
+            <pubDate>Tue, 19 Jan 2021 21:51:21 GMT</pubDate>
+            <description><![CDATA[Implementing fishbone lab diagrams as svg elements for the web]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Typescript Algos]]></title>
+            <link>https://lsmurray.com/blog/typescript-algos</link>
+            <guid>https://lsmurray.com/blog/typescript-algos</guid>
+            <pubDate>Thu, 31 Dec 2020 17:42:34 GMT</pubDate>
+            <description><![CDATA[A small collection of algorithms I've written for use in my projects.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Quake Applications For Mac]]></title>
+            <link>https://lsmurray.com/blog/quake-applications-for-mac</link>
+            <guid>https://lsmurray.com/blog/quake-applications-for-mac</guid>
+            <pubDate>Sat, 20 Feb 2021 16:42:46 GMT</pubDate>
+            <description><![CDATA[Create quake style dropdown windows for any application.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Database First Development]]></title>
+            <link>https://lsmurray.com/blog/database-first-development</link>
+            <guid>https://lsmurray.com/blog/database-first-development</guid>
+            <pubDate>Tue, 23 Mar 2021 04:33:28 GMT</pubDate>
+            <description><![CDATA[An interesting paradigm for creating websites and blogging using next.js]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Replacing Tmux With Kitty]]></title>
+            <link>https://lsmurray.com/blog/replacing-tmux-with-kitty</link>
+            <guid>https://lsmurray.com/blog/replacing-tmux-with-kitty</guid>
+            <pubDate>Tue, 23 Feb 2021 13:57:58 GMT</pubDate>
+            <description><![CDATA[Steps to replace the useful aspects of my tmux workflow with kitty]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Becoming a better developer]]></title>
+            <link>https://lsmurray.com/blog/becoming-a-better-developer</link>
+            <guid>https://lsmurray.com/blog/becoming-a-better-developer</guid>
+            <pubDate>Thu, 31 Dec 2020 17:08:14 GMT</pubDate>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Hello world]]></title>
+            <link>https://lsmurray.com/blog/hello</link>
+            <guid>https://lsmurray.com/blog/hello</guid>
+            <pubDate>Tue, 08 Dec 2020 01:06:23 GMT</pubDate>
+            <description><![CDATA[My first post on this blog and a commitment to share what I build.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Markdown Anki Decks]]></title>
+            <link>https://lsmurray.com/blog/markdown-anki-decks</link>
+            <guid>https://lsmurray.com/blog/markdown-anki-decks</guid>
+            <pubDate>Wed, 23 Dec 2020 19:00:02 GMT</pubDate>
+            <description><![CDATA[A command line program to convert markdown files into anki decks.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Sudoku.com bookmarklet]]></title>
+            <link>https://lsmurray.com/blog/sudoku-bookmarklet</link>
+            <guid>https://lsmurray.com/blog/sudoku-bookmarklet</guid>
+            <pubDate>Tue, 12 Jan 2021 21:21:02 GMT</pubDate>
+            <description><![CDATA[Enable keyboard only input on sudoku.com]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Make Prettier Ignore Ranges]]></title>
+            <link>https://lsmurray.com/til/make-prettier-ignore-ranges</link>
+            <guid>https://lsmurray.com/til/make-prettier-ignore-ranges</guid>
+            <pubDate>Wed, 24 Mar 2021 14:30:11 GMT</pubDate>
+            <description><![CDATA[How to make the prettier default formatter ignore ranges]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Javascript functions can cause layout thrashing]]></title>
+            <link>https://lsmurray.com/til/layout-thrashing</link>
+            <guid>https://lsmurray.com/til/layout-thrashing</guid>
+            <pubDate>Thu, 25 Mar 2021 18:06:52 GMT</pubDate>
+            <description><![CDATA[How javascript methods can cause layout thrashing and greatly reduce your application's performance]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Fuzzy search Json Files]]></title>
+            <link>https://lsmurray.com/til/fuzzy-search-json-file</link>
+            <guid>https://lsmurray.com/til/fuzzy-search-json-file</guid>
+            <pubDate>Wed, 24 Mar 2021 14:09:03 GMT</pubDate>
+            <description><![CDATA[How to use fzf and jq to fuzzy search a json file]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Great articles from around the web]]></title>
+            <link>https://lsmurray.com/til/great-articles</link>
+            <guid>https://lsmurray.com/til/great-articles</guid>
+            <pubDate>Wed, 24 Mar 2021 19:37:08 GMT</pubDate>
+            <description><![CDATA[A collection of awesome articles and small summaries about why I like them. Basically my plain text equivalent of pocket.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+        <item>
+            <title><![CDATA[Be cautious when you use symbol polyfills]]></title>
+            <link>https://lsmurray.com/til/polyfill-symbols-in-js</link>
+            <guid>https://lsmurray.com/til/polyfill-symbols-in-js</guid>
+            <pubDate>Mon, 29 Mar 2021 17:26:20 GMT</pubDate>
+            <description><![CDATA[Polyfills can feel like a plug and play solution for supporting older browsers, but they can come with caveats which break expected behavior.]]></description>
+            <author>luke@lukesmurray.com (Luke Murray)</author>
+        </item>
+    </channel>
+</rss>
