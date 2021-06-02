@@ -71,7 +71,7 @@
     "next-mdx-remote": "^2.1.4",
     "next-remote-watch": "^1.0.0",
     "patch-package": "^6.4.7",
-    "postcss": "^8.2.8",
+    "postcss": "^8.2.10",
     "prisma": "^2.19.0",
     "reflect-metadata": "^0.1.13",
     "remark-footnotes": "2.0.0",
