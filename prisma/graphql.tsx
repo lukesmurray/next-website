@@ -21,15 +21,15 @@ export type AffectedRowsOutput = {
 };
 
 export type AggregateFile = {
-  count?: Maybe<FileCountAggregate>;
-  max?: Maybe<FileMaxAggregate>;
-  min?: Maybe<FileMinAggregate>;
+  _count?: Maybe<FileCountAggregate>;
+  _max?: Maybe<FileMaxAggregate>;
+  _min?: Maybe<FileMinAggregate>;
 };
 
 export type AggregatePage = {
-  count?: Maybe<PageCountAggregate>;
-  max?: Maybe<PageMaxAggregate>;
-  min?: Maybe<PageMinAggregate>;
+  _count?: Maybe<PageCountAggregate>;
+  _max?: Maybe<PageMaxAggregate>;
+  _min?: Maybe<PageMinAggregate>;
 };
 
 export type BoolFieldUpdateOperationsInput = {
@@ -41,6 +41,14 @@ export type BoolFilter = {
   not?: Maybe<NestedBoolFilter>;
 };
 
+export type BoolWithAggregatesFilter = {
+  _count?: Maybe<NestedIntFilter>;
+  _max?: Maybe<NestedBoolFilter>;
+  _min?: Maybe<NestedBoolFilter>;
+  equals?: Maybe<Scalars['Boolean']>;
+  not?: Maybe<NestedBoolWithAggregatesFilter>;
+};
+
 
 export type DateTimeNullableFilter = {
   equals?: Maybe<Scalars['DateTime']>;
@@ -50,6 +58,20 @@ export type DateTimeNullableFilter = {
   lt?: Maybe<Scalars['DateTime']>;
   lte?: Maybe<Scalars['DateTime']>;
   not?: Maybe<NestedDateTimeNullableFilter>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+};
+
+export type DateTimeNullableWithAggregatesFilter = {
+  _count?: Maybe<NestedIntNullableFilter>;
+  _max?: Maybe<NestedDateTimeNullableFilter>;
+  _min?: Maybe<NestedDateTimeNullableFilter>;
+  equals?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeNullableWithAggregatesFilter>;
   notIn?: Maybe<Array<Scalars['DateTime']>>;
 };
 
@@ -72,7 +94,7 @@ export type FilePagesArgs = {
 
 export type FileCountAggregate = {
   _all: Scalars['Int'];
-  path?: Maybe<Scalars['Int']>;
+  path: Scalars['Int'];
 };
 
 export type FileCreateInput = {
@@ -92,6 +114,13 @@ export type FileCreateOrConnectWithoutPagesInput = {
 };
 
 export type FileCreateWithoutPagesInput = {
+  path: Scalars['String'];
+};
+
+export type FileGroupBy = {
+  _count?: Maybe<FileCountAggregate>;
+  _max?: Maybe<FileMaxAggregate>;
+  _min?: Maybe<FileMinAggregate>;
   path: Scalars['String'];
 };
 
@@ -115,6 +144,13 @@ export type FileRelationFilter = {
 export enum FileScalarFieldEnum {
   Path = 'path'
 }
+
+export type FileScalarWhereWithAggregatesInput = {
+  AND?: Maybe<Array<FileScalarWhereWithAggregatesInput>>;
+  NOT?: Maybe<Array<FileScalarWhereWithAggregatesInput>>;
+  OR?: Maybe<Array<FileScalarWhereWithAggregatesInput>>;
+  path?: Maybe<StringWithAggregatesFilter>;
+};
 
 export type FileUpdateInput = {
   Pages?: Maybe<PageUpdateManyWithoutFileInput>;
@@ -244,6 +280,14 @@ export type NestedBoolFilter = {
   not?: Maybe<NestedBoolFilter>;
 };
 
+export type NestedBoolWithAggregatesFilter = {
+  _count?: Maybe<NestedIntFilter>;
+  _max?: Maybe<NestedBoolFilter>;
+  _min?: Maybe<NestedBoolFilter>;
+  equals?: Maybe<Scalars['Boolean']>;
+  not?: Maybe<NestedBoolWithAggregatesFilter>;
+};
+
 export type NestedDateTimeNullableFilter = {
   equals?: Maybe<Scalars['DateTime']>;
   gt?: Maybe<Scalars['DateTime']>;
@@ -253,6 +297,42 @@ export type NestedDateTimeNullableFilter = {
   lte?: Maybe<Scalars['DateTime']>;
   not?: Maybe<NestedDateTimeNullableFilter>;
   notIn?: Maybe<Array<Scalars['DateTime']>>;
+};
+
+export type NestedDateTimeNullableWithAggregatesFilter = {
+  _count?: Maybe<NestedIntNullableFilter>;
+  _max?: Maybe<NestedDateTimeNullableFilter>;
+  _min?: Maybe<NestedDateTimeNullableFilter>;
+  equals?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<NestedDateTimeNullableWithAggregatesFilter>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+};
+
+export type NestedIntFilter = {
+  equals?: Maybe<Scalars['Int']>;
+  gt?: Maybe<Scalars['Int']>;
+  gte?: Maybe<Scalars['Int']>;
+  in?: Maybe<Array<Scalars['Int']>>;
+  lt?: Maybe<Scalars['Int']>;
+  lte?: Maybe<Scalars['Int']>;
+  not?: Maybe<NestedIntFilter>;
+  notIn?: Maybe<Array<Scalars['Int']>>;
+};
+
+export type NestedIntNullableFilter = {
+  equals?: Maybe<Scalars['Int']>;
+  gt?: Maybe<Scalars['Int']>;
+  gte?: Maybe<Scalars['Int']>;
+  in?: Maybe<Array<Scalars['Int']>>;
+  lt?: Maybe<Scalars['Int']>;
+  lte?: Maybe<Scalars['Int']>;
+  not?: Maybe<NestedIntNullableFilter>;
+  notIn?: Maybe<Array<Scalars['Int']>>;
 };
 
 export type NestedStringFilter = {
@@ -279,6 +359,40 @@ export type NestedStringNullableFilter = {
   lt?: Maybe<Scalars['String']>;
   lte?: Maybe<Scalars['String']>;
   not?: Maybe<NestedStringNullableFilter>;
+  notIn?: Maybe<Array<Scalars['String']>>;
+  startsWith?: Maybe<Scalars['String']>;
+};
+
+export type NestedStringNullableWithAggregatesFilter = {
+  _count?: Maybe<NestedIntNullableFilter>;
+  _max?: Maybe<NestedStringNullableFilter>;
+  _min?: Maybe<NestedStringNullableFilter>;
+  contains?: Maybe<Scalars['String']>;
+  endsWith?: Maybe<Scalars['String']>;
+  equals?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Scalars['String']>>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  not?: Maybe<NestedStringNullableWithAggregatesFilter>;
+  notIn?: Maybe<Array<Scalars['String']>>;
+  startsWith?: Maybe<Scalars['String']>;
+};
+
+export type NestedStringWithAggregatesFilter = {
+  _count?: Maybe<NestedIntFilter>;
+  _max?: Maybe<NestedStringFilter>;
+  _min?: Maybe<NestedStringFilter>;
+  contains?: Maybe<Scalars['String']>;
+  endsWith?: Maybe<Scalars['String']>;
+  equals?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Scalars['String']>>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  not?: Maybe<NestedStringWithAggregatesFilter>;
   notIn?: Maybe<Array<Scalars['String']>>;
   startsWith?: Maybe<Scalars['String']>;
 };
@@ -347,20 +461,20 @@ export type PagePagesArgs = {
 
 export type PageCountAggregate = {
   _all: Scalars['Int'];
-  content?: Maybe<Scalars['Int']>;
-  date?: Maybe<Scalars['Int']>;
-  description?: Maybe<Scalars['Int']>;
-  dir?: Maybe<Scalars['Int']>;
-  draft?: Maybe<Scalars['Int']>;
-  filePath?: Maybe<Scalars['Int']>;
-  firstSectionSlug?: Maybe<Scalars['Int']>;
-  image?: Maybe<Scalars['Int']>;
-  isHome?: Maybe<Scalars['Int']>;
-  isSection?: Maybe<Scalars['Int']>;
-  kind?: Maybe<Scalars['Int']>;
-  parentSlug?: Maybe<Scalars['Int']>;
-  slug?: Maybe<Scalars['Int']>;
-  title?: Maybe<Scalars['Int']>;
+  content: Scalars['Int'];
+  date: Scalars['Int'];
+  description: Scalars['Int'];
+  dir: Scalars['Int'];
+  draft: Scalars['Int'];
+  filePath: Scalars['Int'];
+  firstSectionSlug: Scalars['Int'];
+  image: Scalars['Int'];
+  isHome: Scalars['Int'];
+  isSection: Scalars['Int'];
+  kind: Scalars['Int'];
+  parentSlug: Scalars['Int'];
+  slug: Scalars['Int'];
+  title: Scalars['Int'];
 };
 
 export type PageCreateInput = {
@@ -527,6 +641,26 @@ export type PageCreateWithoutParentInput = {
   title: Scalars['String'];
 };
 
+export type PageGroupBy = {
+  _count?: Maybe<PageCountAggregate>;
+  _max?: Maybe<PageMaxAggregate>;
+  _min?: Maybe<PageMinAggregate>;
+  content: Scalars['String'];
+  date?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['String']>;
+  dir: Scalars['String'];
+  draft: Scalars['Boolean'];
+  filePath?: Maybe<Scalars['String']>;
+  firstSectionSlug?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  isHome: Scalars['Boolean'];
+  isSection: Scalars['Boolean'];
+  kind: Scalars['String'];
+  parentSlug?: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
+  title: Scalars['String'];
+};
+
 export type PageListRelationFilter = {
   every?: Maybe<PageWhereInput>;
   none?: Maybe<PageWhereInput>;
@@ -624,6 +758,26 @@ export type PageScalarWhereInput = {
   parentSlug?: Maybe<StringNullableFilter>;
   slug?: Maybe<StringFilter>;
   title?: Maybe<StringFilter>;
+};
+
+export type PageScalarWhereWithAggregatesInput = {
+  AND?: Maybe<Array<PageScalarWhereWithAggregatesInput>>;
+  NOT?: Maybe<Array<PageScalarWhereWithAggregatesInput>>;
+  OR?: Maybe<Array<PageScalarWhereWithAggregatesInput>>;
+  content?: Maybe<StringWithAggregatesFilter>;
+  date?: Maybe<DateTimeNullableWithAggregatesFilter>;
+  description?: Maybe<StringNullableWithAggregatesFilter>;
+  dir?: Maybe<StringWithAggregatesFilter>;
+  draft?: Maybe<BoolWithAggregatesFilter>;
+  filePath?: Maybe<StringNullableWithAggregatesFilter>;
+  firstSectionSlug?: Maybe<StringNullableWithAggregatesFilter>;
+  image?: Maybe<StringNullableWithAggregatesFilter>;
+  isHome?: Maybe<BoolWithAggregatesFilter>;
+  isSection?: Maybe<BoolWithAggregatesFilter>;
+  kind?: Maybe<StringWithAggregatesFilter>;
+  parentSlug?: Maybe<StringNullableWithAggregatesFilter>;
+  slug?: Maybe<StringWithAggregatesFilter>;
+  title?: Maybe<StringWithAggregatesFilter>;
 };
 
 export type PageUpdateInput = {
@@ -902,6 +1056,8 @@ export type Query = {
   files: Array<File>;
   findFirstFile?: Maybe<File>;
   findFirstPage?: Maybe<Page>;
+  groupByFile: Array<FileGroupBy>;
+  groupByPage: Array<PageGroupBy>;
   page?: Maybe<Page>;
   pages: Array<Page>;
 };
@@ -960,6 +1116,26 @@ export type QueryFindFirstPageArgs = {
 };
 
 
+export type QueryGroupByFileArgs = {
+  by: Array<FileScalarFieldEnum>;
+  having?: Maybe<FileScalarWhereWithAggregatesInput>;
+  orderBy?: Maybe<Array<FileOrderByInput>>;
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  where?: Maybe<FileWhereInput>;
+};
+
+
+export type QueryGroupByPageArgs = {
+  by: Array<PageScalarFieldEnum>;
+  having?: Maybe<PageScalarWhereWithAggregatesInput>;
+  orderBy?: Maybe<Array<PageOrderByInput>>;
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  where?: Maybe<PageWhereInput>;
+};
+
+
 export type QueryPageArgs = {
   where: PageWhereUniqueInput;
 };
@@ -1007,6 +1183,40 @@ export type StringNullableFilter = {
   lt?: Maybe<Scalars['String']>;
   lte?: Maybe<Scalars['String']>;
   not?: Maybe<NestedStringNullableFilter>;
+  notIn?: Maybe<Array<Scalars['String']>>;
+  startsWith?: Maybe<Scalars['String']>;
+};
+
+export type StringNullableWithAggregatesFilter = {
+  _count?: Maybe<NestedIntNullableFilter>;
+  _max?: Maybe<NestedStringNullableFilter>;
+  _min?: Maybe<NestedStringNullableFilter>;
+  contains?: Maybe<Scalars['String']>;
+  endsWith?: Maybe<Scalars['String']>;
+  equals?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Scalars['String']>>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  not?: Maybe<NestedStringNullableWithAggregatesFilter>;
+  notIn?: Maybe<Array<Scalars['String']>>;
+  startsWith?: Maybe<Scalars['String']>;
+};
+
+export type StringWithAggregatesFilter = {
+  _count?: Maybe<NestedIntFilter>;
+  _max?: Maybe<NestedStringFilter>;
+  _min?: Maybe<NestedStringFilter>;
+  contains?: Maybe<Scalars['String']>;
+  endsWith?: Maybe<Scalars['String']>;
+  equals?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Scalars['String']>>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  not?: Maybe<NestedStringWithAggregatesFilter>;
   notIn?: Maybe<Array<Scalars['String']>>;
   startsWith?: Maybe<Scalars['String']>;
 };

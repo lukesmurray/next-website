@@ -1,5 +1,5 @@
 import { MDX } from "components/MDX";
-import renderToString from "next-mdx-remote/render-to-string";
+import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
@@ -8,13 +8,11 @@ import numberedFootnotes from "remark-numbered-footnotes";
 import remarkPrism from "remark-prism";
 import remarkWikilink from "remark-wiki-link";
 import { Pluggable } from "unified";
-import { mdxComponents } from "./mdxComponents";
 import { anchorMetadata } from "./plugins/anchorMetadata";
 import { imageMetadata } from "./plugins/imageMetadata";
 
 export function renderMdxDataToString(content: string, slug: string) {
-  return renderToString(content, {
-    components: mdxComponents(slug),
+  return serialize(content, {
     mdxOptions: {
       remarkPlugins: getRemarkPlugins(slug),
       rehypePlugins: getRehypePlugins(slug),

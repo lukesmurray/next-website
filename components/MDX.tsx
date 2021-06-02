@@ -1,9 +1,8 @@
-import { MdxRemote } from "next-mdx-remote/types";
-import { hydrateMdxData } from "../lib/mdx/hydrateMdxData";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { mdxComponents } from "./mdxComponents";
 
-export const MDX: React.VFC<{ mdx: MdxRemote.Source; slug: string }> = (
+export const MDX: React.VFC<{ mdx: MDXRemoteSerializeResult; slug: string }> = (
   props
 ) => {
-  const content = hydrateMdxData(props.mdx, props.slug);
-  return <>{content}</>;
+  return <MDXRemote {...props.mdx} components={mdxComponents(props.slug)} />;
 };

@@ -1,7 +1,7 @@
 // eventually could expand to remote images
 // TODO(lukemurray): https://github.com/image-size/image-size/issues/258#issuecomment-792493746
 import { Element } from "hast";
-import classnames from "hast-util-classnames";
+import { classnames } from "hast-util-classnames";
 import { Processor, Settings, Transformer } from "unified";
 import { Parent } from "unist";
 import visit from "unist-util-visit";

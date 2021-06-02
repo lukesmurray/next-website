@@ -1,4 +1,3 @@
-import { MdxRemote } from "next-mdx-remote/types";
 import { SlugPageQuery } from "../../prisma/graphql";
 import { renderMdxDataToString } from "./renderMdxDataToString";
 
@@ -32,7 +31,7 @@ export async function addMdxToData(data: SlugPageQuery) {
       currentPage: Modify<
         typeof data.currentPage,
         {
-          mdx: MdxRemote.Source;
+          mdx: typeof mdx;
         }
       >;
     }

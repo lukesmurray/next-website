@@ -1,6 +1,7 @@
 const webpack = require("webpack");
+const withTM = require("next-transpile-modules")(["hast-util-classnames"]); // pass the modules you would like to see transpiled
 
-module.exports = {
+module.exports = withTM({
   webpack: (config, { isServer }) => {
     // Fixes packages that depend on fs/module module
     if (!isServer) {
@@ -26,4 +27,4 @@ module.exports = {
 
     return config;
   },
-};
+});

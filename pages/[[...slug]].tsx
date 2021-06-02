@@ -7,7 +7,7 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
-import { ParsedUrlQuery } from "node:querystring";
+import { ParsedUrlQuery } from "querystring";
 import React from "react";
 import { Layout } from "../components/Layout";
 import { PageList } from "../components/PageList";
@@ -183,7 +183,9 @@ export const getStaticPaths = async (context: GetStaticPathsContext) => {
     }
   `);
 
-  await generateRssFeed(result.data);
+  if (process.env.NODE_ENV !== "development") {
+    await generateRssFeed(result.data);
+  }
 
   return {
     paths: result.data!.pages.map((s) => ({
