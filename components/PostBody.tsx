@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import { InferGetStaticPropsType } from "next";
 import React from "react";
 import { proseStyles } from "styles/proseStyles";
@@ -15,12 +16,23 @@ export const PostBody: React.VFC<
   }
 
   return (
-    <PostBodyWrapper>
+    <PostBodyWrapper {...props}>
       <MDX mdx={currentPage.mdx} slug={currentPage.slug} />
     </PostBodyWrapper>
   );
 };
 
-export const PostBodyWrapper = styled.article`
+export const PostBodyWrapper = styled.article<
+  InferGetStaticPropsType<typeof getStaticProps>
+>`
   ${proseStyles}
+
+  /* hide footnotes on the home page */
+  .footnotes {
+    ${(props) =>
+      props.currentPage.kind === "home" &&
+      css`
+        display: none;
+      `}
+  }
 `;

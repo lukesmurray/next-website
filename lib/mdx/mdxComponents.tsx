@@ -58,6 +58,7 @@ export function mdxComponents(slug: string): MdxRemote.Components {
                 interactive={true}
                 appendTo={() => document.body}
                 trigger={"mouseenter focus"}
+                maxWidth={"none"}
                 content={<ClonedFootnote fnId={props.href!.slice(1)} />}
                 interactiveBorder={5}
                 interactiveDebounce={75}
