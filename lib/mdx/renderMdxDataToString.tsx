@@ -45,7 +45,6 @@ function getRemarkPlugins(slug: string): Pluggable[] {
       remarkWikilink,
       {
         pageResolver: (permalink: string) => {
-          console.log(slug, path.join(slug, permalink));
           return [
             path
               .resolve(path.join(slug, permalink))

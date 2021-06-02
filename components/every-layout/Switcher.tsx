@@ -13,7 +13,7 @@ type SwitcherProps = {
   space?: string;
 
   /**
-   * The maximum numner of elements allow to appear in a horizontal layout
+   * The maximum number of elements allow to appear in a horizontal layout
    */
   limit?: number;
 };

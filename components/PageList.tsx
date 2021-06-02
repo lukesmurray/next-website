@@ -4,7 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Maybe } from "prisma/graphql";
 import React from "react";
-import { captionStyles, h3Styles, linkStyles } from "styles/proseStyles";
+import {
+  captionStyles,
+  h2Styles,
+  h3Styles,
+  linkStyles,
+} from "styles/proseStyles";
 import { spacing } from "styles/spacing";
 import tw, { css } from "twin.macro";
 import { getStaticProps } from "../pages/[[...slug]]";
@@ -16,7 +21,7 @@ import { formatPageTitle } from "./formatters/formatPageTitle";
 export const PageList: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
-  const { currentPage } = props;
+  const { currentPage, recentPosts } = props;
 
   const sections = currentPage.pages.filter((p) => p.kind !== "page");
   const pages = currentPage.pages.filter((p) => p.kind === "page");
@@ -28,23 +33,26 @@ export const PageList: React.VFC<
   return (
     <Stack as={"section"} space={spacing[14]}>
       {sections.length > 0 && (
-        <ClusterGrid min={`calc(${spacing.prose}/2.5)`}>
-          <ul
-            css={[
-              css`
-                & > li {
-                  ${tw`p-3 rounded-md shadow hover:cursor-pointer focus-within:cursor-pointer hover:shadow-md bg-surface hover:bg-surfaceLifted`}
-                }
-              `,
-            ]}
-          >
-            {sections.map((page) => (
-              <li key={page.slug}>
-                <SectionCard page={page} />
-              </li>
-            ))}
-          </ul>
-        </ClusterGrid>
+        <Stack as={"section"}>
+          <h2 css={h2Styles}>Sections</h2>
+          <ClusterGrid min={`calc(${spacing.prose}/2.5)`}>
+            <ul
+              css={[
+                css`
+                  & > li {
+                    ${tw`p-3 rounded-md shadow hover:cursor-pointer focus-within:cursor-pointer hover:shadow-md bg-surface hover:bg-surfaceLifted`}
+                  }
+                `,
+              ]}
+            >
+              {sections.map((page) => (
+                <li key={page.slug}>
+                  <SectionCard page={page} />
+                </li>
+              ))}
+            </ul>
+          </ClusterGrid>
+        </Stack>
       )}
       {pages.length > 0 && (
         <Stack as="ul">
@@ -53,6 +61,19 @@ export const PageList: React.VFC<
               <PageSummaryLink page={page} />
             </li>
           ))}
+        </Stack>
+      )}
+
+      {currentPage.kind === "home" && recentPosts.length > 0 && (
+        <Stack as="section">
+          <h2 css={h2Styles}>Recent Posts</h2>
+          <Stack as="ul">
+            {recentPosts.map((page) => (
+              <li key={page.slug}>
+                <PageSummaryLink page={page} />
+              </li>
+            ))}
+          </Stack>
         </Stack>
       )}
     </Stack>

@@ -1017,7 +1017,7 @@ export type SlugPageQueryVariables = Exact<{
 }>;
 
 
-export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, date?: Maybe<any>, draft: boolean, description?: Maybe<string>, filePath?: Maybe<string>, image?: Maybe<string>, parent?: Maybe<{ slug: string, title: string, kind: string, draft: boolean, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, pages: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> }> };
+export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, date?: Maybe<any>, draft: boolean, description?: Maybe<string>, filePath?: Maybe<string>, image?: Maybe<string>, parent?: Maybe<{ slug: string, title: string, kind: string, draft: boolean, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, pages: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> }>, recentPosts: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> };
 
 export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1076,6 +1076,18 @@ export const SlugPageDocument = gql`
       date
       description
     }
+  }
+  recentPosts: pages(
+    orderBy: {date: desc}
+    where: {AND: [{OR: [{draft: {not: {equals: true}}}, {draft: {equals: $publishDrafts}}]}, {isSection: {equals: false}}]}
+    take: 5
+  ) {
+    slug
+    title
+    kind
+    draft
+    date
+    description
   }
 }
     `;

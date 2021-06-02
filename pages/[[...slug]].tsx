@@ -118,6 +118,28 @@ export const getStaticProps = async (
             description
           }
         }
+        recentPosts: pages(
+          orderBy: { date: desc }
+          where: {
+            AND: [
+              {
+                OR: [
+                  { draft: { not: { equals: true } } }
+                  { draft: { equals: $publishDrafts } }
+                ]
+              }
+              { isSection: { equals: false } }
+            ]
+          }
+          take: 5
+        ) {
+          slug
+          title
+          kind
+          draft
+          date
+          description
+        }
       }
     `,
     {

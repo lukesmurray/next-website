@@ -31,7 +31,7 @@ type PageSlug = string;
 /**
  * The interface for a page (pages can contain other pages)
  */
-interface Page {
+export interface Page {
   /**
    * Content defined below frontmatter
    */
@@ -131,7 +131,7 @@ type FileParseInfo = {
  * Parse context used in parsing.
  * Contains information relevant for the entire parsing process.
  */
-type ParseContext = {
+export type ParseContext = {
   /**
    * The root directory for the current parse context
    */
@@ -194,7 +194,7 @@ async function* walkFileTree(
  * @param parent The parent page if one exists
  * @returns The page representing the directory
  */
-async function parseDirectory(
+export async function parseDirectory(
   dir: string,
   parent: Page | undefined,
   parseContext: ParseContext
@@ -240,7 +240,7 @@ async function parseDirectory(
  * @param parent the parent page
  * @returns The page representing the file
  */
-async function parseFile(
+export async function parseFile(
   filePath: string,
   parent: Page,
   parseContext: ParseContext
