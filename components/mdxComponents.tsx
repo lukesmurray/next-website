@@ -26,6 +26,7 @@ export function mdxComponents(slug: string): Record<string, React.ReactNode> {
       const imgSrc = useMemo(() => resolveImgUrlInWeb(src, slug), [src, slug]);
       if (height !== undefined && width !== undefined && imgSrc !== undefined) {
         return (
+          // @ts-ignore
           <Image
             layout="responsive"
             src={imgSrc}
