@@ -1,0 +1,11 @@
+---
+title: "No Auto Value on Zero - an odd mysql pitfall"
+date: "2021-06-08T13:12:56"
+description: ""
+draft: false
+# image: /path/to/image
+---
+
+Today I was inserting data from a csv into a mysql database and spent about an hour running into a weird error where the first time I inserted the data into the table I would get an error `Error Code: 1062. Duplicate entry '1' for key 'PRIMARY'`. The error is related to [`NO_AUTO_VALUE_ON_ZERO`](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_no_auto_value_on_zero) which generates an auto incrementing primary key when you insert a primary key with a value of zero. When I inserted the data a second time the primary key would have been auto incremented beyond the max row count so the error would go away.
+
+Pretty odd bug.
