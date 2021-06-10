@@ -1,0 +1,73 @@
+---
+title: "A Brief History of Messaging"
+date: "2021-06-10T09:49:55"
+description: "A short history of messaging software"
+draft: true
+# image: /path/to/image
+---
+
+## Basic History
+
+- The earliest messaging systems developed on time sharing computers [^emailorigin] and ARPANET developed as a way of linking these often incompatible implementations.
+- The first ARPANET email was sent in 1971 [^emailorigin] and SMTP protocol was introduced in 1981
+- From the 1980s to 1990s proprietary mail systems or the X.400 email system part of GOSIP would dominate but in 1995 restrictions on email traffic ended and SMTP, POP3, IMAP protocols were standardized [^emailorigin]
+- Issues that arise with messaging
+  - attachment size limiations
+  - information overload due to volumes of email - office workers complain of too many emails
+  - spam
+  - malware - sending malicious mail
+  - spoofing - sending an email as someone else
+  - bombing - DDOS of an address
+  - tracking - can be used maliciously
+- Talkomatic built on the PLATO System at University of Illinois was first chat system. Was very popular in the 1980s
+- One early GUI chat was BroadCast which was a popular Mac extension in the 1980s
+- CompuServe CB Simulator in 1980 was one of the first publicly available chat services
+- features in online chat
+  - multicast - sending one mesage to multiple people
+  - group chat AKA synchronous conferencing
+
+[^emailorigin]: https://en.wikipedia.org/wiki/Email#Origin
+
+## Email Systems
+
+- ARPANET
+- GOSIP
+- X.400
+
+## Chat Systems
+
+- [List of Chat Software and Protocols](https://en.wikipedia.org/wiki/Online_chat#Software_and_protocols)
+
+- [Talkomatic](https://en.wikipedia.org/wiki/Talkomatic)
+  - Talkomatic was created by Doug Brown and David R. Woolley in 1973 on the PLATO System[4] at the University of Illinois. It offered six channels (the analog of a 'room'), each of which could hold up to five participants.[5] Along with PLATO Notes and a wide variety of games, Talkomatic was one of the features of PLATO that gave rise to a large online community that persisted into the mid 1980s.
+  - [web demo](https://talkomatic.sjzoppi.com/talko_en.html#)
+- BroadCast
+- CB Simulator
+- Internet Relay Chat
+
+## Chat Protocols
+
+- [Instant Messaging Protocols](https://en.wikipedia.org/wiki/Comparison_of_instant_messaging_protocols)
+  - the interesting thing to note here is the headers in the table
+    - asynchronous message relaying
+    - TLS
+    - end to end encryption
+    - unlimited number of contacts
+    - bulletins to all contacts
+    - one to many routing
+    - spam protection
+    - group channel or conference support
+    - audio/VoIP support
+    - webcome/video
+    - batch file sharing
+    - media synchronization
+    - serverless
+    - protocol
+
+It's interesting that email provides the user with an address while both Discord and Slack provide the user with a "workspace" that contains "channels" as well as one on one chats.
+
+All of the top Discord Bots seem to be games where interaction leads to currency being acquired and that currency can be gambled.
+
+Matrix is very cool but has crazy bad performance issues and is still very non-user friendly. Bridging to other applications can require installing docker which is a no go for 99% of the population.
+
+Might be worth reading the [public matrix spec](https://matrix.org/docs/spec/)
