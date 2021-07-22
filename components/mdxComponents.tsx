@@ -8,6 +8,8 @@ import "tippy.js/dist/tippy.css";
 import { css } from "twin.macro";
 import { resolveImgUrlInWeb } from "../lib/utils/resolveImgUrl";
 import { ClonedFootnote } from "./ClonedFootnote";
+import { GithubFileLink } from "./GithubFileLink";
+import { TwitterLink } from "./TwitterLink";
 
 /**
  * Create mdx components
@@ -16,6 +18,8 @@ import { ClonedFootnote } from "./ClonedFootnote";
  */
 export function mdxComponents(slug: string): Record<string, React.ReactNode> {
   const components: Record<string, React.ReactNode> = {
+    GithubLink: GithubFileLink,
+    TwitterLink,
     img: (
       props: React.ClassAttributes<HTMLImageElement> &
         React.ImgHTMLAttributes<HTMLImageElement> & {

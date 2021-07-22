@@ -1,5 +1,7 @@
 import { MDX } from "components/MDX";
+import { InferGetStaticPropsType } from "next";
 import { serialize } from "next-mdx-remote/serialize";
+import { getStaticProps } from "pages/[[...slug]]";
 import path from "path";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
@@ -20,9 +22,15 @@ export function renderMdxDataToString(content: string, slug: string) {
   });
 }
 
-export async function renderMdxDataToStaticHtml(content: string, slug: string) {
+export async function renderMdxDataToStaticHtml(
+  content: string,
+  slug: string,
+  scope: InferGetStaticPropsType<typeof getStaticProps>
+) {
   const mdx = await renderMdxDataToString(content, slug);
-  return ReactDOMServer.renderToStaticMarkup(<MDX mdx={mdx} slug={slug} />);
+  return ReactDOMServer.renderToStaticMarkup(
+    <MDX mdx={mdx} slug={slug} scope={scope} />
+  );
 }
 
 function getRehypePlugins(slug: string): Pluggable[] {

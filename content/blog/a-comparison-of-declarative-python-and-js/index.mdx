@@ -1,0 +1,203 @@
+---
+title: "A comparison of declarative python and js"
+date: "2021-07-22T15:05:24"
+description: "Comparing how to write declarative syntax in python and js"
+draft: false
+# image: /path/to/image
+---
+
+Declarative code communicates more effectively than imperative code [^functional_light_js].
+Declarative code is easier to read and reason about since it describes what the code does rather than how it does it.
+
+Consider the following two pieces of code from [Functional Light JS](https://github.com/getify/Functional-Light-JS/blob/master/manuscript/ch2.md#the-importance-of-declarative-style).
+
+```javascript
+// declarative parameter specification
+function foo([x, y, ...args] = []) {}
+
+// imperative parameter specification
+function foo(params) {
+  var x = params[0];
+  var y = params[1];
+  var args = params.slice(2);
+}
+```
+
+Both functions are doing the same thing but first function is easier to read.
+In the second function you need to read three lines of code to figure out what the function does, and you need to be familiar with how [`slice`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) works.
+
+> Wherever possible, and to whatever degrees our language and our libraries/frameworks will let us, we should be striving for declarative, self-explanatory code. — [Kyle Simpson](https://github.com/getify/Functional-Light-JS/blob/master/manuscript/ch2.md#the-importance-of-declarative-style)
+
+[^functional_light_js]: From [Functional Light JS](https://github.com/getify/Functional-Light-JS/blob/master/manuscript/ch2.md#the-importance-of-declarative-style) by Kyle Simpson.
+
+I recently started writing python code for the first time in a while, and I decided to compare how to write declarative syntax in python and js.
+
+## Creating a list
+
+- Python
+  ```python
+  foo = [1, 2, 3]
+  ```
+- JS
+  ```js
+  var foo = [1, 2, 3];
+  ```
+
+## Creating a Dictionary/Object
+
+- Python
+  ```python
+  foo = {"a": 1, "b": 2, "c": 3}
+  ```
+- JS
+  ```js
+  var foo = { a: 1, b: 2, c: 3 };
+  ```
+
+## Unpacking a list
+
+- Python
+  ```python
+  a, b, c = [1, 2, 3]
+  ```
+- JS
+  ```js
+  var [a, b, c] = [1, 2, 3];
+  ```
+
+Both python and js support nested unpacking.
+
+- Python
+  ```python
+  a, [b, c], d = [1, [2, 3], 4]
+  ```
+- JS
+  ```js
+  var [a, [b, c], d] = [1, [2, 3], 4];
+  ```
+
+and both python and js support merging multiple items together during unpacking.
+
+- Python
+  ```python
+  a, *b = [1, 2, 3]
+  # a = 1, b = [2, 3]
+  ```
+- JS
+  ```js
+  var [a, ...b] = [1, 2, 3];
+  // a = 1, b = [2, 3]
+  ```
+
+One thing python does which javascript does not is allowing the merging parameter to be anywhere in the unpacking.
+
+```python
+a, *b, c = [1, 2, 3, 4, 5]
+# a = 1
+# b = [2, 3, 4]
+# c = 5
+```
+
+You can use this to get the last element in a list.
+
+```python
+*_, last = [1, 2, 3, 4, 5]
+# last = 5
+```
+
+## Unpacking a Dictionary/Object
+
+Python does not have support for unpacking a dictionary.
+
+- JS
+  ```js
+  var { a, b, c } = { a: 1, b: 2, c: 3 };
+  ```
+
+## Array Concatenation
+
+- Python
+  ```python
+  foo = [*[1, 2, 3], *[4, 5, 6]]
+  ```
+- JS
+  ```js
+  var foo = [...[1, 2, 3], ...[4, 5, 6]];
+  ```
+
+## Object/Dict Concatenation
+
+- Python
+  ```python
+  foo = {**{"a": 1, "b": 2, "c": 3}, **{"d": 4, "e": 5, "f": 6}}
+  ```
+- JS
+  ```js
+  var foo = { ...{ a: 1, b: 2, c: 3 }, ...{ d: 4, e: 5, f: 6 } };
+  ```
+
+In both python and javascript later keys overwrite earlier keys when you merge dictionaries/objects.
+
+## Rest Parameters
+
+- Python
+  ```python
+  def foo(*args):
+    pass
+  ```
+- JS
+
+  ```js
+  function foo(...args) {}
+  ```
+
+## Partial Rest Parameters
+
+- Python
+  ```python
+  def foo(a, b, c, *args):
+    pass
+  ```
+- JS
+
+  ```js
+  function foo(a, b, c, ...args) {
+    var a, b, c;
+    [a, b, c, ...args] = args;
+  }
+  ```
+
+## Argument Unpacking
+
+Python does not support unpacking in the argument list but you can still unpack the list in the function.
+
+- Python
+  ```python
+  def foo(*args):
+    a, b, c, *args = args
+  ```
+- JS
+  ```js
+  function foo([a, b, c, ...args] = []) {}
+  ```
+
+## Unpacking Keyword Arguments
+
+Javascript does not support keyword arguments but you can still unpack a single object and use the keys similarly to keyword arguments.
+
+- Python
+
+  ```python
+  def foo(a, b, c):
+    pass
+
+  foo(**{"a": 1, "b": 2, "c": 3})
+  ```
+
+- JS
+  ```js
+  function foo({ a, b, c }) {}
+  foo({ a: 1, b: 2, c: 3 });
+  ```
+
+If you can think of more examples or saw an error feel free to let me know via <TwitterLink/> or open an issue on <GithubLink filePath={currentPage.filePath}/>.

@@ -8,21 +8,20 @@ import { Stack } from "./every-layout/Stack";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
-export const Layout: React.FC<
-  InferGetStaticPropsType<typeof getStaticProps>
-> = (props) => {
-  return (
-    <HeaderMainFooterLayout gutter={spacing[4]}>
-      <Header {...props} />
-      <Center>
-        <Stack as="main" space={spacing["12"]}>
-          {props.children}
-        </Stack>
-      </Center>
-      <Footer {...props} />
-    </HeaderMainFooterLayout>
-  );
-};
+export const Layout: React.FC<InferGetStaticPropsType<typeof getStaticProps>> =
+  (props) => {
+    return (
+      <HeaderMainFooterLayout gutter={spacing[4]}>
+        <Header {...props} />
+        <Center>
+          <Stack as="main" space={spacing["12"]}>
+            {props.children}
+          </Stack>
+        </Center>
+        <Footer {...props} />
+      </HeaderMainFooterLayout>
+    );
+  };
 
 type HeaderMainFooterLayoutProps = {
   /**

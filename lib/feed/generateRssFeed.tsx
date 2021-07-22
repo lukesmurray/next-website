@@ -2,6 +2,8 @@ import { Feed } from "feed";
 import fs from "fs/promises";
 import { publishDrafts } from "lib/constants/publishDrafts";
 import { renderMdxDataToStaticHtml } from "lib/mdx/renderMdxDataToString";
+import { slugQueryStaticProps } from "lib/queries/slugQueryStaticProps";
+import { convertDatabaseSlugToRenderSlug } from "lib/utils/routing";
 import { SlugStaticPathsQuery } from "../../prisma/graphql";
 import {
   author,
@@ -37,6 +39,9 @@ export async function generateRssFeed(data: SlugStaticPathsQuery | undefined) {
 
   for (const page of data.pages) {
     const url = `${feedBaseUrl}${page.slug}`;
+    const pageQueryResult = await slugQueryStaticProps(
+      convertDatabaseSlugToRenderSlug(page.slug)
+    );
     // add pages to the feed
     // don't add drafts unless publish drafts is truee
     if (page.kind === "page" && (page.draft !== true || publishDrafts)) {
@@ -48,7 +53,11 @@ export async function generateRssFeed(data: SlugStaticPathsQuery | undefined) {
         author: [author],
         contributor: [author],
         date: new Date(page.date),
-        content: await renderMdxDataToStaticHtml(page.content, page.slug),
+        content: await renderMdxDataToStaticHtml(
+          page.content,
+          page.slug,
+          pageQueryResult.data as any
+        ),
       });
     }
   }

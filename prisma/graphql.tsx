@@ -1221,6 +1221,11 @@ export type StringWithAggregatesFilter = {
   startsWith?: Maybe<Scalars['String']>;
 };
 
+export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SlugStaticPathsQuery = { pages: Array<{ slug: string, title: string, description?: Maybe<string>, date?: Maybe<any>, kind: string, draft: boolean, content: string }> };
+
 export type SlugPageQueryVariables = Exact<{
   currentSlug: Scalars['String'];
   publishDrafts: Scalars['Boolean'];
@@ -1229,12 +1234,47 @@ export type SlugPageQueryVariables = Exact<{
 
 export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, date?: Maybe<any>, draft: boolean, description?: Maybe<string>, filePath?: Maybe<string>, image?: Maybe<string>, parent?: Maybe<{ slug: string, title: string, kind: string, draft: boolean, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, pages: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> }>, recentPosts: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> };
 
-export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
+export const SlugStaticPathsDocument = gql`
+    query SlugStaticPaths {
+  pages {
+    slug
+    title
+    description
+    date
+    kind
+    draft
+    content
+  }
+}
+    `;
 
-export type SlugStaticPathsQuery = { pages: Array<{ slug: string, title: string, description?: Maybe<string>, date?: Maybe<any>, kind: string, draft: boolean, content: string }> };
-
-
+/**
+ * __useSlugStaticPathsQuery__
+ *
+ * To run a query within a React component, call `useSlugStaticPathsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSlugStaticPathsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSlugStaticPathsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSlugStaticPathsQuery(baseOptions?: Apollo.QueryHookOptions<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>(SlugStaticPathsDocument, options);
+      }
+export function useSlugStaticPathsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>(SlugStaticPathsDocument, options);
+        }
+export type SlugStaticPathsQueryHookResult = ReturnType<typeof useSlugStaticPathsQuery>;
+export type SlugStaticPathsLazyQueryHookResult = ReturnType<typeof useSlugStaticPathsLazyQuery>;
+export type SlugStaticPathsQueryResult = Apollo.QueryResult<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>;
 export const SlugPageDocument = gql`
     query SlugPage($currentSlug: String!, $publishDrafts: Boolean!) {
   root: page(where: {slug: "/"}) {
@@ -1330,43 +1370,3 @@ export function useSlugPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<S
 export type SlugPageQueryHookResult = ReturnType<typeof useSlugPageQuery>;
 export type SlugPageLazyQueryHookResult = ReturnType<typeof useSlugPageLazyQuery>;
 export type SlugPageQueryResult = Apollo.QueryResult<SlugPageQuery, SlugPageQueryVariables>;
-export const SlugStaticPathsDocument = gql`
-    query SlugStaticPaths {
-  pages {
-    slug
-    title
-    description
-    date
-    kind
-    draft
-    content
-  }
-}
-    `;
-
-/**
- * __useSlugStaticPathsQuery__
- *
- * To run a query within a React component, call `useSlugStaticPathsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSlugStaticPathsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSlugStaticPathsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useSlugStaticPathsQuery(baseOptions?: Apollo.QueryHookOptions<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>(SlugStaticPathsDocument, options);
-      }
-export function useSlugStaticPathsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>(SlugStaticPathsDocument, options);
-        }
-export type SlugStaticPathsQueryHookResult = ReturnType<typeof useSlugStaticPathsQuery>;
-export type SlugStaticPathsLazyQueryHookResult = ReturnType<typeof useSlugStaticPathsLazyQuery>;
-export type SlugStaticPathsQueryResult = Apollo.QueryResult<SlugStaticPathsQuery, SlugStaticPathsQueryVariables>;

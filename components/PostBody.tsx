@@ -17,7 +17,7 @@ export const PostBody: React.VFC<
 
   return (
     <PostBodyWrapper {...props}>
-      <MDX mdx={currentPage.mdx} slug={currentPage.slug} />
+      <MDX mdx={currentPage.mdx} slug={currentPage.slug} scope={props} />
     </PostBodyWrapper>
   );
 };
