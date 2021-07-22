@@ -8,9 +8,8 @@ draft: false
 
 # Welcome!
 
-My name is Luke and I am a PhD candidate at MIT working in [David Karger's](http://people.csail.mit.edu/karger/) [Haystack group](http://haystack.csail.mit.edu/).
+I am a PhD candidate working in [David Karger's](http://people.csail.mit.edu/karger/) [Haystack group](http://haystack.csail.mit.edu/) at MIT interested in building software which augments human cognition.
 
-I'm interested in building software which augments human cognition.
 At the moment I am building tools for doctors in the Emergency Room at [Beth Israel Deaconess Medical Center](https://www.bidmc.org/) which seek to reduce the cognitive burden of synthesizing the patient medical record, improve the quality of patient care, and lower the burden of creating clinical documentation.
 My tools have been actively deployed in live Emergency Room settings for over a year and have been used to document over 1000 patient visits.
 
