@@ -41,6 +41,11 @@ export const stylesBase = css`
   }
 
   body {
-    ${tw`bg-primary text-primary transition-colors duration-200`}
+    ${tw`bg-primary text-primary`}
+  }
+
+  body.light,
+  body.dark {
+    ${tw`transition-colors duration-200`}
   }
 `;
