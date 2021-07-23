@@ -1041,7 +1041,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.4.4", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.4.4", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
   integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
@@ -7269,18 +7269,6 @@ mdast-util-to-hast@10.0.1:
     unist-util-position "^3.0.0"
     unist-util-visit "^2.0.0"
 
-mdast-util-to-markdown@^0.5.1:
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/mdast-util-to-markdown/-/mdast-util-to-markdown-0.5.4.tgz#be680ed0c0e11a07d07c7adff9551eec09c1b0f9"
-  integrity sha512-0jQTkbWYx0HdEA/h++7faebJWr5JyBoBeiRf0u3F4F3QtnyyGaWIsOwo749kRb1ttKrLLr+wRtOkfou9yB0p6A==
-  dependencies:
-    "@types/unist" "^2.0.0"
-    longest-streak "^2.0.0"
-    mdast-util-to-string "^2.0.0"
-    parse-entities "^2.0.0"
-    repeat-string "^1.0.0"
-    zwitch "^1.0.0"
-
 mdast-util-to-markdown@^0.6.0:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/mdast-util-to-markdown/-/mdast-util-to-markdown-0.6.5.tgz#b33f67ca820d69e6cc527a93d4039249b504bebe"
@@ -7297,14 +7285,6 @@ mdast-util-to-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/mdast-util-to-string/-/mdast-util-to-string-2.0.0.tgz#b8cfe6a713e1091cb5b728fc48885a4767f8b97b"
   integrity sha512-AW4DRS3QbBayY/jJmD8437V1Gombjf8RSOUCMFBuo5iHi58AGEgVCKQ+ezHkZZDpAQS75hcBMpLqjpJTjtUL7w==
-
-mdast-util-wiki-link@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/mdast-util-wiki-link/-/mdast-util-wiki-link-0.0.1.tgz#1f70e494d8af5fd527210f300683016be8307fd5"
-  integrity sha512-mQGhpvS1kICzDvC4me3vV4L/0msyGTvoHWIjqI0wUR1ToQ+CMy1o+tDVsS1G6QrXMMHOY0I8S9k6qwRfjxS6cA==
-  dependencies:
-    "@babel/runtime" "^7.12.1"
-    mdast-util-to-markdown "^0.5.1"
 
 mdurl@^1.0.0:
   version "1.0.1"
@@ -7357,13 +7337,6 @@ micromark-extension-footnote@^0.3.0:
   integrity sha512-gr/BeIxbIWQoUm02cIfK7mdMZ/fbroRpLsck4kvFtjbzP4yi+OPVbnukTc/zy0i7spC2xYE/dbX1Sur8BEDJsQ==
   dependencies:
     micromark "~2.11.0"
-
-micromark-extension-wiki-link@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/micromark-extension-wiki-link/-/micromark-extension-wiki-link-0.0.4.tgz#f4750a0f24051bf0521bbafaf64f291f9266d2a4"
-  integrity sha512-dJc8AfnoU8BHkN+7fWZvIS20SMsMS1ZlxQUn6We67MqeKbOiEDZV5eEvCpwqGBijbJbxX3Kxz879L4K9HIiOvw==
-  dependencies:
-    "@babel/runtime" "^7.12.1"
 
 micromark@~2.11.0:
   version "2.11.4"
@@ -7748,7 +7721,7 @@ nwsapi@^2.2.0:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.0.tgz#204879a9e3d068ff2a55139c2c772780681a38b7"
   integrity sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==
 
-object-assign@^4.0.0, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -8837,14 +8810,13 @@ remark-stringify@^9.0.0:
   dependencies:
     mdast-util-to-markdown "^0.6.0"
 
-remark-wiki-link@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/remark-wiki-link/-/remark-wiki-link-1.0.2.tgz#a02dc2bf7f94827a45440a659b08cbb15f4239de"
-  integrity sha512-lPCfPUXO9GrpZxJ6Y0y4DoMcqLyYm9Y5Mv4pUyZqVGJkiYxHJOWUNkNHhdF8GgWg6ILOcvemExUOUhQQpZ5Q0Q==
+remark-wiki-link@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/remark-wiki-link/-/remark-wiki-link-0.0.4.tgz#9af79538714280513f209661794083d5ae3006d7"
+  integrity sha512-Mmd5TspUWTnt+gafIdUtczHsjZY21XYEI9BeR6HMLKv/pUiNa5tDSWSjiPMvx07DlD4OmSM+tIhhk7SQXV3LrA==
   dependencies:
     "@babel/runtime" "^7.4.4"
-    mdast-util-wiki-link "0.0.1"
-    micromark-extension-wiki-link "0.0.4"
+    unist-util-map "^1.0.3"
 
 remark@^13.0.0:
   version "13.0.0"
@@ -10196,6 +10168,13 @@ unist-util-is@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/unist-util-is/-/unist-util-is-4.1.0.tgz#976e5f462a7a5de73d94b706bac1b90671b57797"
   integrity sha512-ZOQSsnce92GrxSqlnEEseX0gi7GH9zTJZ0p9dtu87WRb/37mMPO2Ilx1s/t9vBHrFhbgweUwb+t7cIn5dxPhZg==
+
+unist-util-map@^1.0.3:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/unist-util-map/-/unist-util-map-1.0.5.tgz#701069b72e1d1cc02db265502a5e82b77c2eb8b7"
+  integrity sha512-dFil/AN6vqhnQWNCZk0GF/G3+Q5YwsB+PqjnzvpO2wzdRtUJ1E8PN+XRE/PRr/G3FzKjRTJU0haqE0Ekl+O3Ag==
+  dependencies:
+    object-assign "^4.0.1"
 
 unist-util-map@^2.0.1:
   version "2.0.1"

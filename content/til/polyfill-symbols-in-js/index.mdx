@@ -6,6 +6,15 @@ draft: false
 image: images/can-i-use-symbols.png
 ---
 
+<Admonition type="caution" title="What I would do now">
+
+In this post I used javascript Symbols because they are not enumerable in [`for...in`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in) loops.
+Since writing the code I've learned that you can use [`Object.defineProperty`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) and set [`enumerable to false`](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#enumerable) to get similar behavior without needing a polyfill for symbols in IE11.
+
+I also have identified that symbols made my implementation more complicated than necessary, and I would take a different approach now[^hindsight]. That being said this post still documents my first time realizing that you sometimes need to read the implementation of a polyfill before assuming it works identically to the spec.
+
+</Admonition>
+
 One of the projects I'm working on has to support Internet Explorer 11 (IE11).
 The project also relies on an autocomplete system built using [compressed tries](https://en.wikipedia.org/wiki/Trie#Compressing_tries).
 All of the details of the trie implementation are beyond the scope of this post, but I need to reveal some of the details to explain the issues I ran into when trying to get the trie to work in IE11.

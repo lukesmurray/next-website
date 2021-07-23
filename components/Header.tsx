@@ -7,9 +7,7 @@ import { HeaderSectionLinks } from "./HeaderSectionLinks";
 import { Logo } from "./Logo";
 import ThemeToggle from "./theme/ThemeToggle";
 
-export const Header: React.VFC<
-  InferGetStaticPropsType<typeof getStaticProps>
-> = (props) => {
+export function Header(props: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <header>
       <Cluster justify="space-between" align="center">
@@ -26,4 +24,4 @@ export const Header: React.VFC<
       <Breadcrumbs {...props} />
     </header>
   );
-};
+}

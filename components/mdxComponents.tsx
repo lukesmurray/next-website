@@ -7,6 +7,7 @@ import "tippy.js/animations/scale-extreme.css";
 import "tippy.js/dist/tippy.css";
 import { css } from "twin.macro";
 import { resolveImgUrlInWeb } from "../lib/utils/resolveImgUrl";
+import { Admonition } from "./Admonition";
 import { ClonedFootnote } from "./ClonedFootnote";
 import { GithubFileLink } from "./GithubFileLink";
 import { TwitterLink } from "./TwitterLink";
@@ -18,7 +19,8 @@ import { TwitterLink } from "./TwitterLink";
  */
 export function mdxComponents(slug: string): Record<string, React.ReactNode> {
   const components: Record<string, React.ReactNode> = {
-    GithubLink: GithubFileLink,
+    Admonition,
+    GithubFileLink,
     TwitterLink,
     img: (
       props: React.ClassAttributes<HTMLImageElement> &

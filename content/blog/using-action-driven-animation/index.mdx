@@ -17,15 +17,14 @@ What does this mean? [Tobias explains better than I ever could](https://tobiasah
 
 ## Using action driven animation for internal links
 
-<aside style={{border: "2px solid var(--text-secondary-light)", padding: "0 2rem"}}>
-
-**⚠️ Touch Screen and Mobile Users**
+<Admonition type="caution" title="Touch Screen and Mobile Users">
 
 The hover examples below do not work on touch devices! If you're reading this on a touch device you'll have to make do with the gifs! Tapping the links will not cause an animation to occur.
 
-</aside>
+</Admonition>
 
-I've added transclusion for internal links in several iterations of my blog. For example try hovering on this [[index.mdx|recursive link to this page]]. Notice how the iframe grows in and out of the link, almost as if the preview is expanding from within the anchor tag? The animation is indicating to the user that the page is coming from _inside the link_. Implicitly the animation is reinforcing the concept that if the user clicks on the link they will navigate to the previewed page.
+I have added transclusion for internal links in several iterations of my blog.
+For example try hovering on this [[index.mdx|recursive link to this page]]. Notice how the iframe grows in and out of the link, almost as if the preview is expanding from within the anchor tag? The animation is indicating to the user that the page is coming from _inside the link_. Implicitly the animation is reinforcing the concept that if the user clicks on the link they will navigate to the previewed page.
 
 ![example internal link animation displaying a link preview growing from and shrinking into the anchor link](images/internal-link-animation.gif)
 

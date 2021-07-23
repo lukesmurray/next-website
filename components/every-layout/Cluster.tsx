@@ -24,7 +24,9 @@ type ClusterProps = {
  * Requires a child container component. Spacing is applied inside that child.
  */
 export const Cluster = styled.div<ClusterProps>`
-  overflow: hidden;
+  /* ↓ Suppress horizontal scrolling caused by
+  the negative margin in some circumstances */
+  /* overflow: hidden; */
 
   & > * {
     display: flex;
