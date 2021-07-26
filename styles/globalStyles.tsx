@@ -5,6 +5,23 @@ import { syntaxStyles } from "./syntaxStyles";
 import { tippyFootnoteAnimation } from "./tippyAnimation";
 import { tippyCustomTheme } from "./tippyTheme";
 
+/**
+ * Fix the code width on smaller screens
+ */
+const codeWidthStyles = css`
+  pre {
+    max-width: calc(100vw - 2rem);
+
+    /* when the screen is small set the max-width to the screen size
+    because 65ch of code is larger than the screen size */
+    @media (max-width: 600px) {
+      @supports (max-width: min(calc(100vw - 2rem), 65ch)) {
+        max-width: min(calc(100vw - 2rem), 65ch);
+      }
+    }
+  }
+`;
+
 export const globalStyles = css`
   /* normalize the html/body height */
   html,
@@ -41,4 +58,6 @@ export const globalStyles = css`
   ${tippyFootnoteAnimation}
 
   ${tippyCustomTheme}
+
+  ${codeWidthStyles}
 `;

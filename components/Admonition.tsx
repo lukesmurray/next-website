@@ -1,3 +1,4 @@
+import { spacing } from "styles/spacing";
 import tw, { css } from "twin.macro";
 
 export function Admonition({
@@ -20,9 +21,28 @@ export function Admonition({
         `,
       ]}
     >
-      <div>
-        {icon ?? <AdmonitionIcon type={type} />}
-        {title ?? <AdmonitionTitle type={type} />}
+      <div
+        css={[
+          tw`bg-primary`,
+          css`
+            width: fit-content;
+            margin-top: -${spacing["8"]};
+            margin-left: calc(-1 * (${spacing["4"]} + 2px));
+
+            /* equivalent of md: */
+            @media (min-width: 768px) {
+              margin-top: -${spacing["10"]};
+              margin-left: calc(-1 * (${spacing["6"]} + 2px));
+            }
+          `,
+        ]}
+      >
+        <span>{icon ?? <AdmonitionIcon type={type} />}</span>
+        {title !== "" && (
+          <span css={tw`px-3 text-caption`}>
+            {title ?? <AdmonitionTitle type={type} />}
+          </span>
+        )}
       </div>
       {children}
     </aside>
