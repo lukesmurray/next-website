@@ -1,0 +1,749 @@
+---
+title: "React Query Auto Sync Hook"
+date: "2021-07-26T09:25:28"
+description: "How to build an auto sync hook with react query"
+draft: true
+# image: /path/to/image
+---
+
+In this post I'll show you how to build an auto synchook with react query.
+The hook will automatically poll the server for changes to a query result, and will automatically save changes you make to the query result back to the server.
+
+<Admonition type="note" title="Concurrent Editing">
+
+Concurrent editing is outside the scope of this post.
+For now we can assume that some merge function exists which can always be used to merge changes from the server with changes made locally.
+If you are interested in more robust solutions for collaborative editing you could check out CRDT implementations such as [yjs](https://github.com/yjs/yjs) or [Automerge](https://github.com/automerge/automerge).
+
+</Admonition>
+
+<!--  -->
+
+[React Query](https://react-query.tanstack.com/) is a great library for asynchronously managing server state.
+But a general rule with react query is that you should [keep server and client state separate](https://tkdodo.eu/blog/practical-react-query#keep-server-and-client-state-separate).
+Server state is the `data` object returned by [`useQuery`](https://react-query.tanstack.com/reference/useQuery).
+If you want to modify this state locally you should copy the `data` to a local `draft` value and change the `draft` value.
+Why?
+ReactQuery assumes that the `data` object only changes based on updates from the server uses _structural sharing_ (a deep comparison of the object's values) to memoize the query results.
+Changing the `data` object directly breaks a lot of the assumptions ReactQuery uses to handle caching, updating, and memoizing query results.
+
+Here is a short example hook that uses a local draft pattern.
+
+```tsx
+import { useState } from "react";
+import { QueryKey, useQuery, UseQueryOptions } from "react-query";
+
+export function useQueryWithDraft<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey
+>(options: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>) {
+  const [draft, setDraft] = useState<TData | undefined>(undefined);
+
+  const queryResult = useQuery(options);
+
+  return {
+    setDraft,
+    draft: draft ?? queryResult.data,
+    queryResult,
+  };
+}
+```
+
+This hook maintains a separation of client and server state.
+The consumer of the hook can treat `draft` value as client state and can update it using `setDraft`.
+The server state remains safe inside the `queryResult`.
+
+But modifying local state isn't very useful unless we have a way to save the modified state back to the server.
+
+```tsx
+import { useCallback, useRef, useState } from "react";
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "react-query";
+
+export function useQueryWithDraft<
+  TQueryFnData = unknown,
+  TQueryError = unknown,
+  TQueryData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TMutationData = unknown,
+  TMutationError = unknown,
+  TMutationContext = unknown
+>(
+  queryOptions: UseQueryOptions<
+    TQueryFnData,
+    TQueryError,
+    TQueryData,
+    TQueryKey
+  >,
+  mutationOptions: UseMutationOptions<
+    TMutationData,
+    TMutationError,
+    TQueryData, // input to mutate is the same as the output of the query
+    TMutationContext
+  >
+) {
+  const [draft, setDraft] = useState<TQueryData | undefined>(undefined);
+
+  // create a stable ref to the draft so we can memoize the save function
+  const draftRef = useRef<TQueryData | undefined>(undefined);
+  draftRef.current = draft;
+
+  const queryResult = useQuery(queryOptions);
+
+  const queryClient = useQueryClient();
+  const queryKey = queryOptions.queryKey!;
+
+  // we provide options to useMutation that optimistically update our state
+  const mutationResult = useMutation({
+    ...mutationOptions,
+    onMutate: async (draft) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries(queryKey);
+      // Snapshot the last known server data
+      const previousData = queryClient.getQueryData(queryKey);
+      // optimistically set our known server state to the new data
+      queryClient.setQueryData(queryKey, draft);
+      // optimistically clear our draft state
+      setDraft(undefined);
+      // Return a context object with the snapshotted value
+      return {
+        previousData,
+        ...mutationOptions.onMutate?.(draft),
+      } as any;
+    },
+    onError: (err, draft, context) => {
+      // reset the server state to the last known state
+      queryClient.setQueryData(queryKey, (context as any).previousData);
+      // reset the draft to the last known draft unless the user made more changes
+      if (draft !== undefined) {
+        setDraft(draft as any);
+      }
+      return mutationOptions.onError?.(err, draft, context);
+    },
+    onSettled: (data, error, variables, context) => {
+      // refetch after error or success:
+      queryClient.invalidateQueries(queryKey);
+      return mutationOptions?.onSettled?.(data, error, variables, context);
+    },
+  });
+
+  const { mutate } = mutationResult;
+
+  // return a stable save function
+  const save = useCallback(() => {
+    if (draftRef.current !== undefined) {
+      mutate(draftRef.current);
+    }
+  }, [mutate]);
+
+  return {
+    save,
+    setDraft,
+    draft: draft ?? queryResult.data,
+    queryResult,
+    mutationResult,
+  };
+}
+```
+
+This hook appears much more complicated but when we break it down the overall changes are straightforward.
+The hook now takes two arguments `queryOptions` and `mutationOptions`.
+The `mutationOptions` are used to handle saving the `draft` value to the server.
+The hook returns the `mutationResult` and a `save` function which can be called without any arguments to save the `draft` value to the server.
+
+The bulk of the complicated code is inside `useMutation` and that code is simply handling [optimistc updates](https://react-query.tanstack.com/guides/optimistic-updates).
+
+Using this API is very simple.
+
+```tsx
+import React from "react";
+import { useQueryWithDraft } from "./useReactQueryAutoSync";
+
+function HookDemo() {
+  const { draft, setDraft, save } = useQueryWithDraft(
+    {
+      queryKey: "foo",
+      queryFn: () => {
+        /* omitted */
+      },
+    },
+    {
+      mutationFn: async () => {
+        /* omitted */
+      },
+    }
+  );
+  return (
+    <>
+      <input
+        type="text"
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+      />
+      <button onClick={() => save()}>Save</button>
+    </>
+  );
+}
+```
+
+We treat the `draft` and `setDraft` values similarly to the result of a `useState` and when we want to `save` the `draft` value to the server we call `save`.
+
+There are two steps remaining to create an auto sync hook.
+We need to poll the server for changes and we need to automatically save the local state when it changes.
+React hooks can manage polling for you if you pass `refetchInterval` to the `queryOptions`.
+That leaves automatically saving to the server.
+
+To prevent clobbering the server with changes we can wrap our `save` function in a [debounce](https://lodash.com/docs/4.17.15#debounce) function.
+
+```tsx
+import debounce from "lodash.debounce";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "react-query";
+
+interface AutoSaveOptions {
+  wait: number;
+  maxWait?: number;
+}
+
+export function useQueryWithDraft<
+  TQueryFnData = unknown,
+  TQueryError = unknown,
+  TQueryData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TMutationData = unknown,
+  TMutationError = unknown,
+  TMutationContext = unknown
+>(
+  queryOptions: UseQueryOptions<
+    TQueryFnData,
+    TQueryError,
+    TQueryData,
+    TQueryKey
+  >,
+  mutationOptions: UseMutationOptions<
+    TMutationData,
+    TMutationError,
+    TQueryData, // input to mutate is the same as the output of the query
+    TMutationContext
+  >,
+  autoSaveOptions?: AutoSaveOptions
+) {
+  const [draft, setDraft] = useState<TQueryData | undefined>(undefined);
+
+  // create a stable ref to the draft so we can memoize the save function
+  const draftRef = useRef<TQueryData | undefined>(undefined);
+  draftRef.current = draft;
+
+  const queryResult = useQuery(queryOptions);
+
+  const queryClient = useQueryClient();
+  const queryKey = queryOptions.queryKey!;
+
+  // we provide options to useMutation that optimistically update our state
+  const mutationResult = useMutation({
+    ...mutationOptions,
+    onMutate: async (draft) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries(queryKey);
+      // Snapshot the last known server data
+      const previousData = queryClient.getQueryData(queryKey);
+      // optimistically set our known server state to the new data
+      queryClient.setQueryData(queryKey, draft);
+      // optimistically clear our draft state
+      setDraft(undefined);
+      // Return a context object with the snapshotted value
+      return {
+        previousData,
+        ...mutationOptions.onMutate?.(draft),
+      } as any;
+    },
+    onError: (err, draft, context) => {
+      // reset the server state to the last known state
+      queryClient.setQueryData(queryKey, (context as any).previousData);
+      // reset the draft to the last known draft unless the user made more changes
+      if (draft !== undefined) {
+        setDraft(draft as any);
+      }
+      return mutationOptions.onError?.(err, draft, context);
+    },
+    onSettled: (data, error, variables, context) => {
+      // refetch after error or success:
+      queryClient.invalidateQueries(queryKey);
+      return mutationOptions?.onSettled?.(data, error, variables, context);
+    },
+  });
+
+  const { mutate } = mutationResult;
+
+  // return a stable save function
+  const save = useCallback(() => {
+    if (draftRef.current !== undefined) {
+      mutate(draftRef.current);
+    }
+  }, [mutate]);
+
+  // memoize a debounced save function
+  const saveDebounced = useMemo(
+    () =>
+      debounce(save, autoSaveOptions?.wait, {
+        // only pass maxWait to the options if maxWait is defined
+        // if maxWait is undefined it is set to 0
+        ...(autoSaveOptions?.maxWait !== undefined
+          ? { maxWait: autoSaveOptions?.maxWait }
+          : {}),
+      }),
+    [autoSaveOptions?.maxWait, autoSaveOptions?.wait, save]
+  );
+
+  // clean up saveDebounced on unmount to avoid leaks
+  useEffect(() => {
+    const prevSaveDebounced = saveDebounced;
+    return () => {
+      prevSaveDebounced.cancel();
+    };
+  }, [saveDebounced]);
+
+  // call saveDebounced when the draft changes
+  useEffect(() => {
+    // check that autoSave is enabled and there are local changes to save
+    if (autoSaveOptions?.wait !== undefined && draft !== undefined) {
+      saveDebounced();
+    }
+  }, [saveDebounced, draft, autoSaveOptions?.wait]);
+
+  return {
+    save: useCallback(() => {
+      saveDebounced.cancel();
+      save();
+    }, [save, saveDebounced]),
+    setDraft,
+    draft: draft ?? queryResult.data,
+    queryResult,
+    mutationResult,
+  };
+}
+```
+
+This hook takes one additional argument `autoSaveOptions` which contains arguments to pass to `lodash.debounce` and otherwise the external API remains the same.
+
+Internally we implement the following logic:
+
+- We create a memoized debounced save function.
+- We make sure to clean up the debounced save function when the component unmounts by calling `cancel()`.
+- We make sure to call the debounced save function when the draft changes
+- We cancel the debounced save function when the user manually saves
+
+We are always careful to cancel a stale debounced save function and our value is only saved if there is an outstanding local change.
+
+We can also add code to make sure the draft is saved when the user navigates away from the page.
+
+```tsx
+import debounce from "lodash.debounce";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "react-query";
+
+interface AutoSaveOptions {
+  wait: number;
+  maxWait?: number;
+}
+
+export function useQueryWithDraft<
+  TQueryFnData = unknown,
+  TQueryError = unknown,
+  TQueryData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TMutationData = unknown,
+  TMutationError = unknown,
+  TMutationContext = unknown
+>(
+  queryOptions: UseQueryOptions<
+    TQueryFnData,
+    TQueryError,
+    TQueryData,
+    TQueryKey
+  >,
+  mutationOptions: UseMutationOptions<
+    TMutationData,
+    TMutationError,
+    TQueryData, // input to mutate is the same as the output of the query
+    TMutationContext
+  >,
+  autoSaveOptions?: AutoSaveOptions
+) {
+  const [draft, setDraft] = useState<TQueryData | undefined>(undefined);
+
+  // create a stable ref to the draft so we can memoize the save function
+  const draftRef = useRef<TQueryData | undefined>(undefined);
+  draftRef.current = draft;
+
+  const queryResult = useQuery(queryOptions);
+
+  const queryClient = useQueryClient();
+  const queryKey = queryOptions.queryKey!;
+
+  // we provide options to useMutation that optimistically update our state
+  const mutationResult = useMutation({
+    ...mutationOptions,
+    onMutate: async (draft) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries(queryKey);
+      // Snapshot the last known server data
+      const previousData = queryClient.getQueryData(queryKey);
+      // optimistically set our known server state to the new data
+      queryClient.setQueryData(queryKey, draft);
+      // optimistically clear our draft state
+      setDraft(undefined);
+      // Return a context object with the snapshotted value
+      return {
+        previousData,
+        ...mutationOptions.onMutate?.(draft),
+      } as any;
+    },
+    onError: (err, draft, context) => {
+      // reset the server state to the last known state
+      queryClient.setQueryData(queryKey, (context as any).previousData);
+      // reset the draft to the last known draft unless the user made more changes
+      if (draft !== undefined) {
+        setDraft(draft as any);
+      }
+      return mutationOptions.onError?.(err, draft, context);
+    },
+    onSettled: (data, error, variables, context) => {
+      // refetch after error or success:
+      queryClient.invalidateQueries(queryKey);
+      return mutationOptions?.onSettled?.(data, error, variables, context);
+    },
+  });
+
+  const { mutate } = mutationResult;
+
+  // return a stable save function
+  const save = useCallback(() => {
+    if (draftRef.current !== undefined) {
+      mutate(draftRef.current);
+    }
+  }, [mutate]);
+
+  // memoize a debounced save function
+  const saveDebounced = useMemo(
+    () =>
+      debounce(save, autoSaveOptions?.wait, {
+        // only pass maxWait to the options if maxWait is defined
+        // if maxWait is undefined it is set to 0
+        ...(autoSaveOptions?.maxWait !== undefined
+          ? { maxWait: autoSaveOptions?.maxWait }
+          : {}),
+      }),
+    [autoSaveOptions?.maxWait, autoSaveOptions?.wait, save]
+  );
+
+  // clean up saveDebounced on unmount to avoid leaks
+  useEffect(() => {
+    const prevSaveDebounced = saveDebounced;
+    return () => {
+      prevSaveDebounced.cancel();
+    };
+  }, [saveDebounced]);
+
+  // call saveDebounced when the draft changes
+  useEffect(() => {
+    // check that autoSave is enabled and there are local changes to save
+    if (autoSaveOptions?.wait !== undefined && draft !== undefined) {
+      saveDebounced();
+    }
+  }, [saveDebounced, draft, autoSaveOptions?.wait]);
+
+  // create a function which saves and cancels the debounced save
+  const saveAndCancelDebounced = useMemo(
+    () => () => {
+      saveDebounced.cancel();
+      save();
+    },
+    [save, saveDebounced]
+  );
+
+  // confirm before the user leaves if the draft value isn't saved
+  useEffect(() => {
+    // create a closure for the draft
+    const currentDraft = draft;
+
+    const alertUserIfDraftIsUnsaved = (e: BeforeUnloadEvent) => {
+      if (currentDraft !== undefined) {
+        // Cancel the event
+        e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+        // Chrome requires returnValue to be set
+        e.returnValue = "";
+      } else {
+        // the absence of a returnValue property on the event will guarantee the browser unload happens
+        delete e["returnValue"];
+      }
+    };
+
+    const saveDraftOnVisibilityChange = () => {
+      // fires when user switches tabs, apps, goes to home screen, etc.
+      if (document.visibilityState == "hidden") {
+        // TODO(lukemurray): This doesn't quite work
+        // see https://calendar.perfplanet.com/2020/beaconing-in-practice/#beaconing-incrementally-gathering-telemtry
+        // and https://github.com/wealthsimple/beforeunload-request
+        // we really want to replace with sendBeacon
+        saveAndCancelDebounced();
+      }
+    };
+
+    // only add beforeUnload if there is unsaved work to avoid performance penalty
+    if (currentDraft !== undefined) {
+      window.addEventListener("beforeunload", alertUserIfDraftIsUnsaved);
+    }
+    document.addEventListener("visibilitychange", saveDraftOnVisibilityChange);
+    return () => {
+      if (currentDraft !== undefined) {
+        window.removeEventListener("beforeunload", alertUserIfDraftIsUnsaved);
+      }
+      document.removeEventListener(
+        "visibilitychange",
+        saveDraftOnVisibilityChange
+      );
+    };
+  }, [draft, saveAndCancelDebounced]);
+
+  return {
+    save: saveAndCancelDebounced,
+    setDraft,
+    draft: draft ?? queryResult.data,
+    queryResult,
+    mutationResult,
+  };
+}
+```
+
+For one last step let's see if we can handle merging changes from the server with the outstanding local changes to the draft.
+We can do this by passing a merge function and merging the server and local state if they are both defined.
+
+```tsx
+import debounce from "lodash.debounce";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "react-query";
+
+interface AutoSaveOptions {
+  wait: number;
+  maxWait?: number;
+}
+
+export function useQueryWithDraft<
+  TQueryFnData = unknown,
+  TQueryError = unknown,
+  TQueryData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TMutationData = unknown,
+  TMutationError = unknown,
+  TMutationContext = unknown
+>({
+  queryOptions,
+  mutationOptions,
+  autoSaveOptions,
+  merge,
+}: {
+  queryOptions: UseQueryOptions<
+    TQueryFnData,
+    TQueryError,
+    TQueryData,
+    TQueryKey
+  >;
+  mutationOptions: UseMutationOptions<
+    TMutationData,
+    TMutationError,
+    TQueryData, // input to mutate is the same as the output of the query
+    TMutationContext
+  >;
+  autoSaveOptions?: AutoSaveOptions;
+  merge?: (remote: TQueryData, local: TQueryData) => TQueryData;
+}) {
+  const [draft, setDraft] = useState<TQueryData | undefined>(undefined);
+
+  // create a stable ref to the draft so we can memoize the save function
+  const draftRef = useRef<TQueryData | undefined>(undefined);
+  draftRef.current = draft;
+
+  const queryResult = useQuery(queryOptions);
+
+  const queryClient = useQueryClient();
+  const queryKey = queryOptions.queryKey!;
+
+  // we provide options to useMutation that optimistically update our state
+  const mutationResult = useMutation({
+    ...mutationOptions,
+    onMutate: async (draft) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries(queryKey);
+      // Snapshot the last known server data
+      const previousData = queryClient.getQueryData(queryKey);
+      // optimistically set our known server state to the new data
+      queryClient.setQueryData(queryKey, draft);
+      // optimistically clear our draft state
+      setDraft(undefined);
+      // Return a context object with the snapshotted value
+      return {
+        previousData,
+        ...mutationOptions.onMutate?.(draft),
+      } as any;
+    },
+    onError: (err, draft, context) => {
+      // reset the server state to the last known state
+      queryClient.setQueryData(queryKey, (context as any).previousData);
+      // reset the draft to the last known draft unless the user made more changes
+      if (draft !== undefined) {
+        setDraft(draft as any);
+      }
+      return mutationOptions.onError?.(err, draft, context);
+    },
+    onSettled: (data, error, variables, context) => {
+      // refetch after error or success:
+      queryClient.invalidateQueries(queryKey);
+      return mutationOptions?.onSettled?.(data, error, variables, context);
+    },
+  });
+
+  const { mutate } = mutationResult;
+
+  // return a stable save function
+  const save = useCallback(() => {
+    if (draftRef.current !== undefined) {
+      mutate(draftRef.current);
+    }
+  }, [mutate]);
+
+  // memoize a debounced save function
+  const saveDebounced = useMemo(
+    () =>
+      debounce(save, autoSaveOptions?.wait, {
+        // only pass maxWait to the options if maxWait is defined
+        // if maxWait is undefined it is set to 0
+        ...(autoSaveOptions?.maxWait !== undefined
+          ? { maxWait: autoSaveOptions?.maxWait }
+          : {}),
+      }),
+    [autoSaveOptions?.maxWait, autoSaveOptions?.wait, save]
+  );
+
+  // clean up saveDebounced on unmount to avoid leaks
+  useEffect(() => {
+    const prevSaveDebounced = saveDebounced;
+    return () => {
+      prevSaveDebounced.cancel();
+    };
+  }, [saveDebounced]);
+
+  // call saveDebounced when the draft changes
+  useEffect(() => {
+    // check that autoSave is enabled and there are local changes to save
+    if (autoSaveOptions?.wait !== undefined && draft !== undefined) {
+      saveDebounced();
+    }
+  }, [saveDebounced, draft, autoSaveOptions?.wait]);
+
+  // create a function which saves and cancels the debounced save
+  const saveAndCancelDebounced = useMemo(
+    () => () => {
+      saveDebounced.cancel();
+      save();
+    },
+    [save, saveDebounced]
+  );
+
+  // confirm before the user leaves if the draft value isn't saved
+  useEffect(() => {
+    // create a closure for the draft
+    const currentDraft = draft;
+
+    const alertUserIfDraftIsUnsaved = (e: BeforeUnloadEvent) => {
+      if (currentDraft !== undefined) {
+        // Cancel the event
+        e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+        // Chrome requires returnValue to be set
+        e.returnValue = "";
+      } else {
+        // the absence of a returnValue property on the event will guarantee the browser unload happens
+        delete e["returnValue"];
+      }
+    };
+
+    const saveDraftOnVisibilityChange = () => {
+      // fires when user switches tabs, apps, goes to home screen, etc.
+      if (document.visibilityState == "hidden") {
+        // TODO(lukemurray): This doesn't quite work
+        // see https://calendar.perfplanet.com/2020/beaconing-in-practice/#beaconing-incrementally-gathering-telemtry
+        // and https://github.com/wealthsimple/beforeunload-request
+        // we really want to replace with sendBeacon
+        saveAndCancelDebounced();
+      }
+    };
+
+    // only add beforeUnload if there is unsaved work to avoid performance penalty
+    if (currentDraft !== undefined) {
+      window.addEventListener("beforeunload", alertUserIfDraftIsUnsaved);
+    }
+    document.addEventListener("visibilitychange", saveDraftOnVisibilityChange);
+    return () => {
+      if (currentDraft !== undefined) {
+        window.removeEventListener("beforeunload", alertUserIfDraftIsUnsaved);
+      }
+      document.removeEventListener(
+        "visibilitychange",
+        saveDraftOnVisibilityChange
+      );
+    };
+  }, [draft, saveAndCancelDebounced]);
+
+  // merge the local data with the server data when the server data changes
+  useEffect(() => {
+    const serverData = queryResult.data;
+    if (serverData !== undefined && merge !== undefined) {
+      setDraft((localData) => {
+        if (localData !== undefined) {
+          return merge(serverData, localData);
+        }
+      });
+    }
+  }, [merge, queryResult.data]);
+
+  return {
+    save: saveAndCancelDebounced,
+    setDraft,
+    draft: draft ?? queryResult.data,
+    queryResult,
+    mutationResult,
+  };
+}
+```
+
+This hook can be used to automatially synchronize a value with a server.
+Later on I'll share a code sandbox which uses this hook in a more interesting scenario.
