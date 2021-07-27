@@ -2,7 +2,7 @@
 title: "React Query Auto Sync Hook"
 date: "2021-07-26T09:25:28"
 description: "How to build an auto sync hook with react query"
-draft: true
+draft: false
 # image: /path/to/image
 ---
 
@@ -746,4 +746,4 @@ export function useQueryWithDraft<
 ```
 
 This hook can be used to automatially synchronize a value with a server.
-Later on I'll share a code sandbox which uses this hook in a more interesting scenario.
+Later on I'll share a code sandbox which uses this hook in a more interesting scenario, compare the usage of this hook to other alternatives for synchronizing state such as websockets, long polling, and [replicache](https://replicache.dev/), and answer when using this type of synchronization is a good idea and when other alternatives are better. For now the [code for this hook](https://github.com/lukesmurray/react-query-autosync) can be found on github with some minor changes.
