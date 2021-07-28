@@ -7,17 +7,17 @@ draft: false
 ---
 
 In this post I'll show you how to build an auto sync hook with react query.
-The hook is useful for building user interfaces which auto save.
-Auto save interfaces are useful for [preventing accidental data loss](http://ui-patterns.com/patterns/autosave) and have become the [norm in document based applications](https://developer.apple.com/design/human-interface-guidelines/macos/system-capabilities/auto-save/).
+The hook can be used to build user interfaces that require an auto save feature.
+Auto save is useful for [preventing accidental data loss](http://ui-patterns.com/patterns/autosave) and has become the [norm in document based applications](https://developer.apple.com/design/human-interface-guidelines/macos/system-capabilities/auto-save/).
 Despite the increasing prevalance of auto save interfaces, I found very little information about how to build one with react query.
-Most of the examples in react query either expect the user to manually send data to the server using a _create_ or _save_ button, or [provide separate interfaces](https://react-query.tanstack.com/examples/playground) for viewing data from the server and editing it locally.
+Most react query examples require the user to manually save with a _save_ button, or [provide separate interfaces](https://react-query.tanstack.com/examples/playground) for viewing data from the server and editing it locally.
 
 As a general rule, when using react query you should [keep server and client state separate](https://tkdodo.eu/blog/practical-react-query#keep-server-and-client-state-separate).
 Server state is the `data` returned by a [`useQuery`](https://react-query.tanstack.com/reference/useQuery) call.
 Client state is locally modified server state.
 When you want to modify server state with react query, you make a copy of the server state and modify the copy.
 
-<Admonition type="Note" title="Why">
+<Admonition type="note" title="Why">
 
 ReactQuery assumes that the `data` object only changes based on updates from the server uses _structural sharing_ (a deep comparison of the object's values) to memoize the query results.
 Changing the `data` object directly breaks a lot of the assumptions ReactQuery uses to handle caching, updating, and memoizing query results.
@@ -59,12 +59,11 @@ export function useReactQueryAutoSync<
 }
 ```
 
-The consumer of this hook does not have to think about the separation of server and client state.
-They can simply use the `draft` value directly as long as they only modify the draft value using `setDraft`.
+The consumer of this hook does not have to think about the separation of server and client state as long as they only modify the `draft` with `setDraft`.
 
 However modifying server state isn't very useful unless we have a way to save that state back to the server.
 We'll start by adding a manual `save` function to the hook.
-In order to save however we'll also need to provide mutation options to the hook and return a mutation result.
+To create the `save` function we need to provide mutation options to the hook and return a mutation result.
 
 ```tsx
 import { useCallback, useRef, useState } from "react";
@@ -122,9 +121,9 @@ export function useReactQueryAutoSync<
 }
 ```
 
-The consumer of this hook can now use the `save` function to save the current draft to the server.
+The consumer of this hook can use the `save` function to save the draft to the server.
 
-To make this concrete here is an example of how to use the hook in its current state.
+To make this concrete let's look at an example of how to use the hook in its current state.
 
 ```tsx
 import React from "react";
@@ -160,8 +159,9 @@ function HookDemo() {
 We treat the `draft` and `setDraft` values similarly to the result of a `useState` and when we want to save the `draft` value to the server we call `save`.
 
 Before we go on I have to admit that the previous hook omitted some important implementation details from `useMutation`.
-Whenever we perform an implementation we want to use [optimistic updates](https://react-query.tanstack.com/guides/optimistic-updates) so that the user does not have to wait for the `draft` to save to the server before they can continue working.
-We want to assume the save function succeeded but rollback if the save function fails.
+Whenever we perform a mutaiton we want to use [optimistic updates](https://react-query.tanstack.com/guides/optimistic-updates).
+Optimistic updates assume the save succeeds but rollback the state if the save fails.
+They allow the user to ignore the delay between sending data to the server and receiving a response.
 
 ```ts
 export function useReactQueryAutoSync</*...*/>({}: /*...*/
@@ -216,10 +216,10 @@ export function useReactQueryAutoSync</*...*/>({}: /*...*/
 ```
 
 These changes look complicated but if you check out the [optimistic updates](https://react-query.tanstack.com/guides/optimistic-updates) guide you'll see that they are essentially boilerplate.
-The only additional change is that we maintain our `draft` state in the optimistic updates as well as the reactQuery data.
+We augment the boilerplate with a couple lines to manage our `draft` state.
 
-As a nice side effect we can assume that if the `draft` value is undefined then local changes have been saved to the server.
-If you look at our `save` function you can see that we use this guarantee to avoid sending unecessary data to the server.
+As a nice side effect we can assume that if the `draft` value is undefined then all local changes have been saved to the server.
+If you look at our `save` function you can see that we use this guarantee to avoid calling `mutate` unecessarily.
 
 ```ts
 const save = useCallback(() => {
@@ -230,7 +230,7 @@ const save = useCallback(() => {
 ```
 
 Now that we have a way to manually save the `draft` to the server we can implement an auto save interface.
-Auto save interfaces are often used for documents which tend to change frequently and can be relatively large.
+Because auto save interfaces are often used for documents we can assume that our `draft` value is a document and may change frequenctly and be relatively expensive to save.
 We don't want to clobber the server with changes and save on every keystroke so we'll use a debounce function to only save after a certain amount of time has passed between changes.
 
 ```ts
@@ -325,21 +325,21 @@ export function useReactQueryAutoSync</*...*/>({
 
 We provide an `autoSaveOptions` parameter which is use to set the delay and max delay for our debounce[^lodashdebounce].
 We then use these parameters to create a debounced version of our `save` function [^usememoperformance].
-If the user does not provide an `autoSaveOptions` parameter we use the `EmptyDebounceFunc` which is a no-op function that replicates the `[lodash.debounce](https://lodash.com/docs/4.17.15#debounce)` api.
+If the user does not provide an `autoSaveOptions` parameter we use the `EmptyDebounceFunc` which is a no-op function that replicates the [`lodash.debounce`](https://lodash.com/docs/4.17.15#debounce) api.
 We make sure to clean up our debounce function when the component unmounts to avoid memory leaks.
 Most importantly we call `saveDebounced` when the `draft` value changes.
 
-[^lodashdebounce]: See [`lodash.debounce`](https://lodash.com/docs/4.17.15#debounce) for documentation on these parameters.
-[^usememoperformance]: We could have used `useCallback` here but then we would call `lodash.debounce` on every render. `useMemo` is more performant and only calls `lodash.debounce` when one of the dependencies. Check out [Kent C. Dodd's article](https://kentcdodds.com/blog/usememo-and-usecallback/) comparing `useMemo` and `useCallback` if you're interested in learning more about this.
+[^lodashdebounce]: See [`lodash.debounce`](https://lodash.com/docs/4.17.15#debounce) for documentation on `maxDelay` and `delay` parameters.
+[^usememoperformance]: We could have used `useCallback` to create the debounce function but then we would call `lodash.debounce` on every render. `useMemo` is more performant and only calls `lodash.debounce` when one of the dependencies changes. Check out [Kent C. Dodd's article](https://kentcdodds.com/blog/usememo-and-usecallback/) comparing `useMemo` and `useCallback` if you're interested in learning more about this.
 
 You may have noticed that we created a `draftRef` so that the `save` function does not have to list `draft` as one of its dependencies.
-This is important because otherwise the debounced save function would have to be recreated whenver the `draft` value changes which is both expensive and breaks debounce functionality such as `maxDelay`.
+This is important because otherwise the debounced save function would have to be recreated whenever the `draft` value changes which is both expensive and breaks debounce functionality such as `maxDelay`.
 
 When the user manually saves the draft value with `save` we cancel the debounced save function to avoid double saves.
 
 At this point the hook is already useful for creating auto save interfaces.
 However there are a couple of user experience issue we can still address.
-For example we may want to prevent the user from leaving the page if the hook has outstanding local changes.
+For example we may want to prevent the user from leaving the page if there are outstanding local changes.
 
 ```ts
 /*...*/
@@ -354,9 +354,8 @@ export function useReactQueryAutoSync</*...*/>({
   /*...*/
 
   // create a function which saves and cancels the debounced save
-  const saveAndCancelDebounced =
-    useMemo();
-    /*...*/
+  const saveAndCancelDebounced = useMemo();
+  /*...*/
 
   // confirm before the user leaves if the draft value isn't saved
   useEffect(() => {
@@ -398,7 +397,7 @@ We use the `beforeUnload` event to warn the user if they are leaving the page wi
 
 [^beforeunloadbestpractices]: Note that [best practices](https://web.dev/bfcache/) recommend that you only add a `beforeUnload` event listener when the user has unsaved changes. Our hook follows these practices by only adding the event listener when the user has unsaved changes and properly cleaning up the event listener in `useEffect`.
 
-For one last step let's see if we can handle merging changes from the server with the outstanding local changes to the draft.
+As one last step let's see if we can handle merging changes from the server with the outstanding local changes to the draft.
 We can do this by passing a merge function and merging the server and local state if they are both defined.
 
 ```tsx
@@ -434,15 +433,18 @@ export function useReactQueryAutoSync</*...*/>({
 }
 ```
 
+With this change react query can be used to poll the server for updates (see `refetchInterval` in the `useQuery` API) and the `merge` function can be used to merge the server state into the client state.
+
 <Admonition type="note" title="Concurrent Editing">
 
-Concurrent editing is outside the scope of this post.
-The merge function described here might not support concurrent editing from multiple users.
-If you are interested in more robust solutions for collaborative editing you could check out CRDT implementations such as [yjs](https://github.com/yjs/yjs) or [Automerge](https://github.com/automerge/automerge) or realtime collaboration APIs such as [replicache](https://replicache.dev/)
+You may be wondering if the merge function would enable concurrent editing.
+Concurrent editing is outside the scope of this post but there are probably better ways to implement concurrent editing than polling.
+If you are interested in more robust solutions for concurrent editing you could check out CRDT implementations such as [yjs](https://github.com/yjs/yjs) or [Automerge](https://github.com/automerge/automerge) or realtime collaboration APIs such as [replicache](https://replicache.dev/)
 
 </Admonition>
 
 <!--  -->
 
-This hook can be used to automatially synchronize a value with a server.
-Later on I may share a code sandbox which uses this hook in a more interesting scenario, compare the usage of this hook to other alternatives for synchronizing state such as websockets, long polling, and [replicache](https://replicache.dev/), and answer when using this type of synchronization is a good idea and when other alternatives are better. For now the [code for this hook](https://github.com/lukesmurray/react-query-autosync) can be found on github with some minor changes.
+The hook is now complete and you should be able to use it to build your own auto saving interfaces.
+While it may seem straightforward the code shown here is the result of several iterations of redesign.
+If you want to see all the code for this hook in one place you can check out the [project](https://github.com/lukesmurray/react-query-autosync) on github or just the [code for this hook](https://github.com/lukesmurray/react-query-autosync/blob/main/lib/useReactQueryAutoSync.tsx) with some minor changes and updates.
