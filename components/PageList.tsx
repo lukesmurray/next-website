@@ -18,6 +18,12 @@ import { Stack } from "./every-layout/Stack";
 import { formatDate } from "./formatters/formatDate";
 import { formatPageTitle } from "./formatters/formatPageTitle";
 
+const cardListStyles = css`
+  & > li {
+    ${tw`p-3 rounded-md shadow hover:cursor-pointer focus-within:cursor-pointer hover:shadow-md hover:bg-surface`}
+  }
+`;
+
 export const PageList: React.VFC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
@@ -36,15 +42,7 @@ export const PageList: React.VFC<
         <Stack as={"section"}>
           <h2 css={h2Styles}>Sections</h2>
           <ClusterGrid min={`calc(${spacing.prose}/2.5)`}>
-            <ul
-              css={[
-                css`
-                  & > li {
-                    ${tw`p-3 rounded-md shadow hover:cursor-pointer focus-within:cursor-pointer hover:shadow-md bg-surface hover:bg-surfaceLifted`}
-                  }
-                `,
-              ]}
-            >
+            <ul css={[cardListStyles]}>
               {sections.map((page) => (
                 <li key={page.slug}>
                   <SectionCard page={page} />
@@ -55,10 +53,10 @@ export const PageList: React.VFC<
         </Stack>
       )}
       {pages.length > 0 && (
-        <Stack as="ul">
+        <Stack as="ul" css={[cardListStyles]}>
           {pages.map((page) => (
             <li key={page.slug}>
-              <PageSummaryLink page={page} />
+              <PageCard page={page} />
             </li>
           ))}
         </Stack>
@@ -66,11 +64,11 @@ export const PageList: React.VFC<
 
       {currentPage.kind === "home" && recentPosts.length > 0 && (
         <Stack as="section">
-          <h2 css={h2Styles}>Recent Posts</h2>
-          <Stack as="ul">
+          <h2 css={[h2Styles, tw`text-secondary`]}>Recent Posts</h2>
+          <Stack as="ul" css={[cardListStyles]}>
             {recentPosts.map((page) => (
-              <li key={page.slug}>
-                <PageSummaryLink page={page} />
+              <li key={page.slug} css={tw`p-3`}>
+                <PageCard page={page} />
               </li>
             ))}
           </Stack>
@@ -106,6 +104,40 @@ const SectionCard: React.VFC<{
       </Link>
       {isDefined(page.description) && (
         <div css={captionStyles}>{page.description}</div>
+      )}
+    </div>
+  );
+};
+
+const PageCard: React.VFC<{
+  page: {
+    slug: string;
+    title: string;
+    kind: string;
+    draft: boolean;
+    date?: any;
+    description?: Maybe<string> | undefined;
+  };
+}> = (props) => {
+  const { page } = props;
+  const router = useRouter();
+
+  return (
+    <div
+      onClick={() => {
+        router.push(page.slug);
+      }}
+    >
+      <Link href={page.slug} passHref>
+        <a css={[h3Styles, linkStyles]}>{formatPageTitle(page)}</a>
+      </Link>
+      {isDefined(page.date) && (
+        <div css={[captionStyles]}>{formatDate(page.date)}</div>
+      )}
+      {isDefined(page.description) && (
+        <div css={[captionStyles, tw`text-primaryLight`]}>
+          {page.description}
+        </div>
       )}
     </div>
   );
