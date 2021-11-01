@@ -11,12 +11,9 @@ draft: true
 - As local first software becomes more popular, we've started to run into the limits of performance.
   Keeping track of and merging collaborative changes can be memory and cpu intensive, potentially limiting the types of software that can be developed with a local first paradigm.
   Does streaming your browser through the cloud offer a potential solution[^mightybrowser] [^stadia]?
-
-[^mightybrowser]: [Mighty](https://www.mightyapp.com/) is a browser which runs in the cloud and streams the GUI to your device, moving the memory and CPU load to the server.
-[^stadia]: [Stadia](https://stadia.google.com/) is a cloud based game service which allows you to play games on low power devices by moving memory and CPU load to the cloud.
-
+  [^mightybrowser]: [Mighty](https://www.mightyapp.com/) is a browser which runs in the cloud and streams the GUI to your device, moving the memory and CPU load to the server.
+  [^stadia]: [Stadia](https://stadia.google.com/) is a cloud based game service which allows you to play games on low power devices by moving memory and CPU load to the cloud.
 - XR, 3d applications
-
 - Collaborative reactive data structures and services
   - supabase
     - postgres with real time subscriptions
@@ -32,7 +29,6 @@ draft: true
   - Automerge
   - yjs
   - faster crdts https://josephg.com/blog/crdts-go-brrr/
-
 - declarative type generation and client-server communication
   - related to [database in the browser](https://stopa.io/post/279)
   - uis will continue to be generated from state but queries to generate that state will be declarative and implemented with query optimizers
@@ -46,3 +42,14 @@ draft: true
   [^ifatreefalls]:
       The [philosophical thought experiment](https://en.wikipedia.org/wiki/If_a_tree_falls_in_a_forest) ""If a tree falls in a forest and no one is around to hear it, does it make a sound?" is relevant here.
       If we don't know how to package and share software who will be able to use it?
+
+## Can we build p2p web applications without a central server?
+
+- Can we build a site where multiple people visiting the site can communicate with eachother without requiring a central server to maintain those connections?
+  - The answer is no. You need a centralized server to set up the initial connections.
+
+## What are the core ingredients needed to build end user extensible software?
+
+- See [why figma wins](https://kwokchain.com/2020/06/19/why-figma-wins/) as an example of this
+- Other examples of incredible ecosystems are [vscode](https://code.visualstudio.com/docs/editor/extension-gallery), [atom](https://atom.io/packages), and probably the least obvious but most pervase...unix.
+-

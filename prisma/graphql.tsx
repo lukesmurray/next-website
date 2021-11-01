@@ -49,7 +49,6 @@ export type BoolWithAggregatesFilter = {
   not?: Maybe<NestedBoolWithAggregatesFilter>;
 };
 
-
 export type DateTimeNullableFilter = {
   equals?: Maybe<Scalars['DateTime']>;
   gt?: Maybe<Scalars['DateTime']>;
@@ -78,6 +77,7 @@ export type DateTimeNullableWithAggregatesFilter = {
 export type File = {
   /** The Pages that this file is associated with */
   Pages: Array<Page>;
+  _count?: Maybe<FileCount>;
   /** The path to the file. Relative to the root directory. */
   path: Scalars['String'];
 };
@@ -86,15 +86,23 @@ export type File = {
 export type FilePagesArgs = {
   cursor?: Maybe<PageWhereUniqueInput>;
   distinct?: Maybe<Array<PageScalarFieldEnum>>;
-  orderBy?: Maybe<Array<PageOrderByInput>>;
+  orderBy?: Maybe<Array<PageOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<PageWhereInput>;
 };
 
+export type FileCount = {
+  Pages: Scalars['Int'];
+};
+
 export type FileCountAggregate = {
   _all: Scalars['Int'];
   path: Scalars['Int'];
+};
+
+export type FileCountOrderByAggregateInput = {
+  path?: Maybe<SortOrder>;
 };
 
 export type FileCreateInput = {
@@ -128,11 +136,27 @@ export type FileMaxAggregate = {
   path?: Maybe<Scalars['String']>;
 };
 
+export type FileMaxOrderByAggregateInput = {
+  path?: Maybe<SortOrder>;
+};
+
 export type FileMinAggregate = {
   path?: Maybe<Scalars['String']>;
 };
 
-export type FileOrderByInput = {
+export type FileMinOrderByAggregateInput = {
+  path?: Maybe<SortOrder>;
+};
+
+export type FileOrderByWithAggregationInput = {
+  _count?: Maybe<FileCountOrderByAggregateInput>;
+  _max?: Maybe<FileMaxOrderByAggregateInput>;
+  _min?: Maybe<FileMinOrderByAggregateInput>;
+  path?: Maybe<SortOrder>;
+};
+
+export type FileOrderByWithRelationInput = {
+  Pages?: Maybe<PageOrderByRelationAggregateInput>;
   path?: Maybe<SortOrder>;
 };
 
@@ -406,6 +430,7 @@ export type NullableStringFieldUpdateOperationsInput = {
 };
 
 export type Page = {
+  _count?: Maybe<PageCount>;
   /** the content of the page */
   content: Scalars['String'];
   /** the date field from the page frontmatter */
@@ -414,7 +439,10 @@ export type Page = {
   description?: Maybe<Scalars['String']>;
   /** Path to the directory containing this file. Relative to the root directory */
   dir: Scalars['String'];
-  /** true if the content is a draftcomes from the draft field in frontmatter */
+  /**
+   * true if the content is a draft
+   * comes from the draft field in frontmatter
+   */
   draft: Scalars['Boolean'];
   file?: Maybe<File>;
   /** The path to the file. Relative to the root directory. */
@@ -428,7 +456,12 @@ export type Page = {
   isHome: Scalars['Boolean'];
   /** True if the page is a section */
   isSection: Scalars['Boolean'];
-  /** The kind of the page. One of "home" | "page" | "section"Note that a home page is also a section. It is a superset of the sectiontype. So a page with `kind: home` would also have `isSection: true` */
+  /**
+   * The kind of the page. One of "home" | "page" | "section"
+   *
+   * Note that a home page is also a section. It is a superset of the section
+   * type. So a page with `kind: home` would also have `isSection: true`
+   */
   kind: Scalars['String'];
   pages: Array<Page>;
   parent?: Maybe<Page>;
@@ -443,7 +476,7 @@ export type Page = {
 export type PageFirstSectionPagesArgs = {
   cursor?: Maybe<PageWhereUniqueInput>;
   distinct?: Maybe<Array<PageScalarFieldEnum>>;
-  orderBy?: Maybe<Array<PageOrderByInput>>;
+  orderBy?: Maybe<Array<PageOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<PageWhereInput>;
@@ -453,10 +486,15 @@ export type PageFirstSectionPagesArgs = {
 export type PagePagesArgs = {
   cursor?: Maybe<PageWhereUniqueInput>;
   distinct?: Maybe<Array<PageScalarFieldEnum>>;
-  orderBy?: Maybe<Array<PageOrderByInput>>;
+  orderBy?: Maybe<Array<PageOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<PageWhereInput>;
+};
+
+export type PageCount = {
+  firstSectionPages: Scalars['Int'];
+  pages: Scalars['Int'];
 };
 
 export type PageCountAggregate = {
@@ -475,6 +513,23 @@ export type PageCountAggregate = {
   parentSlug: Scalars['Int'];
   slug: Scalars['Int'];
   title: Scalars['Int'];
+};
+
+export type PageCountOrderByAggregateInput = {
+  content?: Maybe<SortOrder>;
+  date?: Maybe<SortOrder>;
+  description?: Maybe<SortOrder>;
+  dir?: Maybe<SortOrder>;
+  draft?: Maybe<SortOrder>;
+  filePath?: Maybe<SortOrder>;
+  firstSectionSlug?: Maybe<SortOrder>;
+  image?: Maybe<SortOrder>;
+  isHome?: Maybe<SortOrder>;
+  isSection?: Maybe<SortOrder>;
+  kind?: Maybe<SortOrder>;
+  parentSlug?: Maybe<SortOrder>;
+  slug?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
 };
 
 export type PageCreateInput = {
@@ -684,6 +739,23 @@ export type PageMaxAggregate = {
   title?: Maybe<Scalars['String']>;
 };
 
+export type PageMaxOrderByAggregateInput = {
+  content?: Maybe<SortOrder>;
+  date?: Maybe<SortOrder>;
+  description?: Maybe<SortOrder>;
+  dir?: Maybe<SortOrder>;
+  draft?: Maybe<SortOrder>;
+  filePath?: Maybe<SortOrder>;
+  firstSectionSlug?: Maybe<SortOrder>;
+  image?: Maybe<SortOrder>;
+  isHome?: Maybe<SortOrder>;
+  isSection?: Maybe<SortOrder>;
+  kind?: Maybe<SortOrder>;
+  parentSlug?: Maybe<SortOrder>;
+  slug?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+};
+
 export type PageMinAggregate = {
   content?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['DateTime']>;
@@ -701,7 +773,7 @@ export type PageMinAggregate = {
   title?: Maybe<Scalars['String']>;
 };
 
-export type PageOrderByInput = {
+export type PageMinOrderByAggregateInput = {
   content?: Maybe<SortOrder>;
   date?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
@@ -713,6 +785,52 @@ export type PageOrderByInput = {
   isHome?: Maybe<SortOrder>;
   isSection?: Maybe<SortOrder>;
   kind?: Maybe<SortOrder>;
+  parentSlug?: Maybe<SortOrder>;
+  slug?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+};
+
+export type PageOrderByRelationAggregateInput = {
+  _count?: Maybe<SortOrder>;
+};
+
+export type PageOrderByWithAggregationInput = {
+  _count?: Maybe<PageCountOrderByAggregateInput>;
+  _max?: Maybe<PageMaxOrderByAggregateInput>;
+  _min?: Maybe<PageMinOrderByAggregateInput>;
+  content?: Maybe<SortOrder>;
+  date?: Maybe<SortOrder>;
+  description?: Maybe<SortOrder>;
+  dir?: Maybe<SortOrder>;
+  draft?: Maybe<SortOrder>;
+  filePath?: Maybe<SortOrder>;
+  firstSectionSlug?: Maybe<SortOrder>;
+  image?: Maybe<SortOrder>;
+  isHome?: Maybe<SortOrder>;
+  isSection?: Maybe<SortOrder>;
+  kind?: Maybe<SortOrder>;
+  parentSlug?: Maybe<SortOrder>;
+  slug?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+};
+
+export type PageOrderByWithRelationInput = {
+  content?: Maybe<SortOrder>;
+  date?: Maybe<SortOrder>;
+  description?: Maybe<SortOrder>;
+  dir?: Maybe<SortOrder>;
+  draft?: Maybe<SortOrder>;
+  file?: Maybe<FileOrderByWithRelationInput>;
+  filePath?: Maybe<SortOrder>;
+  firstSection?: Maybe<PageOrderByWithRelationInput>;
+  firstSectionPages?: Maybe<PageOrderByRelationAggregateInput>;
+  firstSectionSlug?: Maybe<SortOrder>;
+  image?: Maybe<SortOrder>;
+  isHome?: Maybe<SortOrder>;
+  isSection?: Maybe<SortOrder>;
+  kind?: Maybe<SortOrder>;
+  pages?: Maybe<PageOrderByRelationAggregateInput>;
+  parent?: Maybe<PageOrderByWithRelationInput>;
   parentSlug?: Maybe<SortOrder>;
   slug?: Maybe<SortOrder>;
   title?: Maybe<SortOrder>;
@@ -1065,7 +1183,7 @@ export type Query = {
 
 export type QueryAggregateFileArgs = {
   cursor?: Maybe<FileWhereUniqueInput>;
-  orderBy?: Maybe<Array<FileOrderByInput>>;
+  orderBy?: Maybe<Array<FileOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<FileWhereInput>;
@@ -1074,7 +1192,7 @@ export type QueryAggregateFileArgs = {
 
 export type QueryAggregatePageArgs = {
   cursor?: Maybe<PageWhereUniqueInput>;
-  orderBy?: Maybe<Array<PageOrderByInput>>;
+  orderBy?: Maybe<Array<PageOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<PageWhereInput>;
@@ -1089,7 +1207,7 @@ export type QueryFileArgs = {
 export type QueryFilesArgs = {
   cursor?: Maybe<FileWhereUniqueInput>;
   distinct?: Maybe<Array<FileScalarFieldEnum>>;
-  orderBy?: Maybe<Array<FileOrderByInput>>;
+  orderBy?: Maybe<Array<FileOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<FileWhereInput>;
@@ -1099,7 +1217,7 @@ export type QueryFilesArgs = {
 export type QueryFindFirstFileArgs = {
   cursor?: Maybe<FileWhereUniqueInput>;
   distinct?: Maybe<Array<FileScalarFieldEnum>>;
-  orderBy?: Maybe<Array<FileOrderByInput>>;
+  orderBy?: Maybe<Array<FileOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<FileWhereInput>;
@@ -1109,7 +1227,7 @@ export type QueryFindFirstFileArgs = {
 export type QueryFindFirstPageArgs = {
   cursor?: Maybe<PageWhereUniqueInput>;
   distinct?: Maybe<Array<PageScalarFieldEnum>>;
-  orderBy?: Maybe<Array<PageOrderByInput>>;
+  orderBy?: Maybe<Array<PageOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<PageWhereInput>;
@@ -1119,7 +1237,7 @@ export type QueryFindFirstPageArgs = {
 export type QueryGroupByFileArgs = {
   by: Array<FileScalarFieldEnum>;
   having?: Maybe<FileScalarWhereWithAggregatesInput>;
-  orderBy?: Maybe<Array<FileOrderByInput>>;
+  orderBy?: Maybe<Array<FileOrderByWithAggregationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<FileWhereInput>;
@@ -1129,7 +1247,7 @@ export type QueryGroupByFileArgs = {
 export type QueryGroupByPageArgs = {
   by: Array<PageScalarFieldEnum>;
   having?: Maybe<PageScalarWhereWithAggregatesInput>;
-  orderBy?: Maybe<Array<PageOrderByInput>>;
+  orderBy?: Maybe<Array<PageOrderByWithAggregationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<PageWhereInput>;
@@ -1144,7 +1262,7 @@ export type QueryPageArgs = {
 export type QueryPagesArgs = {
   cursor?: Maybe<PageWhereUniqueInput>;
   distinct?: Maybe<Array<PageScalarFieldEnum>>;
-  orderBy?: Maybe<Array<PageOrderByInput>>;
+  orderBy?: Maybe<Array<PageOrderByWithRelationInput>>;
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<PageWhereInput>;
@@ -1224,7 +1342,7 @@ export type StringWithAggregatesFilter = {
 export type SlugStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SlugStaticPathsQuery = { pages: Array<{ slug: string, title: string, description?: Maybe<string>, date?: Maybe<any>, kind: string, draft: boolean, content: string }> };
+export type SlugStaticPathsQuery = { pages: Array<{ slug: string, title: string, description?: string | null | undefined, date?: any | null | undefined, kind: string, draft: boolean, content: string }> };
 
 export type SlugPageQueryVariables = Exact<{
   currentSlug: Scalars['String'];
@@ -1232,7 +1350,7 @@ export type SlugPageQueryVariables = Exact<{
 }>;
 
 
-export type SlugPageQuery = { root?: Maybe<{ slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, currentPage?: Maybe<{ slug: string, title: string, kind: string, content: string, date?: Maybe<any>, draft: boolean, description?: Maybe<string>, filePath?: Maybe<string>, image?: Maybe<string>, parent?: Maybe<{ slug: string, title: string, kind: string, draft: boolean, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> }>, pages: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> }>, recentPosts: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: Maybe<any>, description?: Maybe<string> }> };
+export type SlugPageQuery = { root?: { slug: string, title: string, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> } | null | undefined, currentPage?: { slug: string, title: string, kind: string, content: string, date?: any | null | undefined, draft: boolean, description?: string | null | undefined, filePath?: string | null | undefined, image?: string | null | undefined, parent?: { slug: string, title: string, kind: string, draft: boolean, pages: Array<{ slug: string, title: string, kind: string, draft: boolean }> } | null | undefined, pages: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: any | null | undefined, description?: string | null | undefined }> } | null | undefined, recentPosts: Array<{ slug: string, title: string, kind: string, draft: boolean, date?: any | null | undefined, description?: string | null | undefined }> };
 
 
 export const SlugStaticPathsDocument = gql`

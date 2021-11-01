@@ -2,7 +2,7 @@
 // TODO(lukemurray): https://github.com/image-size/image-size/issues/258#issuecomment-792493746
 import { Element } from "hast";
 import { classnames } from "hast-util-classnames";
-import { Processor, Settings, Transformer } from "unified";
+import { Processor, Transformer } from "unified";
 import { Parent } from "unist";
 import visit from "unist-util-visit";
 import { isLocalUrl } from "../../utils/isLocalUrl";
@@ -20,7 +20,7 @@ interface AnchorNode extends Element {
 interface AnchorMetadataOptions {}
 
 export function anchorMetadata(
-  this: Processor<Settings>,
+  this: Processor,
   settings: AnchorMetadataOptions
 ): Transformer {
   return async (tree) => {

@@ -4,7 +4,7 @@ import { Element } from "hast";
 import imageSize from "image-size";
 import { isValidHttpUrl } from "lib/utils/isValidHttpUrl";
 import { resolveImgUrlInBuild } from "lib/utils/resolveImgUrl";
-import { Processor, Settings, Transformer } from "unified";
+import { Processor, Transformer } from "unified";
 import { Parent } from "unist";
 import visit from "unist-util-visit";
 import { promisify } from "util";
@@ -28,7 +28,7 @@ interface RemarkImageMetadataOptions {
 }
 
 export function imageMetadata(
-  this: Processor<Settings>,
+  this: Processor,
   settings: RemarkImageMetadataOptions
 ): Transformer {
   return async (tree) => {

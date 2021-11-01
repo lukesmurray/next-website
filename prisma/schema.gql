@@ -68,15 +68,24 @@ input DateTimeNullableWithAggregatesFilter {
 
 type File {
   """The Pages that this file is associated with"""
-  Pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
+  Pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByWithRelationInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
+  _count: FileCount
 
   """The path to the file. Relative to the root directory."""
   path: String!
 }
 
+type FileCount {
+  Pages: Int!
+}
+
 type FileCountAggregate {
   _all: Int!
   path: Int!
+}
+
+input FileCountOrderByAggregateInput {
+  path: SortOrder
 }
 
 input FileCreateInput {
@@ -110,11 +119,27 @@ type FileMaxAggregate {
   path: String
 }
 
+input FileMaxOrderByAggregateInput {
+  path: SortOrder
+}
+
 type FileMinAggregate {
   path: String
 }
 
-input FileOrderByInput {
+input FileMinOrderByAggregateInput {
+  path: SortOrder
+}
+
+input FileOrderByWithAggregationInput {
+  _count: FileCountOrderByAggregateInput
+  _max: FileMaxOrderByAggregateInput
+  _min: FileMinOrderByAggregateInput
+  path: SortOrder
+}
+
+input FileOrderByWithRelationInput {
+  Pages: PageOrderByRelationAggregateInput
   path: SortOrder
 }
 
@@ -320,6 +345,8 @@ input NullableStringFieldUpdateOperationsInput {
 }
 
 type Page {
+  _count: PageCount
+
   """the content of the page"""
   content: String!
 
@@ -335,7 +362,8 @@ type Page {
   dir: String!
 
   """
-  true if the content is a draftcomes from the draft field in frontmatter
+  true if the content is a draft
+  comes from the draft field in frontmatter
   """
   draft: Boolean!
   file: File
@@ -343,7 +371,7 @@ type Page {
   """The path to the file. Relative to the root directory."""
   filePath: String
   firstSection: Page
-  firstSectionPages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
+  firstSectionPages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByWithRelationInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
   firstSectionSlug: String
 
   """The path to an image. Relative to the file."""
@@ -356,10 +384,13 @@ type Page {
   isSection: Boolean!
 
   """
-  The kind of the page. One of "home" | "page" | "section"Note that a home page is also a section. It is a superset of the sectiontype. So a page with `kind: home` would also have `isSection: true`
+  The kind of the page. One of "home" | "page" | "section"
+  
+  Note that a home page is also a section. It is a superset of the section
+  type. So a page with `kind: home` would also have `isSection: true`
   """
   kind: String!
-  pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
+  pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByWithRelationInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
   parent: Page
   parentSlug: String
 
@@ -368,6 +399,11 @@ type Page {
 
   """The title for this page"""
   title: String!
+}
+
+type PageCount {
+  firstSectionPages: Int!
+  pages: Int!
 }
 
 type PageCountAggregate {
@@ -386,6 +422,23 @@ type PageCountAggregate {
   parentSlug: Int!
   slug: Int!
   title: Int!
+}
+
+input PageCountOrderByAggregateInput {
+  content: SortOrder
+  date: SortOrder
+  description: SortOrder
+  dir: SortOrder
+  draft: SortOrder
+  filePath: SortOrder
+  firstSectionSlug: SortOrder
+  image: SortOrder
+  isHome: SortOrder
+  isSection: SortOrder
+  kind: SortOrder
+  parentSlug: SortOrder
+  slug: SortOrder
+  title: SortOrder
 }
 
 input PageCreateInput {
@@ -595,6 +648,23 @@ type PageMaxAggregate {
   title: String
 }
 
+input PageMaxOrderByAggregateInput {
+  content: SortOrder
+  date: SortOrder
+  description: SortOrder
+  dir: SortOrder
+  draft: SortOrder
+  filePath: SortOrder
+  firstSectionSlug: SortOrder
+  image: SortOrder
+  isHome: SortOrder
+  isSection: SortOrder
+  kind: SortOrder
+  parentSlug: SortOrder
+  slug: SortOrder
+  title: SortOrder
+}
+
 type PageMinAggregate {
   content: String
   date: DateTime
@@ -612,7 +682,7 @@ type PageMinAggregate {
   title: String
 }
 
-input PageOrderByInput {
+input PageMinOrderByAggregateInput {
   content: SortOrder
   date: SortOrder
   description: SortOrder
@@ -624,6 +694,52 @@ input PageOrderByInput {
   isHome: SortOrder
   isSection: SortOrder
   kind: SortOrder
+  parentSlug: SortOrder
+  slug: SortOrder
+  title: SortOrder
+}
+
+input PageOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input PageOrderByWithAggregationInput {
+  _count: PageCountOrderByAggregateInput
+  _max: PageMaxOrderByAggregateInput
+  _min: PageMinOrderByAggregateInput
+  content: SortOrder
+  date: SortOrder
+  description: SortOrder
+  dir: SortOrder
+  draft: SortOrder
+  filePath: SortOrder
+  firstSectionSlug: SortOrder
+  image: SortOrder
+  isHome: SortOrder
+  isSection: SortOrder
+  kind: SortOrder
+  parentSlug: SortOrder
+  slug: SortOrder
+  title: SortOrder
+}
+
+input PageOrderByWithRelationInput {
+  content: SortOrder
+  date: SortOrder
+  description: SortOrder
+  dir: SortOrder
+  draft: SortOrder
+  file: FileOrderByWithRelationInput
+  filePath: SortOrder
+  firstSection: PageOrderByWithRelationInput
+  firstSectionPages: PageOrderByRelationAggregateInput
+  firstSectionSlug: SortOrder
+  image: SortOrder
+  isHome: SortOrder
+  isSection: SortOrder
+  kind: SortOrder
+  pages: PageOrderByRelationAggregateInput
+  parent: PageOrderByWithRelationInput
   parentSlug: SortOrder
   slug: SortOrder
   title: SortOrder
@@ -961,16 +1077,16 @@ input PageWhereUniqueInput {
 }
 
 type Query {
-  aggregateFile(cursor: FileWhereUniqueInput, orderBy: [FileOrderByInput!], skip: Int, take: Int, where: FileWhereInput): AggregateFile!
-  aggregatePage(cursor: PageWhereUniqueInput, orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): AggregatePage!
+  aggregateFile(cursor: FileWhereUniqueInput, orderBy: [FileOrderByWithRelationInput!], skip: Int, take: Int, where: FileWhereInput): AggregateFile!
+  aggregatePage(cursor: PageWhereUniqueInput, orderBy: [PageOrderByWithRelationInput!], skip: Int, take: Int, where: PageWhereInput): AggregatePage!
   file(where: FileWhereUniqueInput!): File
-  files(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByInput!], skip: Int, take: Int, where: FileWhereInput): [File!]!
-  findFirstFile(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByInput!], skip: Int, take: Int, where: FileWhereInput): File
-  findFirstPage(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): Page
-  groupByFile(by: [FileScalarFieldEnum!]!, having: FileScalarWhereWithAggregatesInput, orderBy: [FileOrderByInput!], skip: Int, take: Int, where: FileWhereInput): [FileGroupBy!]!
-  groupByPage(by: [PageScalarFieldEnum!]!, having: PageScalarWhereWithAggregatesInput, orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [PageGroupBy!]!
+  files(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByWithRelationInput!], skip: Int, take: Int, where: FileWhereInput): [File!]!
+  findFirstFile(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByWithRelationInput!], skip: Int, take: Int, where: FileWhereInput): File
+  findFirstPage(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByWithRelationInput!], skip: Int, take: Int, where: PageWhereInput): Page
+  groupByFile(by: [FileScalarFieldEnum!]!, having: FileScalarWhereWithAggregatesInput, orderBy: [FileOrderByWithAggregationInput!], skip: Int, take: Int, where: FileWhereInput): [FileGroupBy!]!
+  groupByPage(by: [PageScalarFieldEnum!]!, having: PageScalarWhereWithAggregatesInput, orderBy: [PageOrderByWithAggregationInput!], skip: Int, take: Int, where: PageWhereInput): [PageGroupBy!]!
   page(where: PageWhereUniqueInput!): Page
-  pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
+  pages(cursor: PageWhereUniqueInput, distinct: [PageScalarFieldEnum!], orderBy: [PageOrderByWithRelationInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
 }
 
 enum SortOrder {
