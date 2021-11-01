@@ -64,7 +64,7 @@ export const PageList: React.VFC<
 
       {currentPage.kind === "home" && recentPosts.length > 0 && (
         <Stack as="section">
-          <h2 css={[h2Styles, tw`text-secondary`]}>Recent Posts</h2>
+          <h2 css={[h2Styles]}>Recent Posts</h2>
           <Stack as="ul" css={[cardListStyles]}>
             {recentPosts.map((page) => (
               <li key={page.slug} css={tw`p-3`}>
