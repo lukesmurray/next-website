@@ -354,37 +354,37 @@ export function useReactQueryAutoSync</*...*/>({
   /*...*/
 
   // create a function which saves and cancels the debounced save
-  const saveAndCancelDebounced =  /*...*/
+  const saveAndCancelDebounced = /*...*/
 
-  // confirm before the user leaves if the draft value isn't saved
-  useEffect(() => {
-    const shouldPreventUserFromLeaving =
-      draft !== undefined && alertIfUnsavedChanges;
+    // confirm before the user leaves if the draft value isn't saved
+    useEffect(() => {
+      const shouldPreventUserFromLeaving =
+        draft !== undefined && alertIfUnsavedChanges;
 
-    const alertUserIfDraftIsUnsaved = (e: BeforeUnloadEvent) => {
+      const alertUserIfDraftIsUnsaved = (e: BeforeUnloadEvent) => {
+        if (shouldPreventUserFromLeaving) {
+          // Cancel the event
+          e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+          // Chrome requires returnValue to be set
+          e.returnValue = "";
+        } else {
+          // the absence of a returnValue property on the event will guarantee the browser unload happens
+          delete e["returnValue"];
+        }
+      };
+
+      // only add beforeUnload if there is unsaved work to avoid performance penalty
       if (shouldPreventUserFromLeaving) {
-        // Cancel the event
-        e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-        // Chrome requires returnValue to be set
-        e.returnValue = "";
-      } else {
-        // the absence of a returnValue property on the event will guarantee the browser unload happens
-        delete e["returnValue"];
+        window.addEventListener("beforeunload", alertUserIfDraftIsUnsaved);
       }
-    };
-
-    // only add beforeUnload if there is unsaved work to avoid performance penalty
-    if (shouldPreventUserFromLeaving) {
-      window.addEventListener("beforeunload", alertUserIfDraftIsUnsaved);
-    }
-    // document.addEventListener("visibilitychange", saveDraftOnVisibilityChange);
-    return () => {
-      if (shouldPreventUserFromLeaving) {
-        window.removeEventListener("beforeunload", alertUserIfDraftIsUnsaved);
-      }
-      // document.removeEventListener("visibilitychange", saveDraftOnVisibilityChange);
-    };
-  }, [alertIfUnsavedChanges, draft, saveAndCancelDebounced]);
+      // document.addEventListener("visibilitychange", saveDraftOnVisibilityChange);
+      return () => {
+        if (shouldPreventUserFromLeaving) {
+          window.removeEventListener("beforeunload", alertUserIfDraftIsUnsaved);
+        }
+        // document.removeEventListener("visibilitychange", saveDraftOnVisibilityChange);
+      };
+    }, [alertIfUnsavedChanges, draft, saveAndCancelDebounced]);
 
   return {
     /*...*/
@@ -446,4 +446,4 @@ If you are interested in more robust solutions for concurrent editing you could 
 
 The hook is now complete and you should be able to use it to build your own autosave interfaces.
 While it may seem straightforward the code shown here is the result of several iterations and redesigns.
-If you want to see all the code for this hook in one place you can check out the [project](https://github.com/lukesmurray/react-query-autosync) on GitHub or just the [code for this hook](https://github.com/lukesmurray/react-query-autosync/blob/main/lib/useReactQueryAutoSync.tsx) with some minor changes and updates.
+If you want to see all the code for this hook in one place you can check out the [project](https://github.com/lukesmurray/react-query-autosync) on GitHub or just the [code for this hook](https://github.com/lukesmurray/react-query-autosync/blob/main/lib/useReactQueryAutoSync.ts) with some minor changes and updates.
